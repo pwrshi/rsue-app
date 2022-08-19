@@ -1,0 +1,65 @@
+name: rsue_app
+description: rsue_app
+version: 1.0.0+1
+publish_to: none
+environment:
+  sdk: ">=2.17.3 <3.0.0"
+dependencies:
+  intl: ^0.17.0
+  rsue_portfolio_api:
+    git:
+      url: https://github.com/pwrshi/rsue-portfolio-api.git
+  rsue_schedule_api:
+    git:
+      url: https://github.com/pwrshi/rsue-schedule-api.git
+
+  table_calendar: ^3.0.6
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.2
+  shared_preferences: ^2.0.15
+  get: ^4.6.5
+  animated_toggle_switch: ^0.5.2
+  group_button: ^5.0.1
+  fluentui_system_icons: ^1.1.170
+  carousel_slider: ^4.1.1
+  provider: ^6.0.3
+  dio: ^4.0.6
+  dio_cookie_manager: ^2.0.0
+  cookie_jar: ^3.0.1
+  html: ^0.15.0
+  fl_chart: ^0.55.0
+  auto_size_text: ^3.0.0
+  animations: ^2.0.3
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+flutter:
+  uses-material-design: true
+  fonts:
+    - family: Rubik
+      fonts:
+        - asset: assets/fonts/rubik/Rubik-Light.ttf
+          weight: 100
+        - asset: assets/fonts/rubik/Rubik-Medium.ttf
+          weight: 300
+        - asset: assets/fonts/rubik/Rubik-Regular.ttf
+          weight: 500
+        - asset: assets/fonts/rubik/Rubik-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/rubik/Rubik-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/rubik/Rubik-ExtraBold.ttf
+          weight: 800
+        - asset: assets/fonts/rubik/Rubik-Black.ttf
+          weight: 900
+  assets:
+    - assets/icons/faculty/ktiib/
+    - assets/icons/faculty/mip/
+    - assets/icons/faculty/eif/
+    - assets/icons/faculty/fliz/
+    - assets/icons/faculty/td/
+    - assets/icons/faculty/u/
+    - assets/icons/faculty/uef/
+
