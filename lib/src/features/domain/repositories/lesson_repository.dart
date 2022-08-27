@@ -1,7 +1,7 @@
+import 'package:rsue_app/src/core/api/response.dart';
 import 'package:rsue_app/src/features/domain/entities/lesson_entity.dart';
 
-class LessonsRepository {
-  List<LessonEntity>? getLessons(DateTime date) {
-    return null;
-  }
+abstract class LessonsRepository {
+  Future<Response> setGroup();
+  Future<Response<List<LessonEntity>>> getLessons(DateTime date);
 }

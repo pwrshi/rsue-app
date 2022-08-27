@@ -4,9 +4,11 @@ class SubjectEntity {
       required this.teachersname,
       required this.type,
       required this.isClosed,
-      required this.statement});
+      required this.statement,
+      required this.academicPerfomance});
   bool isClosed;
   int statement;
+  AP academicPerfomance;
   String name;
   String teachersname;
   SessionType type;
