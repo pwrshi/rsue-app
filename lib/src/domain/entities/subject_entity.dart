@@ -8,7 +8,7 @@ class SubjectEntity {
       required this.academicPerfomance});
   bool isClosed;
   int statement;
-  AP academicPerfomance;
+  AcademicPerfomance academicPerfomance;
   String name;
   String teachersname;
   SessionType type;
@@ -17,14 +17,14 @@ class SubjectEntity {
 enum SessionType { exam, credit, practice }
 
 /// academic perfomance interface
-abstract class AP {
+abstract class AcademicPerfomance {
   int get finalMark;
   List<int> get controlPoints;
   List<int> get absoluteControlPoints;
 }
 
-class APExam implements AP {
-  APExam(
+class AcademicPerfomanceExam implements AcademicPerfomance {
+  AcademicPerfomanceExam(
     this._controlPoint1,
     this._controlPoint2,
   );
@@ -40,8 +40,8 @@ class APExam implements AP {
   List<int> get controlPoints => [_controlPoint1, _controlPoint2];
 }
 
-class APCredit implements AP {
-  APCredit(
+class AcademicPerfomanceCredit implements AcademicPerfomance {
+  AcademicPerfomanceCredit(
     this._controlPoint1,
     this._controlPoint2,
   );
@@ -57,8 +57,8 @@ class APCredit implements AP {
   List<int> get controlPoints => [_controlPoint1, _controlPoint2];
 }
 
-class APPractice implements AP {
-  APPractice(
+class AcademicPerfomancePractice implements AcademicPerfomance {
+  AcademicPerfomancePractice(
     this._controlPoint1,
   );
   final int _controlPoint1;
