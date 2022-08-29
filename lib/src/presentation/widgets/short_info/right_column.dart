@@ -1,8 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../../../../lib_de/models/apis/response.dart';
-import '../../../../../lib_de/view_models/user.dart';
+import '../../../../lib_de/models/apis/response.dart';
+import '../../../../lib_de/view_models/user.dart';
 
 class ChartWhatNeedsToBeImproved extends StatefulWidget {
   const ChartWhatNeedsToBeImproved({Key? key}) : super(key: key);
