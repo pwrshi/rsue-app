@@ -1,8 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../../../lib_de/models/apis/response.dart';
-import '../../../../lib_de/view_models/user.dart';
 
 class ChartWhatNeedsToBeImproved extends StatefulWidget {
   const ChartWhatNeedsToBeImproved({Key? key}) : super(key: key);
@@ -36,33 +34,92 @@ class ChartWhatNeedsToBeImprovedState
                   )),
             )),
         SizedBox(
-          height: 242,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: context
-                .read<UserViewModel>()
-                .perfomanceChartSubjects
-                .data!
-                .map((e) => RadioPerfomanceButton(
-                    label: e.abbr,
-                    firstPoint: e.cp1,
-                    secondPoint: e.cp2,
-                    selected: selectedItem == e.hashCode,
-                    onTap: () {
-                      setState(() {
-                        if (selectedItem == e.hashCode) {
-                          nameOfSelectedItem = null;
-                          selectedItem = null;
-                        } else {
-                          nameOfSelectedItem = e.abbr;
-                          selectedItem = e.hashCode;
-                        }
-                      });
-                    }))
-                .toList(),
-          ),
-        ),
+            height: 242,
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  RadioPerfomanceButton(
+                      label: "some",
+                      firstPoint: 100,
+                      secondPoint: 100,
+                      selected: selectedItem == 1,
+                      onTap: () {
+                        setState(() {
+                          if (selectedItem == 1) {
+                            nameOfSelectedItem = null;
+                            selectedItem = null;
+                          } else {
+                            nameOfSelectedItem = "some";
+                            selectedItem = 1;
+                          }
+                        });
+                      }),
+                  RadioPerfomanceButton(
+                      label: "some",
+                      firstPoint: 100,
+                      secondPoint: 100,
+                      selected: selectedItem == 2,
+                      onTap: () {
+                        setState(() {
+                          if (selectedItem == 2) {
+                            nameOfSelectedItem = null;
+                            selectedItem = null;
+                          } else {
+                            nameOfSelectedItem = "some";
+                            selectedItem = 2;
+                          }
+                        });
+                      }),
+                  RadioPerfomanceButton(
+                      label: "some",
+                      firstPoint: 100,
+                      secondPoint: 100,
+                      selected: selectedItem == 3,
+                      onTap: () {
+                        setState(() {
+                          if (selectedItem == 3) {
+                            nameOfSelectedItem = null;
+                            selectedItem = null;
+                          } else {
+                            nameOfSelectedItem = "some";
+                            selectedItem = 3;
+                          }
+                        });
+                      }),
+                  RadioPerfomanceButton(
+                      label: "some",
+                      firstPoint: 100,
+                      secondPoint: 100,
+                      selected: selectedItem == 4,
+                      onTap: () {
+                        setState(() {
+                          if (selectedItem == 4) {
+                            nameOfSelectedItem = null;
+                            selectedItem = null;
+                          } else {
+                            nameOfSelectedItem = "some";
+                            selectedItem = 4;
+                          }
+                        });
+                      }),
+                  RadioPerfomanceButton(
+                      label: "some",
+                      firstPoint: 100,
+                      secondPoint: 100,
+                      selected: selectedItem == 5,
+                      onTap: () {
+                        setState(() {
+                          if (selectedItem == 5) {
+                            nameOfSelectedItem = null;
+                            selectedItem = null;
+                          } else {
+                            nameOfSelectedItem = "some";
+                            selectedItem = 5;
+                          }
+                        });
+                      })
+                ])),
       ],
     );
   }
@@ -86,8 +143,8 @@ class RadioPerfomanceButton extends StatelessWidget {
 
   static const animationCurveIn = Curves.easeIn;
   static const animationCurveOut = Curves.easeOut;
-  final _colorOfInnerColumn = Colors.deepOrange.shade300;
-  final _colorOfOuterColumn = Colors.lightBlue.shade100;
+  final _colorOfInnerColumn = Color(0xFF0FCA7A);
+  final _colorOfOuterColumn = Color(0xFF334E68);
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -190,26 +247,14 @@ class RightColumnInfoWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(15.0),
-      width: 220,
-      height: 310,
-      decoration: const BoxDecoration(
-          color: Colors.lightBlue,
-          borderRadius: BorderRadius.all(Radius.circular(15))),
-      child: Builder(builder: (context) {
-        var chart = context.watch<UserViewModel>().perfomanceChartSubjects;
-        switch (chart.status) {
-          case Status.initial:
-            return const Text("0_O");
-          case Status.error:
-            return const Text("ошибка");
-          case Status.loading:
-            return const Center(child: CircularProgressIndicator());
-          case Status.completed:
-            return const ChartWhatNeedsToBeImproved();
-          // ChartComplete(chart.data!.asMap());
-        }
-      }),
-    );
+        padding: const EdgeInsets.all(15.0),
+        width: 220,
+        height: 310,
+        decoration: const BoxDecoration(
+            color: Color(0xFF486581),
+            borderRadius: BorderRadius.all(Radius.circular(15))),
+        child: const ChartWhatNeedsToBeImproved()
+        // ChartComplete(chart.data!.asMap());
+        );
   }
 }

@@ -9,8 +9,8 @@ void main() {
   initializeDateFormatting().then((_) => runApp(const App()));
 }
 
-class App extends StatelessWidget {
-  const App({Key? key}) : super(key: key);
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({Key? key}) : super(key: key);
   Widget routestub(context) {
     return Scaffold(
       appBar: AppBar(
