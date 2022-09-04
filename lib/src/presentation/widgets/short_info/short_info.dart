@@ -10,9 +10,21 @@ class ShortInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: const [LeftColumnInfoWidget(), RightColumnInfoWidget()],
-    );
+    return FittedBox(
+        child: Row(
+      children: [
+        Column(mainAxisSize: MainAxisSize.max, children: const [
+          TopLeftInfoWidget(),
+          SizedBox(
+            height: 8,
+          ),
+          BottomLeftInfoWidget()
+        ]),
+        const SizedBox(
+          width: 8,
+        ),
+        const RightColumnInfoWidget()
+      ],
+    ));
   }
 }

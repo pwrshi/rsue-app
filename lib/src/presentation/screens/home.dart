@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/config.dart';
@@ -65,7 +66,6 @@ class HomeScreen extends StatelessWidget {
 
 class _MenuButton extends StatelessWidget {
   const _MenuButton({
-    super.key,
     required this.icon,
     required this.text,
   });
@@ -111,8 +111,137 @@ class _HomeScreen extends StatelessWidget {
           style: TextStyle(fontFamily: "Rubik_glitch"),
         ),
       ),
-      body: Center(
-        child: Column(children: const [ShortInfo()]),
+      body: ListView(padding: const EdgeInsets.all(8), children: [
+        const Padding(
+          padding: EdgeInsets.only(bottom: 15.0),
+          child: Text(
+            "Добрый день, Станислав!",
+            style: TextStyle(fontSize: 24),
+            textAlign: TextAlign.center,
+          ),
+        ),
+        const ShortInfo(),
+        Padding(
+          padding: const EdgeInsets.only(
+            top: 30,
+          ),
+          child: Row(
+            children: [
+              TextButton(
+                onPressed: () {},
+                child: Row(
+                  children: [
+                    Text(
+                      "Сегодня, ",
+                      style: TextStyle(
+                          fontSize: 24,
+                          color: Theme.of(context).textTheme.bodyLarge?.color),
+                    ),
+                    const Text(
+                      "9 Августа",
+                      style: TextStyle(fontSize: 24),
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+        const LessonWidget(
+          teacher: "доц.Рутта. Н.А.",
+          name: "Математика",
+          room: "Ауд.320",
+          type: "Лекция",
+          time: "8:30-10:00",
+        ),
+        const DelayWidget(
+          time: 10,
+        ),
+        const LessonWidget(
+          teacher: "ст.преп.Декамили Ю.Г..",
+          name:
+              "Элективные дисциплины (модули) по физической культуре и спорту",
+          room: "Ауд.310",
+          type: "Практика",
+          time: "10:10-11:40",
+        ),
+        const DelayWidget(
+          time: 10,
+        )
+      ]),
+    );
+  }
+}
+
+class DelayWidget extends StatelessWidget {
+  const DelayWidget({super.key, required this.time});
+  final int time;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(top: 5, left: 30, right: 30),
+      width: double.infinity,
+      height: 40,
+      decoration: const BoxDecoration(
+          color: Color(0xFF486581),
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(5),
+              topRight: Radius.circular(5),
+              bottomLeft: Radius.circular(15),
+              bottomRight: Radius.circular(15))),
+      child: Center(child: Text("$time минут")),
+    );
+  }
+}
+
+class LessonWidget extends StatelessWidget {
+  const LessonWidget(
+      {super.key,
+      required this.name,
+      required this.room,
+      required this.teacher,
+      required this.time,
+      required this.type});
+  final String type, room, name, teacher, time;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(top: 5),
+      padding: const EdgeInsets.all(15),
+      width: double.infinity,
+      height: 200,
+      decoration: const BoxDecoration(
+          color: Color(0xFF486581),
+          borderRadius: BorderRadius.all(Radius.circular(15))),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [Text(type), Text(room)],
+          ),
+          Column(
+            children: [
+              SizedBox(
+                width: double.infinity,
+                child: AutoSizeText(name,
+                    minFontSize: 16,
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 38,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w500,
+                    )),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [Text(teacher), Text(time)],
+              ),
+            ],
+          )
+        ],
       ),
     );
   }

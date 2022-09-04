@@ -10,7 +10,7 @@ class TopLeftInfoWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         width: 110,
-        height: 150,
+        height: 140,
         decoration: const BoxDecoration(
             color: Color(0xFF486581),
             borderRadius: BorderRadius.all(Radius.circular(15))),
@@ -19,29 +19,32 @@ class TopLeftInfoWidget extends StatelessWidget {
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: const [
-                Text(("Нужно сдать")),
+                Text(
+                  "Нужно сдать",
+                  style: TextStyle(color: Colors.white70),
+                ),
                 Text(
                   "3/4",
                   style: TextStyle(
-                      fontSize: 35,
+                      fontSize: 30,
                       fontWeight: FontWeight.w700,
                       fontFamily: "Rubik"),
                 ),
-                Text("Зачетов")
+                Text("Зачетов", style: TextStyle(color: Colors.white70))
               ],
             ),
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: const [
-                Text("Нужно сдать"),
+                Text("Нужно сдать", style: TextStyle(color: Colors.white70)),
                 Text(
                   "12/13",
                   style: TextStyle(
-                      fontSize: 35,
+                      fontSize: 30,
                       fontWeight: FontWeight.w700,
                       fontFamily: "Rubik"),
                 ),
-                Text("Экзаменов")
+                Text("Экзаменов", style: TextStyle(color: Colors.white70))
               ],
             )
           ],
@@ -65,7 +68,7 @@ class BottomLeftInfoWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         width: 110,
-        height: 150,
+        height: 160,
         decoration: const BoxDecoration(
             color: Color(0xFF486581),
             borderRadius: BorderRadius.all(Radius.circular(15))),
@@ -118,13 +121,13 @@ class CircularChartInfoWidget extends StatelessWidget {
         ),
         Center(
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10.0),
+            padding: const EdgeInsets.symmetric(vertical: 5.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(topText,
                     style:
-                        const TextStyle(color: Colors.white70, fontSize: 12)),
+                        const TextStyle(color: Colors.white70, fontSize: 14)),
                 Text(score.toString(),
                     style: const TextStyle(
                         fontSize: 30,
@@ -132,24 +135,12 @@ class CircularChartInfoWidget extends StatelessWidget {
                         fontFamily: "Rubik",
                         color: Colors.white)),
                 const Text("средний балл",
-                    style: TextStyle(color: Colors.white70, fontSize: 12))
+                    style: TextStyle(color: Colors.white70, fontSize: 14))
               ],
             ),
           ),
         )
       ],
     );
-  }
-}
-
-class LeftColumnInfoWidget extends StatelessWidget {
-  const LeftColumnInfoWidget({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-        children: const [TopLeftInfoWidget(), BottomLeftInfoWidget()]);
   }
 }

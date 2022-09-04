@@ -33,93 +33,91 @@ class ChartWhatNeedsToBeImprovedState
                     fontWeight: FontWeight.w500,
                   )),
             )),
-        SizedBox(
-            height: 242,
-            child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  RadioPerfomanceButton(
-                      label: "some",
-                      firstPoint: 100,
-                      secondPoint: 100,
-                      selected: selectedItem == 1,
-                      onTap: () {
-                        setState(() {
-                          if (selectedItem == 1) {
-                            nameOfSelectedItem = null;
-                            selectedItem = null;
-                          } else {
-                            nameOfSelectedItem = "some";
-                            selectedItem = 1;
-                          }
-                        });
-                      }),
-                  RadioPerfomanceButton(
-                      label: "some",
-                      firstPoint: 100,
-                      secondPoint: 100,
-                      selected: selectedItem == 2,
-                      onTap: () {
-                        setState(() {
-                          if (selectedItem == 2) {
-                            nameOfSelectedItem = null;
-                            selectedItem = null;
-                          } else {
-                            nameOfSelectedItem = "some";
-                            selectedItem = 2;
-                          }
-                        });
-                      }),
-                  RadioPerfomanceButton(
-                      label: "some",
-                      firstPoint: 100,
-                      secondPoint: 100,
-                      selected: selectedItem == 3,
-                      onTap: () {
-                        setState(() {
-                          if (selectedItem == 3) {
-                            nameOfSelectedItem = null;
-                            selectedItem = null;
-                          } else {
-                            nameOfSelectedItem = "some";
-                            selectedItem = 3;
-                          }
-                        });
-                      }),
-                  RadioPerfomanceButton(
-                      label: "some",
-                      firstPoint: 100,
-                      secondPoint: 100,
-                      selected: selectedItem == 4,
-                      onTap: () {
-                        setState(() {
-                          if (selectedItem == 4) {
-                            nameOfSelectedItem = null;
-                            selectedItem = null;
-                          } else {
-                            nameOfSelectedItem = "some";
-                            selectedItem = 4;
-                          }
-                        });
-                      }),
-                  RadioPerfomanceButton(
-                      label: "some",
-                      firstPoint: 100,
-                      secondPoint: 100,
-                      selected: selectedItem == 5,
-                      onTap: () {
-                        setState(() {
-                          if (selectedItem == 5) {
-                            nameOfSelectedItem = null;
-                            selectedItem = null;
-                          } else {
-                            nameOfSelectedItem = "some";
-                            selectedItem = 5;
-                          }
-                        });
-                      })
-                ])),
+        Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              RadioPerfomanceButton(
+                  label: "some",
+                  firstPoint: 100,
+                  secondPoint: 100,
+                  selected: selectedItem == 1,
+                  onTap: () {
+                    setState(() {
+                      if (selectedItem == 1) {
+                        nameOfSelectedItem = null;
+                        selectedItem = null;
+                      } else {
+                        nameOfSelectedItem = "some";
+                        selectedItem = 1;
+                      }
+                    });
+                  }),
+              RadioPerfomanceButton(
+                  label: "some",
+                  firstPoint: 100,
+                  secondPoint: 100,
+                  selected: selectedItem == 2,
+                  onTap: () {
+                    setState(() {
+                      if (selectedItem == 2) {
+                        nameOfSelectedItem = null;
+                        selectedItem = null;
+                      } else {
+                        nameOfSelectedItem = "some";
+                        selectedItem = 2;
+                      }
+                    });
+                  }),
+              RadioPerfomanceButton(
+                  label: "some",
+                  firstPoint: 100,
+                  secondPoint: 100,
+                  selected: selectedItem == 3,
+                  onTap: () {
+                    setState(() {
+                      if (selectedItem == 3) {
+                        nameOfSelectedItem = null;
+                        selectedItem = null;
+                      } else {
+                        nameOfSelectedItem = "some";
+                        selectedItem = 3;
+                      }
+                    });
+                  }),
+              RadioPerfomanceButton(
+                  label: "some",
+                  firstPoint: 100,
+                  secondPoint: 100,
+                  selected: selectedItem == 4,
+                  onTap: () {
+                    setState(() {
+                      if (selectedItem == 4) {
+                        nameOfSelectedItem = null;
+                        selectedItem = null;
+                      } else {
+                        nameOfSelectedItem = "some";
+                        selectedItem = 4;
+                      }
+                    });
+                  }),
+              RadioPerfomanceButton(
+                  label: "some",
+                  firstPoint: 100,
+                  secondPoint: 100,
+                  selected: selectedItem == 5,
+                  onTap: () {
+                    setState(() {
+                      if (selectedItem == 5) {
+                        nameOfSelectedItem = null;
+                        selectedItem = null;
+                      } else {
+                        nameOfSelectedItem = "some";
+                        selectedItem = 5;
+                      }
+                    });
+                  })
+            ]),
       ],
     );
   }
@@ -143,8 +141,8 @@ class RadioPerfomanceButton extends StatelessWidget {
 
   static const animationCurveIn = Curves.easeIn;
   static const animationCurveOut = Curves.easeOut;
-  final _colorOfInnerColumn = Color(0xFF0FCA7A);
-  final _colorOfOuterColumn = Color(0xFF334E68);
+  final _colorOfInnerColumn = const Color(0xFF0FCA7A);
+  final _colorOfOuterColumn = const Color(0xFF334E68);
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -190,7 +188,8 @@ class RadioPerfomanceButton extends StatelessWidget {
                         )
                       : Text(
                           ((firstPoint + secondPoint) / 2).round().toString(),
-                          style: const TextStyle(color: Colors.white),
+                          style: const TextStyle(
+                              color: Colors.white, fontSize: 12),
                         )),
                 ),
               ),
@@ -248,7 +247,7 @@ class RightColumnInfoWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         padding: const EdgeInsets.all(15.0),
-        width: 220,
+        width: 230,
         height: 310,
         decoration: const BoxDecoration(
             color: Color(0xFF486581),
