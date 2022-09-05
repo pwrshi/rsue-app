@@ -38,9 +38,10 @@ class ChartWhatNeedsToBeImprovedState
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               RadioPerfomanceButton(
-                  label: "some",
-                  firstPoint: 100,
-                  secondPoint: 100,
+                  label:
+                      "Элективные дисциплины (модули) по физической культуре и спорту",
+                  firstPoint: 40,
+                  secondPoint: 63,
                   selected: selectedItem == 1,
                   onTap: () {
                     setState(() {
@@ -48,15 +49,16 @@ class ChartWhatNeedsToBeImprovedState
                         nameOfSelectedItem = null;
                         selectedItem = null;
                       } else {
-                        nameOfSelectedItem = "some";
+                        nameOfSelectedItem =
+                            "Элективные дисциплины (модули) по физической культуре и спорту";
                         selectedItem = 1;
                       }
                     });
                   }),
               RadioPerfomanceButton(
-                  label: "some",
-                  firstPoint: 100,
-                  secondPoint: 100,
+                  label: "Математика",
+                  firstPoint: 62,
+                  secondPoint: 73,
                   selected: selectedItem == 2,
                   onTap: () {
                     setState(() {
@@ -64,15 +66,15 @@ class ChartWhatNeedsToBeImprovedState
                         nameOfSelectedItem = null;
                         selectedItem = null;
                       } else {
-                        nameOfSelectedItem = "some";
+                        nameOfSelectedItem = "Математика";
                         selectedItem = 2;
                       }
                     });
                   }),
               RadioPerfomanceButton(
-                  label: "some",
-                  firstPoint: 100,
-                  secondPoint: 100,
+                  label: "Иностранный язык",
+                  firstPoint: 76,
+                  secondPoint: 88,
                   selected: selectedItem == 3,
                   onTap: () {
                     setState(() {
@@ -80,15 +82,15 @@ class ChartWhatNeedsToBeImprovedState
                         nameOfSelectedItem = null;
                         selectedItem = null;
                       } else {
-                        nameOfSelectedItem = "some";
+                        nameOfSelectedItem = "Иностранный язык";
                         selectedItem = 3;
                       }
                     });
                   }),
               RadioPerfomanceButton(
-                  label: "some",
-                  firstPoint: 100,
-                  secondPoint: 100,
+                  label: "Низкоуровневое программирование ",
+                  firstPoint: 80,
+                  secondPoint: 93,
                   selected: selectedItem == 4,
                   onTap: () {
                     setState(() {
@@ -96,15 +98,15 @@ class ChartWhatNeedsToBeImprovedState
                         nameOfSelectedItem = null;
                         selectedItem = null;
                       } else {
-                        nameOfSelectedItem = "some";
+                        nameOfSelectedItem = "Низкоуровневое программирование ";
                         selectedItem = 4;
                       }
                     });
                   }),
               RadioPerfomanceButton(
-                  label: "some",
-                  firstPoint: 100,
-                  secondPoint: 100,
+                  label: "Информационные технологии ",
+                  firstPoint: 92,
+                  secondPoint: 98,
                   selected: selectedItem == 5,
                   onTap: () {
                     setState(() {
@@ -112,7 +114,7 @@ class ChartWhatNeedsToBeImprovedState
                         nameOfSelectedItem = null;
                         selectedItem = null;
                       } else {
-                        nameOfSelectedItem = "some";
+                        nameOfSelectedItem = "Информационные технологии ";
                         selectedItem = 5;
                       }
                     });

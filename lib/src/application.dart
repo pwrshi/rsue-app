@@ -4,6 +4,7 @@ import 'package:flutter_zoom_drawer/config.dart';
 import 'package:provider/provider.dart';
 import 'package:rsue_app/src/config/theme.dart';
 import 'package:rsue_app/src/presentation/screens/home.dart';
+import 'package:rsue_app/src/presentation/screens/profile.dart';
 import 'package:rsue_app/src/presentation/screens/schedule.dart';
 import 'package:rsue_app/src/presentation/widgets/menu_scaffold.dart';
 
@@ -56,7 +57,12 @@ class RsueApplication extends StatelessWidget {
                     MenuButton(
                       icon: FluentIcons.person_48_filled,
                       text: "Профиль",
-                      onPressed: () {},
+                      onPressed: () {
+                        Provider.of<ZoomDrawerController>(context,
+                                listen: false)
+                            .toggle!();
+                        Navigator.pushNamed(context, '/profile');
+                      },
                     ),
                     MenuButton(
                       icon: FluentIcons.bug_24_filled,
@@ -64,7 +70,8 @@ class RsueApplication extends StatelessWidget {
                       onPressed: () {},
                     ),
                   ]),
-              '/schedule': (context) => const ScheduleScreen()
+              '/schedule': (context) => const ScheduleScreen(),
+              '/profile': (context) => const ProfileScreen()
             }));
   }
 }

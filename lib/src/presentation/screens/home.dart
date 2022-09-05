@@ -54,7 +54,7 @@ class HomeScreen extends StatelessWidget {
                     ),
                     const Text(
                       "9 Августа",
-                      style: TextStyle(fontSize: 24),
+                      style: TextStyle(fontSize: 24, color: Color(0xFFBCCCDC)),
                     )
                   ],
                 ),

@@ -3,26 +3,56 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:rsue_app/src/presentation/widgets/schedule/lesson.dart';
 
-const int maxWeekPages = 10;
+const int maxWeekPages = 15;
 
 class IndexedDateWithWeek {
   IndexedDateWithWeek(
-    this._initDay,
+    DateTime date,
     this._max,
   ) {
-    initDay(0);
+    _initDay = clearDateTimeFromTime(findMondayOfThisWeek(date));
+    week = PageController(initialPage: _max);
+    day = PageController(initialPage: _max * 7 + date.weekday - 1);
+    _initDays(_max * 7 + date.weekday - 1);
   }
-  PageController week = PageController(initialPage: maxWeekPages),
-      day = PageController(initialPage: maxWeekPages * 7);
-  // максимальное количество страниц-недель
+
+  static const typeAnimation = Curves.easeOut;
+  static const animationSpeed = Duration(milliseconds: 300);
+
+  /// контроллер для управления компонентом
+  late PageController week, day;
+
+  /// максимальное количество страниц-недель
   final int _max;
-  // _initDay и _focusedDay Всегда должны быть понедельником
-  final DateTime _initDay;
+
+  /*
+    для лучшего понимания процесса _initDay и _focusedDay 
+    являются понедельниками с временем 0:00, по ним вычисляются недели
+  */
+
+  /// понедельник той недели, которая, является точкой отсчёта
+  late final DateTime _initDay;
+
+  /// выбранный день
   late DateTime _selectedDay;
+
+  /// понедельник той недели, которая, находится в фокусе
   late DateTime _focusedDay;
+
+  static DateTime clearDateTimeFromTime(DateTime date) {
+    return DateTime(date.year, date.month, date.day);
+  }
+
+  static DateTime findMondayOfThisWeek(DateTime date) {
+    return date.subtract(Duration(days: date.weekday - 1));
+  }
 
   DateTime get selectedDay {
     return _selectedDay;
+  }
+
+  DateTime getDateTimeByDayId(int id) {
+    return _initDay.add(Duration(days: id - _max * 7));
   }
 
   List<DateTime> getWeek(int wId) {
@@ -37,30 +67,32 @@ class IndexedDateWithWeek {
     return week;
   }
 
+  void setDayIdByDate(DateTime date) {
+    _focusedDay = findMondayOfThisWeek(clearDateTimeFromTime(date));
+    _selectedDay = clearDateTimeFromTime(date);
+    day.animateToPage(dayId, curve: typeAnimation, duration: animationSpeed);
+  }
+
   int get weekId {
-    return _max - _initDay.difference(_focusedDay).inDays;
+    return _max - (_initDay.difference(_focusedDay).inDays / 7).ceil();
   }
 
   set weekId(int newid) {
     _focusedDay = _initDay.add(Duration(days: (newid - _max) * 7));
-    print("$newid\n$_focusedDay");
   }
 
   int get dayId {
     return _max * 7 - _initDay.difference(_selectedDay).inDays;
   }
 
-  void initDay(int newid) {
-    _selectedDay = _initDay.add(Duration(days: newid - _max * 7));
-    _focusedDay =
-        _selectedDay.subtract(Duration(days: _selectedDay.weekday - 1));
+  void _initDays(int newDayId) {
+    _selectedDay = _initDay.add(Duration(days: newDayId - _max * 7));
+    _focusedDay = findMondayOfThisWeek(_selectedDay);
   }
 
-  set dayId(int newid) {
-    initDay(newid);
-    week.animateToPage(weekId,
-        curve: Curves.bounceIn, duration: const Duration(seconds: 1));
-    print("$_selectedDay\n$_focusedDay\n$_initDay");
+  set dayId(int newDayId) {
+    _initDays(newDayId);
+    week.animateToPage(weekId, curve: typeAnimation, duration: animationSpeed);
   }
 }
 
@@ -72,7 +104,6 @@ class ScheduleScreen extends StatefulWidget {
 }
 
 class _ScheduleScreenState extends State<ScheduleScreen> {
-  DateTime date = DateTime.now();
   IndexedDateWithWeek idxw = IndexedDateWithWeek(
     DateTime.now(),
     maxWeekPages,
@@ -103,9 +134,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
               child: PageView.builder(
                 itemCount: maxWeekPages * 2,
                 controller: idxw.week,
-                onPageChanged: ((value) {
-                  idxw.weekId = value;
-                }),
+                onPageChanged: ((value) {}),
                 itemBuilder: (BuildContext context, int index) {
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -114,6 +143,9 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                         .map((e) => DayButton(
                               date: e,
                               selected: idxw.selectedDay,
+                              onTap: () {
+                                idxw.setDayIdByDate(e);
+                              },
                             ))
                         .toList(),
                   );
@@ -124,54 +156,75 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                 child: PageView.builder(
               itemCount: maxWeekPages * 2 * 7,
               onPageChanged: (value) {
-                idxw.dayId = value;
+                setState(() {
+                  idxw.dayId = value;
+                });
               },
               controller: idxw.day,
-              itemBuilder: ((context, index) =>
-                  ListView(padding: const EdgeInsets.all(8), children: const [
-                    LessonWidget(
-                      teacher: "доц.Рутта. Н.А.",
-                      name: "Математика",
-                      room: "Ауд.320",
-                      type: "Лекция",
-                      time: "8:30-10:00",
-                    ),
-                    DelayWidget(
-                      time: 10,
-                    ),
-                    LessonWidget(
-                      teacher: "ст.преп.Декамили Ю.Г..",
-                      name:
-                          "Элективные дисциплины (модули) по физической культуре и спорту",
-                      room: "Ауд.310",
-                      type: "Практика",
-                      time: "10:10-11:40",
-                    ),
-                    DelayWidget(
-                      time: 10,
-                    ),
-                    LessonWidget(
-                      teacher: "доц.Рутта. Н.А.",
-                      name: "Математика",
-                      room: "Ауд.320",
-                      type: "Лекция",
-                      time: "8:30-10:00",
-                    ),
-                    DelayWidget(
-                      time: 10,
-                    ),
-                    LessonWidget(
-                      teacher: "ст.преп.Декамили Ю.Г..",
-                      name:
-                          "Элективные дисциплины (модули) по физической культуре и спорту",
-                      room: "Ауд.310",
-                      type: "Практика",
-                      time: "10:10-11:40",
-                    ),
-                    DelayWidget(
-                      time: 10,
-                    )
-                  ])),
+              itemBuilder: ((context, index) {
+                var date = idxw.getDateTimeByDayId(index);
+                var s = DateFormat.EEEE('ru').format(date);
+                return ListView(padding: const EdgeInsets.all(8), children: [
+                  Row(
+                    children: [
+                      Text(
+                        "${s[0].toUpperCase() + s.substring(1)}, ",
+                        style: TextStyle(
+                            fontSize: 24,
+                            color:
+                                Theme.of(context).textTheme.bodyLarge?.color),
+                      ),
+                      Text(
+                        "${date.day} ${DateFormat.MMMM('ru').format(date)}",
+                        style: const TextStyle(
+                            fontSize: 24, color: Color(0xFFBCCCDC)),
+                      )
+                    ],
+                  ),
+                  const LessonWidget(
+                    teacher: "доц.Рутта. Н.А.",
+                    name: "Математика",
+                    room: "Ауд.320",
+                    type: "Лекция",
+                    time: "8:30-10:00",
+                  ),
+                  const DelayWidget(
+                    time: 10,
+                  ),
+                  const LessonWidget(
+                    teacher: "ст.преп.Декамили Ю.Г..",
+                    name:
+                        "Элективные дисциплины (модули) по физической культуре и спорту",
+                    room: "Ауд.310",
+                    type: "Практика",
+                    time: "10:10-11:40",
+                  ),
+                  const DelayWidget(
+                    time: 10,
+                  ),
+                  const LessonWidget(
+                    teacher: "доц.Рутта. Н.А.",
+                    name: "Математика",
+                    room: "Ауд.320",
+                    type: "Лекция",
+                    time: "8:30-10:00",
+                  ),
+                  const DelayWidget(
+                    time: 10,
+                  ),
+                  const LessonWidget(
+                    teacher: "ст.преп.Декамили Ю.Г..",
+                    name:
+                        "Элективные дисциплины (модули) по физической культуре и спорту",
+                    room: "Ауд.310",
+                    type: "Практика",
+                    time: "10:10-11:40",
+                  ),
+                  const DelayWidget(
+                    time: 10,
+                  )
+                ]);
+              }),
             ))
           ],
         ),
@@ -180,7 +233,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
   }
 }
 
-class DayButton extends StatefulWidget {
+class DayButton extends StatelessWidget {
   DayButton(
       {super.key, required this.date, required this.selected, this.onTap});
   final DateTime date;
@@ -188,17 +241,12 @@ class DayButton extends StatefulWidget {
   void Function()? onTap;
 
   @override
-  State<StatefulWidget> createState() => _DayButtonState();
-}
-
-class _DayButtonState extends State<DayButton> {
-  @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: widget.onTap,
+      onTap: onTap,
       child: Container(
         padding: const EdgeInsets.all(5),
-        decoration: widget.selected == widget.date
+        decoration: selected == date
             ? BoxDecoration(
                 color: const Color(0xFF486581),
                 borderRadius: BorderRadius.circular(15))
@@ -209,12 +257,11 @@ class _DayButtonState extends State<DayButton> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              DateFormat.MMM().format(widget.date),
+              DateFormat.MMM('ru').format(date).replaceAll('.', ''),
               style: const TextStyle(color: Colors.white70, fontSize: 10),
             ),
-            Text(widget.date.day.toString(),
-                style: const TextStyle(fontSize: 20)),
-            Text(DateFormat.E().format(widget.date),
+            Text(date.day.toString(), style: const TextStyle(fontSize: 20)),
+            Text(DateFormat.E('ru').format(date),
                 style: const TextStyle(color: Colors.white70, fontSize: 12))
           ],
         ),
