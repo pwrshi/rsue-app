@@ -4,8 +4,10 @@ import 'package:flutter_zoom_drawer/config.dart';
 import 'package:provider/provider.dart';
 import 'package:rsue_app/src/config/theme.dart';
 import 'package:rsue_app/src/presentation/screens/home.dart';
+import 'package:rsue_app/src/presentation/screens/payments.dart';
 import 'package:rsue_app/src/presentation/screens/profile.dart';
 import 'package:rsue_app/src/presentation/screens/schedule.dart';
+import 'package:rsue_app/src/presentation/screens/whoami.dart';
 import 'package:rsue_app/src/presentation/widgets/menu_scaffold.dart';
 
 class RsueApplication extends StatelessWidget {
@@ -71,6 +73,8 @@ class RsueApplication extends StatelessWidget {
                     ),
                   ]),
               '/schedule': (context) => const ScheduleScreen(),
+              '/profile/whoami': (context) => WhoamiScreen(),
+              '/profile/payments': (context) => const PaymentScreen(),
               '/profile': (context) => const ProfileScreen()
             }));
   }
