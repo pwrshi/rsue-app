@@ -131,25 +131,28 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
           children: [
             SizedBox(
               height: 90,
-              child: PageView.builder(
-                itemCount: maxWeekPages * 2,
-                controller: idxw.week,
-                onPageChanged: ((value) {}),
-                itemBuilder: (BuildContext context, int index) {
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: idxw
-                        .getWeek(index)
-                        .map((e) => DayButton(
-                              date: e,
-                              selected: idxw.selectedDay,
-                              onTap: () {
-                                idxw.setDayIdByDate(e);
-                              },
-                            ))
-                        .toList(),
-                  );
-                },
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 400),
+                child: PageView.builder(
+                  itemCount: maxWeekPages * 2,
+                  controller: idxw.week,
+                  onPageChanged: ((value) {}),
+                  itemBuilder: (BuildContext context, int index) {
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: idxw
+                          .getWeek(index)
+                          .map((e) => DayButton(
+                                date: e,
+                                selected: idxw.selectedDay,
+                                onTap: () {
+                                  idxw.setDayIdByDate(e);
+                                },
+                              ))
+                          .toList(),
+                    );
+                  },
+                ),
               ),
             ),
             Expanded(

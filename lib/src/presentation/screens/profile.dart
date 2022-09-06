@@ -1,5 +1,6 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:rsue_app/src/presentation/widgets/schedule/subject.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -93,6 +94,29 @@ class ProfileScreen extends StatelessWidget {
                 ),
               ],
             ),
+          ),
+          const SubjectWidget(
+            teacher: "доц.Рутта. Н.А.",
+            name: "Математика",
+            controlPoints: [90, 20],
+            type: "Лекция",
+            time: "8:30-10:00",
+          ),
+          const SubjectWidget(
+            teacher: "доц.Рутта. Н.А.",
+            name:
+                "Элективные дисциплины (модули) по физической культуре и спорту",
+            controlPoints: [100],
+            type: "Лекция",
+            time: "8:30-10:00",
+          ),
+          const SubjectWidget(
+            teacher: "доц.Рутта. Н.А.",
+            name:
+                "Элективные дисциплины (модули) по физической культуре и спорту",
+            controlPoints: [],
+            type: "Лекция",
+            time: "8:30-10:00",
           )
         ]),
       ),
