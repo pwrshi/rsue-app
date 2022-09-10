@@ -11,4 +11,4 @@ class Response<T> {
   final T? content;
 }
 
-enum ResponseStatus { loading, error, done }
+enum ResponseStatus { init, loading, error, done }

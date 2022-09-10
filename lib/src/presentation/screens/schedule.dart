@@ -241,7 +241,7 @@ class DayButton extends StatelessWidget {
       {super.key, required this.date, required this.selected, this.onTap});
   final DateTime date;
   DateTime selected;
-  void Function()? onTap;
+  final void Function()? onTap;
 
   @override
   Widget build(BuildContext context) {

@@ -4,6 +4,7 @@ import 'package:flutter_zoom_drawer/config.dart';
 import 'package:provider/provider.dart';
 import 'package:rsue_app/src/config/theme.dart';
 import 'package:rsue_app/src/presentation/screens/home.dart';
+import 'package:rsue_app/src/presentation/screens/introduction.dart';
 import 'package:rsue_app/src/presentation/screens/payments.dart';
 import 'package:rsue_app/src/presentation/screens/profile.dart';
 import 'package:rsue_app/src/presentation/screens/schedule.dart';
@@ -20,7 +21,7 @@ class RsueApplication extends StatelessWidget {
         child: MaterialApp(
             theme: mainTheme,
             title: 'app',
-            initialRoute: '/home',
+            initialRoute: '/introduction',
             locale: const Locale('ru'),
             routes: {
               '/home': (context) =>
@@ -75,7 +76,8 @@ class RsueApplication extends StatelessWidget {
               '/schedule': (context) => const ScheduleScreen(),
               '/profile/whoami': (context) => WhoamiScreen(),
               '/profile/payments': (context) => const PaymentScreen(),
-              '/profile': (context) => const ProfileScreen()
+              '/profile': (context) => const ProfileScreen(),
+              '/introduction': (context) => IntroductionScreen()
             }));
   }
 }
