@@ -1,6 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class ChartWhatNeedsToBeImproved extends StatefulWidget {
   const ChartWhatNeedsToBeImproved({Key? key}) : super(key: key);
@@ -126,7 +125,7 @@ class ChartWhatNeedsToBeImprovedState
 }
 
 class RadioPerfomanceButton extends StatelessWidget {
-  RadioPerfomanceButton(
+  const RadioPerfomanceButton(
       {Key? key,
       required this.label,
       required this.firstPoint,

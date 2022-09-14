@@ -77,7 +77,7 @@ class RsueApplication extends StatelessWidget {
               '/profile/whoami': (context) => WhoamiScreen(),
               '/profile/payments': (context) => const PaymentScreen(),
               '/profile': (context) => const ProfileScreen(),
-              '/introduction': (context) => IntroductionScreen()
+              '/introduction': (context) => const IntroductionScreen()
             }));
   }
 }

@@ -1,6 +1,8 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:rsue_app/src/core/api/response.dart';
+import 'dart:async';
 
 // Фейковые данные
 
@@ -23,6 +25,12 @@ Future<Map<int, String>> getCourses() {
 Future<Map<int, String>> getGroups() {
   return Future.delayed(
       const Duration(seconds: 2), (() => {1: "ПРИ-322", 2: "ПРИ-312"}));
+}
+
+Future<bool> checkAccount(String login, String password) {
+  return Future.delayed(const Duration(seconds: 2), () {
+    return false;
+  });
 }
 
 // Непосредственно реализация экрана
@@ -52,7 +60,9 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
           // первая страница
           const FirstPage(),
           // вторая страница
-          const SecondPage(),
+          SecondPage(
+            setDataSource: (dsname) {},
+          ),
           // третья страница
           ThirdPage(
             onUnset: () {
@@ -65,7 +75,9 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
             },
           ),
           // четвёртая страница
-          const FourthPage(),
+          FourthPage(
+            onLogin: (login, password) {},
+          ),
         ],
       ),
       bottomNavigationBar: Padding(
@@ -111,11 +123,36 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
   }
 }
 
-class FourthPage extends StatelessWidget {
-  const FourthPage({
-    super.key,
-  });
+class FourthPage extends StatefulWidget {
+  const FourthPage({super.key, required this.onLogin});
+  final void Function(String login, String password) onLogin;
+  @override
+  State<StatefulWidget> createState() => _FourthPageState();
+}
 
+class _FourthPageState extends State<FourthPage> {
+  TextEditingController loginField = TextEditingController(),
+      passwordField = TextEditingController();
+  bool enabled = true;
+  RoundedLoadingButtonController lbc = RoundedLoadingButtonController();
+  Response<bool> isSuccessful = const Response(status: ResponseStatus.init);
+  InputDecoration getDecoration(bool enabled, String placeholder) =>
+      InputDecoration(
+        contentPadding: const EdgeInsets.all(20),
+        enabled: enabled,
+        filled: true,
+        fillColor: const Color(0xFF486581),
+        focusedBorder: const OutlineInputBorder(
+            borderSide: BorderSide.none,
+            borderRadius: BorderRadius.all(Radius.circular(15))),
+        enabledBorder: const OutlineInputBorder(
+            borderSide: BorderSide.none,
+            borderRadius: BorderRadius.all(Radius.circular(15))),
+        border: const OutlineInputBorder(
+            borderSide: BorderSide.none,
+            borderRadius: BorderRadius.all(Radius.circular(15))),
+        labelText: placeholder,
+      );
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -133,48 +170,56 @@ class FourthPage extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
-            const TextField(
-              decoration: InputDecoration(
-                contentPadding: EdgeInsets.all(20),
-                filled: true,
-                fillColor: Color(0xFF486581),
-                focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                    borderRadius: BorderRadius.all(Radius.circular(15))),
-                enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                    borderRadius: BorderRadius.all(Radius.circular(15))),
-                border: OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                    borderRadius: BorderRadius.all(Radius.circular(15))),
-                labelText: 'Логин',
-              ),
+            TextField(
+              controller: loginField,
+              decoration: getDecoration(enabled, "Логин"),
             ),
             const SizedBox(
               height: 20,
             ),
-            const TextField(
-              decoration: InputDecoration(
-                contentPadding: EdgeInsets.all(20),
-                filled: true,
-                fillColor: Color(0xFF486581),
-                focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                    borderRadius: BorderRadius.all(Radius.circular(15))),
-                enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                    borderRadius: BorderRadius.all(Radius.circular(15))),
-                border: OutlineInputBorder(
-                    borderSide: BorderSide.none,
-                    borderRadius: BorderRadius.all(Radius.circular(15))),
-                labelText: 'Пароль',
-              ),
+            TextField(
+              controller: passwordField,
+              decoration: getDecoration(enabled, "Пароль"),
               obscureText: true,
             ),
             const SizedBox(
               height: 20,
             ),
-            FilledButton(onPressed: () {}, child: const Text("Проверить"))
+            RoundedLoadingButton(
+                color: const Color(0xff486581),
+                successColor: const Color(0xff0FCA7A),
+                onPressed: () {
+                  setState(() {
+                    enabled = false;
+                  });
+                  isSuccessful = const Response(status: ResponseStatus.loading);
+                  lbc.start();
+                  checkAccount(loginField.text, passwordField.text)
+                      .then((value) {
+                    if (mounted) {
+                      setState(() {
+                        isSuccessful = Response(
+                            status: ResponseStatus.done, content: value);
+                        if (value) {
+                          lbc.success();
+                          widget.onLogin(loginField.text, passwordField.text);
+                        } else {
+                          lbc.error();
+                          Future.delayed(const Duration(seconds: 3), () {
+                            if (mounted) {
+                              lbc.reset();
+                              setState(() {
+                                enabled = true;
+                              });
+                            }
+                          });
+                        }
+                      });
+                    }
+                  });
+                },
+                controller: lbc,
+                child: const Text("Проверить"))
           ],
         )))
       ],
@@ -200,7 +245,7 @@ class _ThirdPageState extends State<ThirdPage> {
   @override
   void initState() {
     super.initState();
-    Future.sync((() => fetchFacults())).then((value) => null);
+    fetchFacults();
   }
 
   // Сценарные действия
@@ -248,27 +293,33 @@ class _ThirdPageState extends State<ThirdPage> {
     resetGroup();
     facults = const Response<Map<int, String>>(status: ResponseStatus.loading);
     getFacults().then((value) {
-      setState(() {
-        facults = Response(status: ResponseStatus.done, content: value);
-      });
+      if (mounted) {
+        setState(() {
+          facults = Response(status: ResponseStatus.done, content: value);
+        });
+      }
     });
   }
 
   void fetchCourse() {
     courses = const Response<Map<int, String>>(status: ResponseStatus.loading);
     getCourses().then((value) {
-      setState(() {
-        courses = Response(status: ResponseStatus.done, content: value);
-      });
+      if (mounted) {
+        setState(() {
+          courses = Response(status: ResponseStatus.done, content: value);
+        });
+      }
     });
   }
 
   void fetchGroups() {
     groups = const Response<Map<int, String>>(status: ResponseStatus.loading);
     getGroups().then((value) {
-      setState(() {
-        groups = Response(status: ResponseStatus.done, content: value);
-      });
+      if (mounted) {
+        setState(() {
+          groups = Response(status: ResponseStatus.done, content: value);
+        });
+      }
     });
   }
 
@@ -312,8 +363,8 @@ class _ThirdPageState extends State<ThirdPage> {
 }
 
 class SecondPage extends StatefulWidget {
-  const SecondPage({super.key});
-
+  const SecondPage({super.key, required this.setDataSource});
+  final void Function(String) setDataSource;
   @override
   State<StatefulWidget> createState() => _SecondPageState();
 }
@@ -372,7 +423,7 @@ class DataSourceWidget extends StatelessWidget {
       height: 133,
       width: 133,
       child: FilledButton(
-          onPressed: () {},
+          onPressed: onPressed,
           style: FilledButton.styleFrom(
             elevation: 30,
             shadowColor: const Color(0xFF486581),

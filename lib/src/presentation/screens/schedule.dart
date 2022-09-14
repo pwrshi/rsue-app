@@ -237,10 +237,10 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
 }
 
 class DayButton extends StatelessWidget {
-  DayButton(
+  const DayButton(
       {super.key, required this.date, required this.selected, this.onTap});
   final DateTime date;
-  DateTime selected;
+  final DateTime selected;
   final void Function()? onTap;
 
   @override
