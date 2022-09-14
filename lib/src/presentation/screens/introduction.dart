@@ -2,6 +2,8 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:rsue_app/src/core/api/response.dart';
 
+// Фейковые данные
+
 Future<Map<int, String>> getFacults() {
   return Future.delayed(
       const Duration(seconds: 2),
@@ -23,6 +25,8 @@ Future<Map<int, String>> getGroups() {
       const Duration(seconds: 2), (() => {1: "ПРИ-322", 2: "ПРИ-312"}));
 }
 
+// Непосредственно реализация экрана
+
 class IntroductionScreen extends StatefulWidget {
   const IntroductionScreen({super.key});
 
@@ -32,63 +36,12 @@ class IntroductionScreen extends StatefulWidget {
 
 class _IntroductionScreenState extends State<IntroductionScreen> {
   PageController pctrl = PageController();
+
+  // Константы для анимации перехода между страниц
   static const typeAnimation = Curves.easeOut;
   static const animationSpeed = Duration(milliseconds: 300);
-  Response<Map<int, String>> facults =
-          const Response(status: ResponseStatus.init),
-      courses = const Response(status: ResponseStatus.init),
-      groups = const Response(status: ResponseStatus.init);
 
-  int? faculty, course, group;
-  MapEntry<int, String>? dropdownValue;
-  @override
-  void initState() {
-    super.initState();
-    Future.sync((() => fetchFacults())).then((value) => null);
-  }
-
-  void resetGroup() {
-    group = null;
-    groups = const Response(status: ResponseStatus.init);
-  }
-
-  void resetCourse() {
-    course = null;
-    courses = const Response(status: ResponseStatus.init);
-  }
-
-  void fetchFacults() {
-    faculty = null;
-    resetCourse();
-    resetGroup();
-    facults = const Response<Map<int, String>>(status: ResponseStatus.loading);
-    getFacults().then((value) {
-      setState(() {
-        facults = Response(status: ResponseStatus.done, content: value);
-      });
-    });
-  }
-
-  void fetchCourse() {
-    course = null;
-    resetGroup();
-    courses = const Response<Map<int, String>>(status: ResponseStatus.loading);
-    getCourses().then((value) {
-      setState(() {
-        courses = Response(status: ResponseStatus.done, content: value);
-      });
-    });
-  }
-
-  void fetchGroups() {
-    group = null;
-    groups = const Response<Map<int, String>>(status: ResponseStatus.loading);
-    getGroups().then((value) {
-      setState(() {
-        groups = Response(status: ResponseStatus.done, content: value);
-      });
-    });
-  }
+  // Методы для работы с выбором группы
 
   @override
   Widget build(BuildContext context) {
@@ -96,107 +49,23 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
       body: PageView(
         controller: pctrl,
         children: [
-          const Center(
-            child: Padding(
-              padding: EdgeInsets.all(20),
-              child: Text(
-                "Привет!\n\nэто альтернативное приложения для доступа к сервисам РИНХ",
-                style: TextStyle(fontSize: 18),
-              ),
-            ),
+          // первая страница
+          const FirstPage(),
+          // вторая страница
+          const SecondPage(),
+          // третья страница
+          ThirdPage(
+            onUnset: () {
+              ScaffoldMessenger.of(context)
+                  .showSnackBar(const SnackBar(content: Text("Убрана")));
+            },
+            onSet: (f, c, g) {
+              ScaffoldMessenger.of(context)
+                  .showSnackBar(SnackBar(content: Text("$f, $c, $g")));
+            },
           ),
-          Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              children: [
-                const Text(
-                  "Выбери источник расписания",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
-                ),
-                Expanded(
-                    child: Center(
-                        child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(8),
-                      height: 133,
-                      width: 133,
-                      decoration: const BoxDecoration(
-                          color: Color(0xFF486581),
-                          borderRadius: BorderRadius.all(Radius.circular(15))),
-                      child: const Center(
-                          child: Text(
-                        "Официальный сайт РИНХ",
-                        textAlign: TextAlign.center,
-                      )),
-                    ),
-                    const SizedBox(
-                      width: 8,
-                    ),
-                    Container(
-                      padding: const EdgeInsets.all(8),
-                      height: 133,
-                      width: 133,
-                      decoration: const BoxDecoration(
-                          color: Color(0xFF486581),
-                          borderRadius: BorderRadius.all(Radius.circular(15))),
-                      child: const Center(
-                          child: Text(
-                        "Бэкап tahinuke.ru",
-                        textAlign: TextAlign.center,
-                      )),
-                    ),
-                  ],
-                )))
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              children: [
-                const Text(
-                  "Выбери группу",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
-                ),
-                SelectorWidget(
-                  placeholder: "Факультет",
-                  value: faculty,
-                  onChanged: (value) {
-                    setState(() {
-                      faculty = value;
-                      fetchCourse();
-                    });
-                  },
-                  items: facults,
-                ),
-                SelectorWidget(
-                  placeholder: "Курс",
-                  items: courses,
-                  value: course,
-                  onChanged: (value) {
-                    setState(() {
-                      fetchGroups();
-                      course = value;
-                    });
-                  },
-                ),
-                SelectorWidget(
-                  placeholder: "Группа",
-                  items: groups,
-                  value: group,
-                  onChanged: (value) {
-                    setState(() {
-                      group = value;
-                    });
-                  },
-                )
-              ],
-            ),
-          )
+          // четвёртая страница
+          const FourthPage(),
         ],
       ),
       bottomNavigationBar: Padding(
@@ -242,6 +111,307 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
   }
 }
 
+class FourthPage extends StatelessWidget {
+  const FourthPage({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      padding: const EdgeInsets.all(20),
+      children: [
+        const Text(
+          "Войдите в портфолио",
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
+        ),
+        Expanded(
+            child: Center(
+                child: Column(
+          children: [
+            const SizedBox(
+              height: 20,
+            ),
+            const TextField(
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.all(20),
+                filled: true,
+                fillColor: Color(0xFF486581),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                    borderRadius: BorderRadius.all(Radius.circular(15))),
+                enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                    borderRadius: BorderRadius.all(Radius.circular(15))),
+                border: OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                    borderRadius: BorderRadius.all(Radius.circular(15))),
+                labelText: 'Логин',
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            const TextField(
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.all(20),
+                filled: true,
+                fillColor: Color(0xFF486581),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                    borderRadius: BorderRadius.all(Radius.circular(15))),
+                enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                    borderRadius: BorderRadius.all(Radius.circular(15))),
+                border: OutlineInputBorder(
+                    borderSide: BorderSide.none,
+                    borderRadius: BorderRadius.all(Radius.circular(15))),
+                labelText: 'Пароль',
+              ),
+              obscureText: true,
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            FilledButton(onPressed: () {}, child: const Text("Проверить"))
+          ],
+        )))
+      ],
+    );
+  }
+}
+
+class ThirdPage extends StatefulWidget {
+  const ThirdPage({super.key, required this.onSet, required this.onUnset});
+  final void Function(int f, int c, int g) onSet;
+  final void Function() onUnset;
+  @override
+  State<StatefulWidget> createState() => _ThirdPageState();
+}
+
+class _ThirdPageState extends State<ThirdPage> {
+  // Переменные для хранения результатов
+  Response<Map<int, String>> facults =
+          const Response(status: ResponseStatus.init),
+      courses = const Response(status: ResponseStatus.init),
+      groups = const Response(status: ResponseStatus.init);
+  int? faculty, course, group;
+  @override
+  void initState() {
+    super.initState();
+    Future.sync((() => fetchFacults())).then((value) => null);
+  }
+
+  // Сценарные действия
+
+  void setFaculty(int value) {
+    resetGroup();
+    resetCourse();
+    setState(() {
+      faculty = value;
+    });
+    fetchCourse();
+  }
+
+  void setCourse(int value) {
+    resetGroup();
+    setState(() {
+      course = value;
+    });
+    fetchGroups();
+  }
+
+  void setGroup(int value) {
+    setState(() {
+      group = value;
+      widget.onSet(faculty!, course!, group!);
+    });
+  }
+
+  void resetGroup() {
+    if (group != null) {
+      group = null;
+      widget.onUnset();
+    }
+    groups = const Response(status: ResponseStatus.init);
+  }
+
+  void resetCourse() {
+    course = null;
+    courses = const Response(status: ResponseStatus.init);
+  }
+
+  void fetchFacults() {
+    faculty = null;
+    resetCourse();
+    resetGroup();
+    facults = const Response<Map<int, String>>(status: ResponseStatus.loading);
+    getFacults().then((value) {
+      setState(() {
+        facults = Response(status: ResponseStatus.done, content: value);
+      });
+    });
+  }
+
+  void fetchCourse() {
+    courses = const Response<Map<int, String>>(status: ResponseStatus.loading);
+    getCourses().then((value) {
+      setState(() {
+        courses = Response(status: ResponseStatus.done, content: value);
+      });
+    });
+  }
+
+  void fetchGroups() {
+    groups = const Response<Map<int, String>>(status: ResponseStatus.loading);
+    getGroups().then((value) {
+      setState(() {
+        groups = Response(status: ResponseStatus.done, content: value);
+      });
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      padding: const EdgeInsets.all(20),
+      children: [
+        const Text(
+          "Выбери группу",
+          textAlign: TextAlign.center,
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
+        ),
+        SelectorWidget(
+          placeholder: "Факультет",
+          value: faculty,
+          onChanged: (v) {
+            setFaculty(v!);
+          },
+          items: facults,
+        ),
+        SelectorWidget(
+          placeholder: "Курс",
+          items: courses,
+          value: course,
+          onChanged: (v) {
+            setCourse(v!);
+          },
+        ),
+        SelectorWidget(
+          placeholder: "Группа",
+          items: groups,
+          value: group,
+          onChanged: (v) {
+            setGroup(v!);
+          },
+        )
+      ],
+    );
+  }
+}
+
+class SecondPage extends StatefulWidget {
+  const SecondPage({super.key});
+
+  @override
+  State<StatefulWidget> createState() => _SecondPageState();
+}
+
+class _SecondPageState extends State<SecondPage> {
+  String selected = "";
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        children: [
+          const Padding(
+            padding: EdgeInsets.only(bottom: 40.0),
+            child: Text(
+              "Выбери источник расписания",
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
+            ),
+          ),
+          Expanded(
+              child: ListView(children: [
+            Wrap(
+              alignment: WrapAlignment.center,
+              runSpacing: 20,
+              spacing: 20,
+              children: [
+                for (var el in ["Расписание с сайта", "С бэкапа tashinuke"])
+                  DataSourceWidget(
+                    name: el,
+                    selected: el == selected,
+                    onPressed: () {
+                      setState(() {
+                        selected = el;
+                      });
+                    },
+                  ),
+              ],
+            )
+          ]))
+        ],
+      ),
+    );
+  }
+}
+
+class DataSourceWidget extends StatelessWidget {
+  const DataSourceWidget(
+      {super.key, required this.name, required this.selected, this.onPressed});
+  final String name;
+  final bool selected;
+  final void Function()? onPressed;
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 133,
+      width: 133,
+      child: FilledButton(
+          onPressed: () {},
+          style: FilledButton.styleFrom(
+            elevation: 30,
+            shadowColor: const Color(0xFF486581),
+            shape: RoundedRectangleBorder(
+              side: selected
+                  ? const BorderSide(width: 3, color: Color(0xFF9FB3C8))
+                  : BorderSide.none,
+              borderRadius: BorderRadius.circular(15.0),
+            ),
+            backgroundColor: const Color(0xFF486581),
+            foregroundColor: Colors.white,
+          ),
+          child: Text(
+            name,
+            textAlign: TextAlign.center,
+          )),
+    );
+  }
+}
+
+class FirstPage extends StatelessWidget {
+  const FirstPage({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: Padding(
+        padding: EdgeInsets.all(20),
+        child: Text(
+          "Привет!\n\nэто альтернативное приложения для доступа к сервисам РИНХ",
+          style: TextStyle(fontSize: 18),
+        ),
+      ),
+    );
+  }
+}
+
 class SelectorWidget extends StatelessWidget {
   const SelectorWidget(
       {super.key,
@@ -274,6 +444,26 @@ class SelectorWidget extends StatelessWidget {
               ),
             );
           }).toList(),
+        );
+      case ResponseStatus.loading:
+        return DropdownButton<int?>(
+          enableFeedback: false,
+          itemHeight: 90,
+          isExpanded: true,
+          //style: const TextStyle(overflow: TextOverflow.ellipsis),
+          hint: Row(
+            children: [
+              Text(placeholder),
+              const SizedBox(
+                width: 25,
+              ),
+              const CircularProgressIndicator()
+            ],
+          ),
+          value: null,
+          icon: const Icon(Icons.arrow_downward),
+          onChanged: null,
+          items: null,
         );
       default:
         return DropdownButton<int?>(
