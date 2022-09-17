@@ -8,20 +8,22 @@ abstract class ScheduleRepository {
   //
 
   // identity api
-  Response<void> setGroup(Group group);
-  Response<void> unsetGroup();
-  Future<Response<List<Group>>> getGroups();
+  void setGroup(Group group);
+  void setGroupByGroupId(GroupId groupId);
+  void unsetGroup();
+  Future<List<Group>> getGroups();
 
-  Future<Response<void>> setGroupByGroupId(GroupId groupId);
   // treetype login scenary support
-  Future<Response<Map<int, String>>> getFacults();
-  Future<Response<Map<int, String>>> getCourseByFacultId(int facult);
-  Future<Response<Map<int, String>>> getGroupsByFacultIdAndCourseId(
-      int facult, int course);
+  Future<Map<int, String>> getFacults();
+  Future<Map<int, String>> getCoursesByFacultId(int faculty);
+  Future<Map<int, String>> getGroupsByFacultIdAndCourseId(
+      int faculty, int course);
+  List<String> getDatasources();
+  void setDatasource(String name);
 
   //
   //  FEATURES
   //
 
-  Future<Response<List<LessonEntity>>> getLessonsOnDay(DateTime date);
+  Future<List<ConcreteLesson>> getLessonsOnDay(DateTime date);
 }

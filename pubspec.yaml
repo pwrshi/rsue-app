@@ -21,6 +21,8 @@ dependencies:
   html: ^0.15.0
   auto_size_text: ^3.0.0
   carousel_slider: ^4.1.1
+  week_of_year: ^2.0.0
+  json_annotation: ^4.6.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

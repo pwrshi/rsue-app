@@ -59,17 +59,18 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
   @override
   void initState() {
     pctrl.addListener(() {
-      double currentpage;
-      try {
-        currentpage = pctrl.page!;
-      } catch (e) {
-        currentpage = 0;
-      }
-      if (currentpage.ceil() != pageBuffer) {
-        setState(() {
-          pageBuffer = currentpage.ceil();
-        });
-      }
+      //double currentpage;
+      // try {
+      //   currentpage = pctrl.page!;
+      // } catch (e) {
+      //   currentpage = 0;
+      // }
+      // if (currentpage.ceil() != pageBuffer) {
+
+      // }
+      setState(() {
+        //pageBuffer = currentpage.ceil();
+      });
     });
     super.initState();
   }

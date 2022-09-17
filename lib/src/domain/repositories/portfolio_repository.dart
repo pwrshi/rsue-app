@@ -7,14 +7,14 @@ abstract class PortfolioRepository {
   //  LOGIN
   //
 
-  Future<Response<void>> login(String username, String password);
+  Future<void> login(String username, String password);
   Response<void> logout();
 
   //
   //  FEATURES
   //
 
-  Future<Response> whoami();
-  Future<Response<List<SubjectEntity>>> getAcademicPerfomance();
-  Future<Response<List<PaymentEntity>>> getPayments();
+  Future whoami();
+  Future<List<SubjectEntity>> getAcademicPerfomance();
+  Future<List<PaymentEntity>> getPayments();
 }
