@@ -4,6 +4,8 @@ import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:rsue_app/src/core/api/response.dart';
 import 'dart:async';
 
+import 'package:rsue_app/src/domain/entities/group_entity.dart';
+
 // Фейковые данные
 
 Future<Map<int, String>> getFacults() {
@@ -29,7 +31,7 @@ Future<Map<int, String>> getGroups() {
 
 Future<bool> checkAccount(String login, String password) {
   return Future.delayed(const Duration(seconds: 2), () {
-    return false;
+    return true;
   });
 }
 
@@ -49,34 +51,90 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
   static const typeAnimation = Curves.easeOut;
   static const animationSpeed = Duration(milliseconds: 300);
 
-  // Методы для работы с выбором группы
+  String? dsName;
+  GroupId? group;
+  String? login, password;
+  int pageBuffer = 0;
+
+  @override
+  void initState() {
+    pctrl.addListener(() {
+      double currentpage;
+      try {
+        currentpage = pctrl.page!;
+      } catch (e) {
+        currentpage = 0;
+      }
+      if (currentpage.ceil() != pageBuffer) {
+        setState(() {
+          pageBuffer = currentpage.ceil();
+        });
+      }
+    });
+    super.initState();
+  }
+
+  bool mayITurnPage() {
+    double currentpage;
+    try {
+      currentpage = pctrl.page!;
+    } catch (e) {
+      currentpage = 0;
+    }
+    if ((dsName == null) && (currentpage == 1.0)) {
+      return false;
+    }
+    if ((group == null) && (currentpage == 2.0)) {
+      return false;
+    }
+    if (((login == null) || (password == null)) && (currentpage == 3.0)) {
+      return false;
+    }
+    return true;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: PageView(
+        physics: const NeverScrollableScrollPhysics(),
         controller: pctrl,
         children: [
           // первая страница
           const FirstPage(),
           // вторая страница
           SecondPage(
-            setDataSource: (dsname) {},
+            setDataSource: (value) {
+              setState(() {
+                dsName = value;
+              });
+            },
           ),
           // третья страница
           ThirdPage(
             onUnset: () {
-              ScaffoldMessenger.of(context)
-                  .showSnackBar(const SnackBar(content: Text("Убрана")));
+              setState(() {
+                group = null;
+              });
+              // ScaffoldMessenger.of(context)
+              //     .showSnackBar(const SnackBar(content: Text("Убрана")));
             },
             onSet: (f, c, g) {
-              ScaffoldMessenger.of(context)
-                  .showSnackBar(SnackBar(content: Text("$f, $c, $g")));
+              setState(() {
+                group = GroupId(facult: f, course: c, group: g);
+              });
+              // ScaffoldMessenger.of(context)
+              //     .showSnackBar(SnackBar(content: Text("$f, $c, $g")));
             },
           ),
           // четвёртая страница
           FourthPage(
-            onLogin: (login, password) {},
+            onLogin: (login, password) {
+              setState(() {
+                this.login = login;
+                this.password = password;
+              });
+            },
           ),
         ],
       ),
@@ -89,6 +147,7 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
                 onPressed: () {
                   pctrl.animateToPage((pctrl.page!.toInt() - 1),
                       duration: animationSpeed, curve: typeAnimation);
+                  setState(() {});
                 },
                 style: FilledButton.styleFrom(
                   shape: RoundedRectangleBorder(
@@ -104,16 +163,36 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
             Expanded(
               child: FilledButton(
                   onPressed: () {
-                    pctrl.animateToPage((pctrl.page!.toInt() + 1),
-                        duration: animationSpeed, curve: typeAnimation);
+                    if (mayITurnPage()) {
+                      pctrl.animateToPage((pctrl.page!.toInt() + 1),
+                          duration: animationSpeed, curve: typeAnimation);
+                      double currentpage;
+                      try {
+                        currentpage = pctrl.page!;
+                      } catch (e) {
+                        currentpage = 0;
+                      }
+                      if (((login != null) || (password != null)) &&
+                          (currentpage == 3.0)) {
+                        Navigator.pushNamed(context, "/home");
+                      }
+                    }
                   },
-                  style: FilledButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    backgroundColor: const Color(0xFF486581),
-                    foregroundColor: Colors.white,
-                  ),
+                  style: mayITurnPage()
+                      ? FilledButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.0),
+                          ),
+                          backgroundColor: const Color(0xFF486581),
+                          foregroundColor: Colors.white,
+                        )
+                      : FilledButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.0),
+                          ),
+                          backgroundColor: const Color(0xFF334E68),
+                          foregroundColor: const Color(0xff9FB3C8),
+                        ),
                   child: const Text("Далее")),
             )
           ]),
@@ -399,6 +478,7 @@ class _SecondPageState extends State<SecondPage> {
                     onPressed: () {
                       setState(() {
                         selected = el;
+                        widget.setDataSource(el);
                       });
                     },
                   ),
