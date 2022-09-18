@@ -1,8 +1,6 @@
-class ResponseError {
-  const ResponseError({required this.name});
-  final String name;
-  @override
-  String toString() {
-    return "ResponseError: $name";
-  }
+import 'error.dart';
+
+class ResponseError extends RsError {
+  const ResponseError({required String name})
+      : super(name: "ResponseError: $name");
 }

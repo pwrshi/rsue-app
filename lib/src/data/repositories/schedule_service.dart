@@ -1,4 +1,3 @@
-import 'package:rsue_app/src/data/datasource/schedule/offical/schedule_offical.dart';
 import 'package:rsue_app/src/domain/entities/lesson_entity.dart';
 import 'package:week_of_year/week_of_year.dart';
 

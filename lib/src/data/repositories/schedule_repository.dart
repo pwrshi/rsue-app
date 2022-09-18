@@ -1,4 +1,6 @@
+import 'package:rsue_app/src/core/error/error.dart';
 import 'package:rsue_app/src/core/error/repository_error.dart';
+import 'package:rsue_app/src/core/resources/data_state.dart';
 import 'package:rsue_app/src/data/datasource/schedule/offical/schedule_offical.dart';
 import 'package:rsue_app/src/data/repositories/schedule_service.dart';
 import 'package:rsue_app/src/domain/entities/lesson_entity.dart';
@@ -23,49 +25,100 @@ class ScheduleRepositoryRsueOfficalImpl extends ScheduleRepository {
       const Response(status: ResponseStatus.init);
 
   @override
-  Future<Map<int, String>> getCoursesByFacultId(int faculty) {
+  Future<DataState<Map<int, String>>> getCoursesByFacultId(int faculty) async {
     if (datasource == null) {
-      throw const RepositoryError(name: "Источник не выбран");
+      return const DataFailed(
+          error: RepositoryError(name: "Источник не выбран"));
     }
-    return datasource!.getCourses(faculty);
+    try {
+      return DataSuccess(data: await datasource!.getCourses(faculty));
+    } catch (e) {
+      if (e is RsError) {
+        return DataFailed(error: e);
+      } else {
+        return const DataFailed(
+            error: RepositoryError(name: "Ошибка получения данных"));
+      }
+    }
   }
 
   @override
-  Future<Map<int, String>> getFacults() {
+  Future<DataState<Map<int, String>>> getFacults() async {
     if (datasource == null) {
-      throw const RepositoryError(name: "Источник не выбран");
+      return const DataFailed(
+          error: RepositoryError(name: "Источник не выбран"));
     }
-    return datasource!.getFacults();
+    try {
+      return DataSuccess(data: await datasource!.getFacults());
+    } catch (e) {
+      if (e is RsError) {
+        return DataFailed(error: e);
+      } else {
+        return const DataFailed(
+            error: RepositoryError(name: "Ошибка получения данных"));
+      }
+    }
   }
 
   @override
-  Future<List<Group>> getGroups() {
+  Future<DataState<List<Group>>> getGroups() async {
     if (datasource == null) {
-      throw const RepositoryError(name: "Источник не выбран");
+      return const DataFailed(
+          error: RepositoryError(name: "Источник не выбран"));
     }
-    return datasource!.getAllGroups();
+    try {
+      return DataSuccess(data: await datasource!.getAllGroups());
+    } catch (e) {
+      if (e is RsError) {
+        return DataFailed(error: e);
+      } else {
+        return const DataFailed(
+            error: RepositoryError(name: "Ошибка получения данных"));
+      }
+    }
   }
 
   @override
-  Future<Map<int, String>> getGroupsByFacultIdAndCourseId(
-      int faculty, int course) {
+  Future<DataState<Map<int, String>>> getGroupsByFacultIdAndCourseId(
+      int faculty, int course) async {
     if (datasource == null) {
-      throw const RepositoryError(name: "Источник не выбран");
+      return const DataFailed(
+          error: RepositoryError(name: "Источник не выбран"));
     }
-    return datasource!.getGroups(faculty, course);
+    try {
+      return DataSuccess(data: await datasource!.getGroups(faculty, course));
+    } catch (e) {
+      if (e is RsError) {
+        return DataFailed(error: e);
+      } else {
+        return const DataFailed(
+            error: RepositoryError(name: "Ошибка получения данных"));
+      }
+    }
   }
 
   @override
-  Future<List<ConcreteLesson>> getLessonsOnDay(DateTime date) async {
+  Future<DataState<List<ConcreteLesson>>> getLessonsOnDay(DateTime date) async {
     if (service.status == ResponseStatus.done) {
       if (service.content == null) {
-        throw const RepositoryError(
-            name:
-                "ЕБАНЫЙ ТВОЙ РОТ, КАКОГО ХУЯ ОНИ В ДРУГОМ ПОРЯДКЕ РАСПОЛОЖЕНЫ!!!");
+        return const DataFailed(
+            error: RepositoryError(
+                name:
+                    "ЕБАНЫЙ ТВОЙ РОТ, КАКОГО ХУЯ ОНИ В ДРУГОМ ПОРЯДКЕ РАСПОЛОЖЕНЫ!!!"));
       }
-      return service.content!.getLessonsOnDay(date);
+      try {
+        return DataSuccess(data: service.content!.getLessonsOnDay(date));
+      } catch (e) {
+        if (e is RsError) {
+          return DataFailed(error: e);
+        } else {
+          return const DataFailed(
+              error: RepositoryError(name: "Ошибка получения данных"));
+        }
+      }
     }
-    throw const RepositoryError(name: "Группа не выбрана/Сервис не создан");
+    return const DataFailed(
+        error: RepositoryError(name: "Группа не выбрана/Сервис не создан"));
   }
 
   @override

@@ -1,4 +1,5 @@
 import 'package:rsue_app/src/core/api/response.dart';
+import 'package:rsue_app/src/core/resources/data_state.dart';
 import 'package:rsue_app/src/domain/entities/group_entity.dart';
 import 'package:rsue_app/src/domain/entities/lesson_entity.dart';
 
@@ -11,12 +12,12 @@ abstract class ScheduleRepository {
   void setGroup(Group group);
   void setGroupByGroupId(GroupId groupId);
   void unsetGroup();
-  Future<List<Group>> getGroups();
+  Future<DataState<List<Group>>> getGroups();
 
   // treetype login scenary support
-  Future<Map<int, String>> getFacults();
-  Future<Map<int, String>> getCoursesByFacultId(int faculty);
-  Future<Map<int, String>> getGroupsByFacultIdAndCourseId(
+  Future<DataState<Map<int, String>>> getFacults();
+  Future<DataState<Map<int, String>>> getCoursesByFacultId(int faculty);
+  Future<DataState<Map<int, String>>> getGroupsByFacultIdAndCourseId(
       int faculty, int course);
   List<String> getDatasources();
   void setDatasource(String name);
@@ -25,5 +26,5 @@ abstract class ScheduleRepository {
   //  FEATURES
   //
 
-  Future<List<ConcreteLesson>> getLessonsOnDay(DateTime date);
+  Future<DataState<List<ConcreteLesson>>> getLessonsOnDay(DateTime date);
 }

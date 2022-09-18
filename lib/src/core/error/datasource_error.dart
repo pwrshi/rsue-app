@@ -1,8 +1,6 @@
-class DatasourceError {
-  const DatasourceError({required this.name});
-  final String name;
-  @override
-  String toString() {
-    return "Datasource error: $name";
-  }
+import 'error.dart';
+
+class DatasourceError extends RsError {
+  const DatasourceError({required String name})
+      : super(name: "Datasource error: $name");
 }
