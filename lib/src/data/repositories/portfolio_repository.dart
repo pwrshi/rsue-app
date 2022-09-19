@@ -18,7 +18,8 @@ class PortfolioRepositoryImpl extends PortfolioRepository {
   }
 
   @override
-  Future<DataState<List<SubjectEntity>>> getAcademicPerfomance() async {
+  Future<DataState<Map<String, List<SubjectEntity>>>>
+      getAcademicPerfomance() async {
     if (_checkCredits()) {
       return const DataFailed(error: RepositoryError(name: "вы не залогинены"));
     }

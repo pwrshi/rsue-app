@@ -20,7 +20,7 @@ class ScheduleRepositoryRsueOfficalImpl extends ScheduleRepository {
   Group? group;
   GroupId? groupId;
 
-  ScheduleDatasource? datasource;
+  ScheduleDatasource? datasource = ScheduleOfficalDatasource();
   Response<ScheduleService> service =
       const Response(status: ResponseStatus.init);
 

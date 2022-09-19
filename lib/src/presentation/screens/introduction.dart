@@ -1,10 +1,13 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:rsue_app/src/core/api/response.dart';
+import 'package:rsue_app/src/core/resources/data_state.dart';
 import 'dart:async';
 
 import 'package:rsue_app/src/domain/entities/group_entity.dart';
+import 'package:rsue_app/src/domain/repositories/schedule_repository.dart';
 
 // Фейковые данные
 
@@ -105,15 +108,21 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
           const FirstPage(),
           // вторая страница
           SecondPage(
+            dss: Provider.of<ScheduleRepository>(context, listen: false)
+                .getDatasources(),
             setDataSource: (value) {
               setState(() {
                 dsName = value;
+                Provider.of<ScheduleRepository>(context, listen: false)
+                    .setDatasource(value);
               });
             },
           ),
           // третья страница
           ThirdPage(
             onUnset: () {
+              Provider.of<ScheduleRepository>(context, listen: false)
+                  .unsetGroup();
               setState(() {
                 group = null;
               });
@@ -122,10 +131,12 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
             },
             onSet: (f, c, g) {
               setState(() {
-                group = GroupId(facult: f, course: c, group: g);
+                Provider.of<ScheduleRepository>(context, listen: false)
+                    .setGroupByGroupId(
+                        group = GroupId(facult: f, course: c, group: g));
               });
-              // ScaffoldMessenger.of(context)
-              //     .showSnackBar(SnackBar(content: Text("$f, $c, $g")));
+              ScaffoldMessenger.of(context)
+                  .showSnackBar(SnackBar(content: Text("$f, $c, $g")));
             },
           ),
           // четвёртая страница
@@ -325,7 +336,6 @@ class _ThirdPageState extends State<ThirdPage> {
   @override
   void initState() {
     super.initState();
-    fetchFacults();
   }
 
   // Сценарные действия
@@ -372,39 +382,56 @@ class _ThirdPageState extends State<ThirdPage> {
     resetCourse();
     resetGroup();
     facults = const Response<Map<int, String>>(status: ResponseStatus.loading);
-    getFacults().then((value) {
-      if (mounted) {
-        setState(() {
-          facults = Response(status: ResponseStatus.done, content: value);
-        });
+    Provider.of<ScheduleRepository>(context, listen: false)
+        .getFacults()
+        .then((value) {
+      if (value is DataSuccess) {
+        if (mounted) {
+          setState(() {
+            facults =
+                Response(status: ResponseStatus.done, content: value.data);
+          });
+        }
       }
     });
   }
 
   void fetchCourse() {
     courses = const Response<Map<int, String>>(status: ResponseStatus.loading);
-    getCourses().then((value) {
-      if (mounted) {
-        setState(() {
-          courses = Response(status: ResponseStatus.done, content: value);
-        });
+    Provider.of<ScheduleRepository>(context, listen: false)
+        .getCoursesByFacultId(faculty!)
+        .then((value) {
+      if (value is DataSuccess) {
+        if (mounted) {
+          setState(() {
+            courses =
+                Response(status: ResponseStatus.done, content: value.data);
+          });
+        }
       }
     });
   }
 
   void fetchGroups() {
     groups = const Response<Map<int, String>>(status: ResponseStatus.loading);
-    getGroups().then((value) {
-      if (mounted) {
-        setState(() {
-          groups = Response(status: ResponseStatus.done, content: value);
-        });
+    Provider.of<ScheduleRepository>(context, listen: false)
+        .getGroupsByFacultIdAndCourseId(faculty!, course!)
+        .then((value) {
+      if (value is DataSuccess) {
+        if (mounted) {
+          setState(() {
+            groups = Response(status: ResponseStatus.done, content: value.data);
+          });
+        }
       }
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    if (facults.status == ResponseStatus.init) {
+      fetchFacults();
+    }
     return ListView(
       padding: const EdgeInsets.all(20),
       children: [
@@ -443,8 +470,9 @@ class _ThirdPageState extends State<ThirdPage> {
 }
 
 class SecondPage extends StatefulWidget {
-  const SecondPage({super.key, required this.setDataSource});
+  const SecondPage({super.key, required this.setDataSource, required this.dss});
   final void Function(String) setDataSource;
+  final List<String> dss;
   @override
   State<StatefulWidget> createState() => _SecondPageState();
 }
@@ -472,7 +500,7 @@ class _SecondPageState extends State<SecondPage> {
               runSpacing: 20,
               spacing: 20,
               children: [
-                for (var el in ["Расписание с сайта", "С бэкапа tashinuke"])
+                for (var el in widget.dss)
                   DataSourceWidget(
                     name: el,
                     selected: el == selected,

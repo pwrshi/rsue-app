@@ -1,7 +1,11 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/config.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:rsue_app/src/core/resources/data_state.dart';
+import 'package:rsue_app/src/data/repositories/schedule_repository.dart';
+import 'package:rsue_app/src/domain/repositories/schedule_repository.dart';
 import 'package:rsue_app/src/presentation/widgets/short_info/short_info.dart';
 
 import '../widgets/schedule/lesson.dart';
@@ -11,6 +15,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var date = DateTime.now();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.background,
@@ -52,9 +57,10 @@ class HomeScreen extends StatelessWidget {
                           fontSize: 24,
                           color: Theme.of(context).textTheme.bodyLarge?.color),
                     ),
-                    const Text(
-                      "9 Августа",
-                      style: TextStyle(fontSize: 24, color: Color(0xFFBCCCDC)),
+                    Text(
+                      "${date.day} ${DateFormat.MMMM('ru').format(date)}",
+                      style: const TextStyle(
+                          fontSize: 24, color: Color(0xFFBCCCDC)),
                     )
                   ],
                 ),
@@ -62,27 +68,28 @@ class HomeScreen extends StatelessWidget {
             ],
           ),
         ),
-        const LessonWidget(
-          teacher: "доц.Рутта. Н.А.",
-          name: "Математика",
-          room: "Ауд.320",
-          type: "Лекция",
-          time: "8:30-10:00",
-        ),
-        const DelayWidget(
-          time: 10,
-        ),
-        const LessonWidget(
-          teacher: "ст.преп.Декамили Ю.Г..",
-          name:
-              "Элективные дисциплины (модули) по физической культуре и спорту",
-          room: "Ауд.310",
-          type: "Практика",
-          time: "10:10-11:40",
-        ),
-        const DelayWidget(
-          time: 10,
-        )
+        FutureBuilder(
+            future:
+                Provider.of<ScheduleRepository>(context).getLessonsOnDay(date),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                if (snapshot.data is DataSuccess) {
+                  var massive = buildLessonList(snapshot.data!.data!);
+                  if (massive.length == 0) {
+                    return const Center(
+                        child: Text(
+                      "Похоже, это выходной",
+                      style: TextStyle(fontSize: 24),
+                    ));
+                  }
+                  return Column(
+                    children: massive,
+                  );
+                }
+                return Text("Ошибочка ${snapshot.data!.error}");
+              }
+              return const CircularProgressIndicator();
+            })
       ]),
     );
   }

@@ -1,6 +1,8 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:rsue_app/src/domain/repositories/schedule_repository.dart';
 import 'package:rsue_app/src/presentation/widgets/schedule/lesson.dart';
 
 const int maxWeekPages = 15;
@@ -167,66 +169,92 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
               itemBuilder: ((context, index) {
                 var date = idxw.getDateTimeByDayId(index);
                 var s = DateFormat.EEEE('ru').format(date);
-                return ListView(padding: const EdgeInsets.all(8), children: [
-                  Row(
-                    children: [
-                      Text(
-                        "${s[0].toUpperCase() + s.substring(1)}, ",
-                        style: TextStyle(
-                            fontSize: 24,
-                            color:
-                                Theme.of(context).textTheme.bodyLarge?.color),
-                      ),
-                      Text(
-                        "${date.day} ${DateFormat.MMMM('ru').format(date)}",
-                        style: const TextStyle(
-                            fontSize: 24, color: Color(0xFFBCCCDC)),
-                      )
-                    ],
-                  ),
-                  const LessonWidget(
-                    teacher: "доц.Рутта. Н.А.",
-                    name: "Математика",
-                    room: "Ауд.320",
-                    type: "Лекция",
-                    time: "8:30-10:00",
-                  ),
-                  const DelayWidget(
-                    time: 10,
-                  ),
-                  const LessonWidget(
-                    teacher: "ст.преп.Декамили Ю.Г..",
-                    name:
-                        "Элективные дисциплины (модули) по физической культуре и спорту",
-                    room: "Ауд.310",
-                    type: "Практика",
-                    time: "10:10-11:40",
-                  ),
-                  const DelayWidget(
-                    time: 10,
-                  ),
-                  const LessonWidget(
-                    teacher: "доц.Рутта. Н.А.",
-                    name: "Математика",
-                    room: "Ауд.320",
-                    type: "Лекция",
-                    time: "8:30-10:00",
-                  ),
-                  const DelayWidget(
-                    time: 10,
-                  ),
-                  const LessonWidget(
-                    teacher: "ст.преп.Декамили Ю.Г..",
-                    name:
-                        "Элективные дисциплины (модули) по физической культуре и спорту",
-                    room: "Ауд.310",
-                    type: "Практика",
-                    time: "10:10-11:40",
-                  ),
-                  const DelayWidget(
-                    time: 10,
-                  )
-                ]);
+                return FutureBuilder(
+                    future: Provider.of<ScheduleRepository>(context)
+                        .getLessonsOnDay(date),
+                    builder: ((context, snapshot) {
+                      if (snapshot.hasData) {
+                        return ListView(
+                            padding: const EdgeInsets.all(8),
+                            children: [
+                              Row(
+                                children: [
+                                  Text(
+                                    "${s[0].toUpperCase() + s.substring(1)}, ",
+                                    style: TextStyle(
+                                        fontSize: 24,
+                                        color: Theme.of(context)
+                                            .textTheme
+                                            .bodyLarge
+                                            ?.color),
+                                  ),
+                                  Text(
+                                    "${date.day} ${DateFormat.MMMM('ru').format(date)}",
+                                    style: const TextStyle(
+                                        fontSize: 24, color: Color(0xFFBCCCDC)),
+                                  )
+                                ],
+                              ),
+                              ...() {
+                                var massive =
+                                    buildLessonList(snapshot.data!.data!);
+                                if (massive.isEmpty) {
+                                  return [
+                                    const Center(
+                                        child: Text(
+                                      "Похоже, это выходной",
+                                      style: TextStyle(fontSize: 24),
+                                    ))
+                                  ];
+                                }
+                                return massive;
+                              }.call()
+                              // const LessonWidget(
+                              //   teacher: "доц.Рутта. Н.А.",
+                              //   name: "Математика",
+                              //   room: "Ауд.320",
+                              //   type: "Лекция",
+                              //   time: "8:30-10:00",
+                              // ),
+                              // const DelayWidget(
+                              //   time: 10,
+                              // ),
+                              // const LessonWidget(
+                              //   teacher: "ст.преп.Декамили Ю.Г..",
+                              //   name:
+                              //       "Элективные дисциплины (модули) по физической культуре и спорту",
+                              //   room: "Ауд.310",
+                              //   type: "Практика",
+                              //   time: "10:10-11:40",
+                              // ),
+                              // const DelayWidget(
+                              //   time: 10,
+                              // ),
+                              // const LessonWidget(
+                              //   teacher: "доц.Рутта. Н.А.",
+                              //   name: "Математика",
+                              //   room: "Ауд.320",
+                              //   type: "Лекция",
+                              //   time: "8:30-10:00",
+                              // ),
+                              // const DelayWidget(
+                              //   time: 10,
+                              // ),
+                              // const LessonWidget(
+                              //   teacher: "ст.преп.Декамили Ю.Г..",
+                              //   name:
+                              //       "Элективные дисциплины (модули) по физической культуре и спорту",
+                              //   room: "Ауд.310",
+                              //   type: "Практика",
+                              //   time: "10:10-11:40",
+                              // ),
+                              // const DelayWidget(
+                              //   time: 10,
+                              // )
+                            ]);
+                      }
+                      return Text("wait...");
+                    }));
               }),
             ))
           ],
