@@ -1,5 +1,7 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:rsue_app/src/domain/repositories/portfolio_repository.dart';
 import 'package:rsue_app/src/presentation/widgets/schedule/subject.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -43,20 +45,25 @@ class ProfileScreen extends StatelessWidget {
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Icon(
+                      children: [
+                        const Icon(
                           FluentIcons.barcode_scanner_24_filled,
                           size: 42,
                           weight: 2,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 9,
                         ),
-                        Text(
-                          "13\nПлатежи",
-                          style: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.w700),
-                        )
+                        FutureBuilder(
+                            future: Provider.of<PortfolioRepository>(context)
+                                .getPayments(),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                return Text(
+                                    "${snapshot.data!.data!.length}\nПлатежи");
+                              }
+                              return const Text("--\nПлатежи");
+                            })
                       ],
                     ),
                   ),
@@ -99,29 +106,57 @@ class ProfileScreen extends StatelessWidget {
               ],
             ),
           ),
-          const SubjectWidget(
-            teacher: "доц.Рутта. Н.А.",
-            name: "Математика",
-            controlPoints: [90, 20],
-            type: "Лекция",
-            time: "8:30-10:00",
-          ),
-          const SubjectWidget(
-            teacher: "доц.Рутта. Н.А.",
-            name:
-                "Элективные дисциплины (модули) по физической культуре и спорту",
-            controlPoints: [100],
-            type: "Лекция",
-            time: "8:30-10:00",
-          ),
-          const SubjectWidget(
-            teacher: "доц.Рутта. Н.А.",
-            name:
-                "Элективные дисциплины (модули) по физической культуре и спорту",
-            controlPoints: [],
-            type: "Лекция",
-            time: "8:30-10:00",
-          )
+          FutureBuilder(
+              future: Provider.of<PortfolioRepository>(context)
+                  .getAcademicPerfomance(),
+              builder: (c, s) {
+                if (s.hasData) {
+                  return Column(
+                    children: [
+                      for (var s in s.data!.data!.entries) ...[
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              top: 20.0, left: 8, right: 8, bottom: 8),
+                          child: Text(s.key),
+                        ),
+                        for (var subject in s.value)
+                          SubjectWidget(
+                              name: subject.name,
+                              controlPoints: subject.controlPoints,
+                              teacher: subject.teachersname,
+                              isClosed: subject.isClosed,
+                              statement: subject.statement,
+                              type: SubjectWidget.sessionTypeToString(
+                                  subject.type))
+                      ]
+                    ],
+                  );
+                }
+                return const CircularProgressIndicator();
+              })
+          // const SubjectWidget(
+          //   teacher: "доц.Рутта. Н.А.",
+          //   name: "Математика",
+          //   controlPoints: [90, 20],
+          //   type: "Лекция",
+          //   time: "8:30-10:00",
+          // ),
+          // const SubjectWidget(
+          //   teacher: "доц.Рутта. Н.А.",
+          //   name:
+          //       "Элективные дисциплины (модули) по физической культуре и спорту",
+          //   controlPoints: [100],
+          //   type: "Лекция",
+          //   time: "8:30-10:00",
+          // ),
+          // const SubjectWidget(
+          //   teacher: "доц.Рутта. Н.А.",
+          //   name:
+          //       "Элективные дисциплины (модули) по физической культуре и спорту",
+          //   controlPoints: [],
+          //   type: "Лекция",
+          //   time: "8:30-10:00",
+          // )
         ]),
       ),
     );

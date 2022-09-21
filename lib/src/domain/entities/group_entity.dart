@@ -1,19 +1,18 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part 'group_entity.freezed.dart';
+part 'group_entity.g.dart';
 
-class Group extends Equatable {
-  const Group(this.name, this.id);
-  final String name;
-  final GroupId id;
-  @override
-  List<Object> get props => [name, id];
+@freezed
+class Group with _$Group {
+  const factory Group(String name, GroupId id) = _Group;
 }
 
-class GroupId extends Equatable {
-  const GroupId(
-      {required this.facult, required this.course, required this.group});
-  final int facult;
-  final int course;
-  final int group;
-  @override
-  List<Object> get props => [facult, course, group];
+@freezed
+class GroupId with _$GroupId {
+  const factory GroupId(
+      {required int facult,
+      required int course,
+      required int group}) = _GroupId;
+  factory GroupId.fromJson(Map<String, Object?> json) =>
+      _$GroupIdFromJson(json);
 }

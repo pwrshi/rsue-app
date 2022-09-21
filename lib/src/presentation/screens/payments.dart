@@ -1,5 +1,7 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:rsue_app/src/domain/repositories/portfolio_repository.dart';
 
 class PaymentScreen extends StatelessWidget {
   const PaymentScreen({super.key});
@@ -7,32 +9,46 @@ class PaymentScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.background,
-          centerTitle: true,
-          leading: IconButton(
-            icon: const Icon(FluentIcons.arrow_left_16_filled),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-          title: const Text(
-            "Платежи",
-            style: TextStyle(fontFamily: "Rubik_glitch"),
-          )),
-      body: ListView(
-        padding: const EdgeInsets.all(8),
-        children: [
-          PaymentWidget(
-            name: "Квитанции на оплату проживания в общежитии",
-            dateOfReceiptFormation: DateTime.now(),
-            dateOfServiceEnding: DateTime.now(),
-            dateOfServiceStarting: DateTime.now(),
-            url: "http://heh.ru",
-          )
-        ],
-      ),
-    );
+        appBar: AppBar(
+            backgroundColor: Theme.of(context).colorScheme.background,
+            centerTitle: true,
+            leading: IconButton(
+              icon: const Icon(FluentIcons.arrow_left_16_filled),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            title: const Text(
+              "Платежи",
+              style: TextStyle(fontFamily: "Rubik_glitch"),
+            )),
+        body: FutureBuilder(
+          future: Provider.of<PortfolioRepository>(context).getPayments(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return ListView(
+                padding: const EdgeInsets.all(8),
+                children: [
+                  for (var p in snapshot.data!.data!) ...[
+                    PaymentWidget(
+                      name: p.name,
+                      dateOfReceiptFormation: p.dateOfReceiptFormation,
+                      dateOfServiceEnding: p.dateOfServiceEnding,
+                      dateOfServiceStarting: p.dateOfServiceStarting,
+                      url: p.url,
+                    ),
+                    SizedBox(
+                      height: 8,
+                    )
+                  ]
+                ],
+              );
+            }
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          },
+        ));
   }
 }
 

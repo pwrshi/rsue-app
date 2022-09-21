@@ -1,6 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:rsue_app/src/domain/entities/subject_entity.dart';
 
 class SubjectWidget extends StatelessWidget {
   const SubjectWidget(
@@ -8,10 +9,24 @@ class SubjectWidget extends StatelessWidget {
       required this.name,
       required this.controlPoints,
       required this.teacher,
-      required this.time,
-      required this.type});
-  final String type, name, teacher, time;
+      required this.type,
+      required this.statement,
+      required this.isClosed});
+  final String type, name, teacher;
   final List<int> controlPoints;
+  final int statement;
+  final bool isClosed;
+
+  static String sessionTypeToString(SessionType s) {
+    switch (s) {
+      case SessionType.credit:
+        return "Зачёт";
+      case SessionType.exam:
+        return "Экзамен";
+      default:
+        return "Практика";
+    }
+  }
 
   Widget getMark() {
     if (controlPoints.isEmpty) {
@@ -99,17 +114,22 @@ class SubjectWidget extends StatelessWidget {
                   Text(teacher, style: const TextStyle(fontSize: 12)),
                 ],
               ),
-              Column(children: const [
-                Icon(
-                  FluentIcons.presence_available_24_filled,
-                  size: 15,
-                ),
-                SizedBox(
+              Column(children: [
+                (isClosed
+                    ? const Icon(
+                        FluentIcons.presence_available_24_filled,
+                        size: 15,
+                      )
+                    : const Icon(
+                        FluentIcons.presence_away_24_filled,
+                        size: 15,
+                      )),
+                const SizedBox(
                   height: 2,
                 ),
                 Text(
-                  "888888",
-                  style: TextStyle(fontSize: 10),
+                  statement.toString(),
+                  style: const TextStyle(fontSize: 10),
                 )
               ])
             ],

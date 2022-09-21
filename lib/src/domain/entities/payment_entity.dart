@@ -1,24 +1,16 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part 'payment_entity.freezed.dart';
+part 'payment_entity.g.dart';
 
-class PaymentEntity extends Equatable {
-  const PaymentEntity(
-      {required this.name,
-      required this.url,
-      required this.dateOfReceiptFormation,
-      required this.dateOfServiceEnding,
-      required this.dateOfServiceStarting});
-  final String name;
-  final String url;
-  final DateTime dateOfReceiptFormation;
-  final DateTime dateOfServiceStarting;
-  final DateTime dateOfServiceEnding;
+@freezed
+class PaymentEntity with _$PaymentEntity {
+  const factory PaymentEntity(
+      {required String name,
+      required String url,
+      required DateTime dateOfReceiptFormation,
+      required DateTime dateOfServiceStarting,
+      required DateTime dateOfServiceEnding}) = _PaymentEntity;
 
-  @override
-  List<Object> get props => [
-        name,
-        url,
-        dateOfReceiptFormation,
-        dateOfServiceEnding,
-        dateOfServiceStarting
-      ];
+  factory PaymentEntity.fromJson(Map<String, Object?> json) =>
+      _$PaymentEntityFromJson(json);
 }

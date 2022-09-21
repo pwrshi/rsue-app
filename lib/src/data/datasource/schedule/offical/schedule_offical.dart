@@ -6,7 +6,7 @@ import 'package:html/parser.dart';
 import 'package:rsue_app/src/config/dio.dart';
 import 'package:rsue_app/src/core/error/datasource_error.dart';
 import 'package:rsue_app/src/data/datasource/schedule/offical/_urls.dart';
-import 'package:rsue_app/src/data/repositories/schedule_repository.dart';
+import 'package:rsue_app/src/data/repositories/schedule_datasource.dart';
 import 'package:rsue_app/src/data/repositories/schedule_service.dart';
 import 'package:rsue_app/src/domain/entities/group_entity.dart';
 import 'package:rsue_app/src/domain/entities/lesson_entity.dart';

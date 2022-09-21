@@ -1,43 +1,32 @@
-import 'package:equatable/equatable.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part 'lesson_entity.freezed.dart';
+part 'lesson_entity.g.dart';
 
-class AbstractLesson extends Equatable {
-  const AbstractLesson(
-      {required this.name,
-      required this.teachersname,
-      required this.room,
-      required this.type,
-      required this.time,
-      this.subgroup});
-  final String? subgroup;
-  final String name;
-  final String teachersname;
-  final String time;
-  final String room;
-  final LessonType type;
-
-  @override
-  List<Object?> get props => [name, teachersname, time, room, type, subgroup];
+@freezed
+class AbstractLesson with _$AbstractLesson {
+  const factory AbstractLesson(
+      {required String name,
+      required String teachersname,
+      required String room,
+      required LessonType type,
+      required String time,
+      String? subgroup}) = _AbstractLesson;
+  factory AbstractLesson.fromJson(Map<String, Object?> json) =>
+      _$AbstractLessonFromJson(json);
 }
 
-class ConcreteLesson extends Equatable {
-  const ConcreteLesson(
-      {required this.name,
-      required this.teachersname,
-      required this.startTime,
-      required this.endTime,
-      required this.room,
-      required this.type,
-      this.subgroup});
-  final String? subgroup;
-  final String name;
-  final String teachersname;
-  final DateTime startTime;
-  final DateTime endTime;
-  final String room;
-  final LessonType type;
-  @override
-  List<Object?> get props =>
-      [name, teachersname, startTime, endTime, room, type, subgroup];
+@freezed
+class ConcreteLesson with _$ConcreteLesson {
+  const factory ConcreteLesson(
+      {required String name,
+      required String teachersname,
+      required DateTime startTime,
+      required DateTime endTime,
+      required String room,
+      required LessonType type,
+      String? subgroup}) = _ConcreteLesson;
+  factory ConcreteLesson.fromJson(Map<String, Object?> json) =>
+      _$ConcreteLessonFromJson(json);
 }
 
 enum LessonType { lab, lection, practice }

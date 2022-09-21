@@ -7,6 +7,7 @@ import 'package:rsue_app/src/core/resources/data_state.dart';
 import 'dart:async';
 
 import 'package:rsue_app/src/domain/entities/group_entity.dart';
+import 'package:rsue_app/src/domain/repositories/portfolio_repository.dart';
 import 'package:rsue_app/src/domain/repositories/schedule_repository.dart';
 
 // Фейковые данные
@@ -285,13 +286,15 @@ class _FourthPageState extends State<FourthPage> {
                   });
                   isSuccessful = const Response(status: ResponseStatus.loading);
                   lbc.start();
-                  checkAccount(loginField.text, passwordField.text)
+                  Provider.of<PortfolioRepository>(context, listen: false)
+                      .login(loginField.text, passwordField.text)
                       .then((value) {
                     if (mounted) {
                       setState(() {
                         isSuccessful = Response(
-                            status: ResponseStatus.done, content: value);
-                        if (value) {
+                            status: ResponseStatus.done,
+                            content: (value is DataFailed ? false : true));
+                        if (value is DataFailed ? false : true) {
                           lbc.success();
                           widget.onLogin(loginField.text, passwordField.text);
                         } else {

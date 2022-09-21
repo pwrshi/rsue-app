@@ -147,20 +147,6 @@ class PortfolioOfficalDataSource extends PortfolioDataSource {
       controlPoint2 = int.parse(
           RegExp(r'КТ2 = (\d+)').firstMatch(raw.children[0].innerHtml)?[1] ??
               '0');
-      AcademicPerfomance academicPerfomance;
-
-      switch (type) {
-        case SessionType.credit:
-          academicPerfomance =
-              AcademicPerfomanceCredit(controlPoint1, controlPoint2);
-          break;
-        case SessionType.exam:
-          academicPerfomance =
-              AcademicPerfomanceExam(controlPoint1, controlPoint2);
-          break;
-        case SessionType.practice:
-          academicPerfomance = AcademicPerfomancePractice(controlPoint1);
-      }
 
       //
       return SubjectEntity(
@@ -169,7 +155,7 @@ class PortfolioOfficalDataSource extends PortfolioDataSource {
           type: type,
           isClosed: isClosed,
           statement: statement,
-          academicPerfomance: academicPerfomance);
+          controlPoints: [controlPoint1, controlPoint2]);
     } catch (e) {
       throw const DatasourceError(name: "Ошибка парсинга успеваемости");
     }
@@ -210,7 +196,7 @@ class PortfolioOfficalDataSource extends PortfolioDataSource {
     return DateTime(
       int.parse(res[2][0]!),
       int.parse(res[1][0]!),
-      int.parse(res[1][0]!),
+      int.parse(res[0][0]!),
     );
   }
 

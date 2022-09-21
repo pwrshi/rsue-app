@@ -1,5 +1,6 @@
 import 'package:rsue_app/src/core/error/repository_error.dart';
 import 'package:rsue_app/src/core/error/response_error.dart';
+import 'package:rsue_app/src/data/datasource/portfolio/portfolio_offical.dart';
 import 'package:rsue_app/src/data/repositories/portfolio_datasource.dart';
 import 'package:rsue_app/src/domain/entities/subject_entity.dart';
 import 'package:rsue_app/src/domain/entities/payment_entity.dart';
@@ -9,7 +10,7 @@ import 'package:rsue_app/src/domain/repositories/portfolio_repository.dart';
 class PortfolioRepositoryImpl extends PortfolioRepository {
   String? username;
   String? password;
-  PortfolioDataSource? source;
+  PortfolioDataSource? source = PortfolioOfficalDataSource();
   bool _checkCredits() {
     if ((username == null) || (password == null)) {
       return false;
@@ -21,34 +22,38 @@ class PortfolioRepositoryImpl extends PortfolioRepository {
   Future<DataState<Map<String, List<SubjectEntity>>>>
       getAcademicPerfomance() async {
     if (_checkCredits()) {
-      return const DataFailed(error: RepositoryError(name: "вы не залогинены"));
+      try {
+        return DataSuccess(
+            data: await source!.getAcademicPerfomance(username!, password!));
+      } catch (e) {
+        return const DataFailed(
+            error: RepositoryError(name: "Ошибка получения успеваемости"));
+      }
     }
-    try {
-      return DataSuccess(
-          data: await source!.getAcademicPerfomance(username!, password!));
-    } catch (e) {
-      return const DataFailed(
-          error: RepositoryError(name: "Ошибка получения успеваемости"));
-    }
+
+    return const DataFailed(error: RepositoryError(name: "вы не залогинены"));
   }
 
   @override
   Future<DataState<List<PaymentEntity>>> getPayments() async {
     if (_checkCredits()) {
-      return const DataFailed(error: RepositoryError(name: "вы не залогинены"));
+      try {
+        return DataSuccess(
+            data: await source!.getPayments(username!, password!));
+      } catch (e) {
+        return const DataFailed(
+            error: RepositoryError(name: "Ошибка получения платежей"));
+      }
     }
-    try {
-      return DataSuccess(data: await source!.getPayments(username!, password!));
-    } catch (e) {
-      return const DataFailed(
-          error: RepositoryError(name: "Ошибка получения платежей"));
-    }
+    return const DataFailed(error: RepositoryError(name: "вы не залогинены"));
   }
 
   @override
   Future<DataState<void>> login(String username, String password) async {
     try {
       if (await source!.checkCredentials(username, password)) {
+        this.username = username;
+        this.password = password;
         return const DataSuccess(data: "");
       } else {
         return const DataFailed(error: ResponseError(name: "неправильно!!!!!"));
@@ -67,14 +72,15 @@ class PortfolioRepositoryImpl extends PortfolioRepository {
   @override
   Future<DataState<Map<String, String>>> whoami() async {
     if (_checkCredits()) {
-      return const DataFailed(error: RepositoryError(name: "вы не залогинены"));
+      try {
+        return DataSuccess(data: await source!.whoami(username!, password!));
+      } catch (e) {
+        return const DataFailed(
+            error: RepositoryError(
+                name: "Ошибка получения информации о пользователе"));
+      }
     }
-    try {
-      return DataSuccess(data: await source!.whoami(username!, password!));
-    } catch (e) {
-      return const DataFailed(
-          error: RepositoryError(
-              name: "Ошибка получения информации о пользователе"));
-    }
+
+    return const DataFailed(error: RepositoryError(name: "вы не залогинены"));
   }
 }

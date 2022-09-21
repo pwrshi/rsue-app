@@ -2,19 +2,12 @@ import 'package:rsue_app/src/core/error/error.dart';
 import 'package:rsue_app/src/core/error/repository_error.dart';
 import 'package:rsue_app/src/core/resources/data_state.dart';
 import 'package:rsue_app/src/data/datasource/schedule/offical/schedule_offical.dart';
+import 'package:rsue_app/src/data/repositories/schedule_datasource.dart';
 import 'package:rsue_app/src/data/repositories/schedule_service.dart';
 import 'package:rsue_app/src/domain/entities/lesson_entity.dart';
 import 'package:rsue_app/src/domain/entities/group_entity.dart';
 import 'package:rsue_app/src/core/api/response.dart';
 import 'package:rsue_app/src/domain/repositories/schedule_repository.dart';
-
-abstract class ScheduleDatasource {
-  Future<Map<int, String>> getFacults();
-  Future<Map<int, String>> getCourses(int faculty);
-  Future<Map<int, String>> getGroups(int faculty, int course);
-  Future<List<Group>> getAllGroups();
-  Future<ScheduleService> getScheduleService(GroupId groupId);
-}
 
 class ScheduleRepositoryRsueOfficalImpl extends ScheduleRepository {
   Group? group;

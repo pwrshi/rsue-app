@@ -22,13 +22,17 @@ class RsueApplication extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
         providers: [
+          // Боковое меню
           Provider<ZoomDrawerController>(
             create: (context) => ZoomDrawerController(),
           ),
+          // Репозитории
           Provider<ScheduleRepository>(
               create: (context) => ScheduleRepositoryRsueOfficalImpl()),
           Provider<PortfolioRepository>(
-              create: ((context) => PortfolioRepositoryImpl()))
+              create: ((context) => PortfolioRepositoryImpl())),
+
+          // непосредственно прокся для виджетов
         ],
         child: MaterialApp(
             theme: mainTheme,

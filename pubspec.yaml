@@ -9,7 +9,6 @@ dependencies:
   rounded_loading_button: ^2.1.0
   fluentui_system_icons: ^1.1.178
   flutter_zoom_drawer: ^3.0.3
-  equatable: ^2.0.5
   table_calendar: ^3.0.6
   flutter:
     sdk: flutter
@@ -23,11 +22,15 @@ dependencies:
   carousel_slider: ^4.1.1
   week_of_year: ^2.0.0
   json_annotation: ^4.6.0
+  freezed_annotation: ^2.1.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
   dart_code_metrics: ^4.18.3
+  build_runner: ^2.2.1
+  freezed: ^2.1.0+1
+  json_serializable: ^6.3.2
 flutter:
   uses-material-design: true
   fonts:
