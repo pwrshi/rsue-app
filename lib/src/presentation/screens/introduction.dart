@@ -255,9 +255,8 @@ class _FourthPageState extends State<FourthPage> {
           textAlign: TextAlign.center,
           style: TextStyle(fontSize: 24, fontWeight: FontWeight.w500),
         ),
-        Expanded(
-            child: Center(
-                child: Column(
+        Center(
+            child: Column(
           children: [
             const SizedBox(
               height: 20,
@@ -315,7 +314,7 @@ class _FourthPageState extends State<FourthPage> {
                 controller: lbc,
                 child: const Text("Проверить"))
           ],
-        )))
+        ))
       ],
     );
   }

@@ -2,14 +2,10 @@ import 'package:rsue_app/src/core/error/datasource_error.dart';
 import 'package:rsue_app/src/data/repositories/portfolio_datasource.dart';
 import 'package:rsue_app/src/domain/entities/subject_entity.dart';
 import 'package:rsue_app/src/domain/entities/payment_entity.dart';
-import 'dart:io';
 
-import 'package:dio/adapter.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart';
 import 'package:dio/dio.dart';
-import 'package:dio_cookie_manager/dio_cookie_manager.dart';
-import 'package:cookie_jar/cookie_jar.dart';
 
 const academicPerformanceURL =
     'https://portfolio.rsue.ru/portfolio/index.php?section=23';
@@ -18,24 +14,9 @@ const reportURL = 'https://portfolio.rsue.ru/portfolio/index.php?view=1';
 const whoamiURL = 'https://portfolio.rsue.ru/portfolio/index.php?section=11';
 const accountingURL = 'https://portfolio.rsue.ru/accounting/index.php';
 
-class PortfolioOfficalDataSource extends PortfolioDataSource {
-  late Dio http;
-  PortfolioOfficalDataSource() {
-    http = Dio();
-
-    // Игнорирует всратый сертификат
-    (http.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
-        (HttpClient client) {
-      // коллбэчит что всё ок
-      client.badCertificateCallback =
-          (X509Certificate cert, String host, int port) => true;
-      return client;
-    };
-
-    //Сохранение кук
-    var cookieJar = CookieJar();
-    http.interceptors.add(CookieManager(cookieJar));
-  }
+class PortfolioOfficalDataSource implements PortfolioDataSource {
+  Dio http;
+  PortfolioOfficalDataSource(this.http);
 
   bool? _checkAuthByDataRaw(String data) {
     if (data.contains(

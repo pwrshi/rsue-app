@@ -1,16 +1,16 @@
 import 'package:rsue_app/src/core/error/repository_error.dart';
 import 'package:rsue_app/src/core/error/response_error.dart';
-import 'package:rsue_app/src/data/datasource/portfolio/portfolio_offical.dart';
 import 'package:rsue_app/src/data/repositories/portfolio_datasource.dart';
 import 'package:rsue_app/src/domain/entities/subject_entity.dart';
 import 'package:rsue_app/src/domain/entities/payment_entity.dart';
 import 'package:rsue_app/src/core/resources/data_state.dart';
 import 'package:rsue_app/src/domain/repositories/portfolio_repository.dart';
 
-class PortfolioRepositoryImpl extends PortfolioRepository {
+class PortfolioRepositoryImpl implements PortfolioRepository {
+  PortfolioRepositoryImpl(this.source);
   String? username;
   String? password;
-  PortfolioDataSource? source = PortfolioOfficalDataSource();
+  PortfolioDataSource? source;
   bool _checkCredits() {
     if ((username == null) || (password == null)) {
       return false;

@@ -13,10 +13,12 @@ import 'package:rsue_app/src/domain/entities/lesson_entity.dart';
 
 typedef ScheduleRaw = Map<String, Map<String, List<Map<String, String>>>>;
 
-class ScheduleOfficalDatasource extends ScheduleDatasource {
+class ScheduleOfficalDatasource implements ScheduleDatasource {
+  ScheduleOfficalDatasource(this.http);
+  Dio http;
   @override
   Future<Map<int, String>> getFacults() async {
-    var response = await getDio().get(htmlUrl);
+    var response = await http.get(htmlUrl);
 
     if (response.statusCode == 200) {
       Map<int, String> facults = {};
@@ -43,7 +45,7 @@ class ScheduleOfficalDatasource extends ScheduleDatasource {
 
   @override
   Future<Map<int, String>> getCourses(int faculty) async {
-    var response = await getDio().post(
+    var response = await http.post(
       queryUrl,
       data: FormData.fromMap(
           {"query": "getKinds", "type_id": faculty.toString()}),
@@ -67,7 +69,7 @@ class ScheduleOfficalDatasource extends ScheduleDatasource {
 
   @override
   Future<Map<int, String>> getGroups(int faculty, int course) async {
-    var response = await getDio().post(
+    var response = await http.post(
       queryUrl,
       data: FormData.fromMap({
         "query": "getCategories",
@@ -110,7 +112,7 @@ class ScheduleOfficalDatasource extends ScheduleDatasource {
   }
 
   Future<ScheduleRaw> _getScheduleRaw(GroupId groupId) async {
-    var response = await getDio().post(htmlUrl,
+    var response = await http.post(htmlUrl,
         data: FormData.fromMap({
           "f": groupId.facult.toString(),
           "k": groupId.course.toString(),

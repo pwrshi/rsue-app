@@ -9,11 +9,13 @@ import 'package:rsue_app/src/domain/entities/group_entity.dart';
 import 'package:rsue_app/src/core/api/response.dart';
 import 'package:rsue_app/src/domain/repositories/schedule_repository.dart';
 
-class ScheduleRepositoryRsueOfficalImpl extends ScheduleRepository {
+class ScheduleRepositoryRsueOfficalImpl implements ScheduleRepository {
+  ScheduleRepositoryRsueOfficalImpl(this.datasources);
   Group? group;
   GroupId? groupId;
+  Map<String, ScheduleDatasource> datasources;
 
-  ScheduleDatasource? datasource = ScheduleOfficalDatasource();
+  ScheduleDatasource? datasource;
   Response<ScheduleService> service =
       const Response(status: ResponseStatus.init);
 
@@ -148,17 +150,11 @@ class ScheduleRepositoryRsueOfficalImpl extends ScheduleRepository {
 
   @override
   List<String> getDatasources() {
-    return ["Сайт РГЭУ(РИНХ)"];
+    return datasources.keys.toList();
   }
 
   @override
   void setDatasource(String name) {
-    switch (name) {
-      case "Сайт РГЭУ(РИНХ)":
-        datasource = ScheduleOfficalDatasource();
-        break;
-      default:
-        throw const RepositoryError(name: "Некорректный источник данных");
-    }
+    datasource = datasources[name];
   }
 }

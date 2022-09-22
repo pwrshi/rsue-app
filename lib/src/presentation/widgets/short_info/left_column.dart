@@ -49,6 +49,7 @@ class TopLeftInfoWidget extends StatelessWidget {
             )
           ],
           options: CarouselOptions(
+            autoPlayInterval: const Duration(milliseconds: 10000),
             enlargeCenterPage: true,
             autoPlay: true,
             height: 150,
@@ -86,6 +87,7 @@ class BottomLeftInfoWidget extends StatelessWidget {
           options: CarouselOptions(
             enlargeCenterPage: true,
             reverse: true,
+            autoPlayInterval: const Duration(milliseconds: 10000),
             autoPlay: true,
             height: 150,
             initialPage: 1,

@@ -12,6 +12,10 @@ class DataSuccess<T> extends DataState<T> {
   const DataSuccess({required super.data});
 }
 
+class DataRestored<T> extends DataState<T> {
+  const DataRestored({required super.data});
+}
+
 class DataFailed<T> extends DataState<T> {
   const DataFailed({required super.error});
 }

@@ -159,7 +159,7 @@ class RadioPerfomanceButton extends StatelessWidget {
                         ? 70
                         : firstPoint + secondPoint)
                     .toDouble(),
-                width: selected ? 58 : 18,
+                width: selected ? 55 : 23,
                 alignment: Alignment.centerRight,
                 curve: animationCurveIn,
                 duration: animationSpeed,
