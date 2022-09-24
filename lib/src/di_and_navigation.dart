@@ -10,6 +10,10 @@ import 'package:rsue_app/src/data/repositories/portfolio_repository.dart';
 import 'package:rsue_app/src/data/repositories/schedule_repository.dart';
 import 'package:rsue_app/src/domain/repositories/portfolio_repository.dart';
 import 'package:rsue_app/src/domain/repositories/schedule_repository.dart';
+import 'package:rsue_app/src/domain/usecases/get_academic_perfomance.dart';
+import 'package:rsue_app/src/domain/usecases/get_payments.dart';
+import 'package:rsue_app/src/domain/usecases/get_whoami.dart';
+import 'package:rsue_app/src/presentation/providers/data/portfolio_snapshot.dart';
 import 'package:rsue_app/src/presentation/screens/home.dart';
 import 'package:rsue_app/src/presentation/screens/introduction.dart';
 import 'package:rsue_app/src/presentation/screens/payments.dart';
@@ -35,6 +39,42 @@ class RsueApplication extends StatelessWidget {
           Provider<PortfolioRepository>(
               create: (context) => PortfolioRepositoryImpl(
                   PortfolioOfficalDataSource(), PortfolioCacheDatasource())),
+
+          //
+          // юзкейсы
+          //
+
+          // Portfolio
+
+          // /// Платежи
+          // ProxyProvider<PortfolioRepository, GetPayments>(
+          //     update: (context, value, previous) {
+          //   return GetPayments(value);
+          // }),
+
+          // /// Кто я
+          // ProxyProvider<PortfolioRepository, GetWhoami>(
+          //     update: (context, value, previous) {
+          //   return GetWhoami(value);
+          // }),
+
+          // /// Успеваемость
+          // ProxyProvider<PortfolioRepository, GetAcademicPerfomance>(
+          //     update: (context, value, previous) {
+          //   return GetAcademicPerfomance(value);
+          // }),
+
+          // прокся для данных
+          ProxyProvider<PortfolioRepository, WhoamiSnapshot>(
+            update: (context, value, previous) => WhoamiSnapshot(value),
+          ),
+          ProxyProvider<PortfolioRepository, AcademicPerfomanceSnapshot>(
+            update: (context, value, previous) =>
+                AcademicPerfomanceSnapshot(value),
+          ),
+          ProxyProvider<PortfolioRepository, PaymentSnapshot>(
+            update: (context, value, previous) => PaymentSnapshot(value),
+          ),
           // непосредственно прокся для виджетов
           Provider<ZoomDrawerController>(
             create: (context) => ZoomDrawerController(),

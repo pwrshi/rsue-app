@@ -1,3 +1,4 @@
+import 'package:rsue_app/src/core/error/error.dart';
 import 'package:rsue_app/src/core/error/response_error.dart';
 
 class Response<T> {
@@ -7,8 +8,8 @@ class Response<T> {
     this.content,
   });
   final ResponseStatus status;
-  final ResponseError? error;
+  final RsError? error;
   final T? content;
 }
 
-enum ResponseStatus { init, loading, error, done }
+enum ResponseStatus { init, loading, error, done, restored }
