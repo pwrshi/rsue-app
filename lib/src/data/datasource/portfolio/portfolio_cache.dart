@@ -1,36 +1,63 @@
-// import 'package:hive/hive.dart';
-// import 'package:rsue_app/src/data/repositories/portfolio_datasource.dart';
-// import 'package:rsue_app/src/domain/entities/subject_entity.dart';
-// import 'package:rsue_app/src/domain/entities/payment_entity.dart';
+import 'package:hive/hive.dart';
+import 'package:rsue_app/src/core/get_hive_box.dart';
+import 'package:rsue_app/src/data/repositories/portfolio_datasource.dart';
+import 'package:rsue_app/src/domain/entities/subject_entity.dart';
+import 'package:rsue_app/src/domain/entities/payment_entity.dart';
 
-// class PortfolioCacheDatasource implements PortfolioDataSource {
-//   Box<Map<String, List<SubjectEntity>>> storageAcademicPerfomance =
-//       Hive.box('portfolio_cache_datasource_get_academic_perfomance');
-//   Box<List<PaymentEntity>> storagePayments =
-//       Hive.box('portfolio_cache_datasource_get_payments');
-//   Box<Map<String, String>> storageWhoami =
-//       Hive.box('portfolio_cache_datasource_get_whoami');
+class PortfolioCacheDatasource implements PortfolioLocalDatasource {
+  var storageAcademicPerfomance =
+      openHiveBox<Map<String, List<SubjectEntity>>>('portfolio_cache_datasource_get_academic_perfomance');
+  var storagePayments =
+      openHiveBox<List<PaymentEntity>>('portfolio_cache_datasource_get_payments');
+  var storageWhoami =
+      openHiveBox<Map<String, String>>('portfolio_cache_datasource_get_whoami');
+  var storageOfCredentials =  openHiveBox<(String, String)>('portfolio_cache_datasource_credentials'); 
 
-//   @override
-//   Future<bool> checkCredentials(String username, String password) {
-//     return Future.sync(() => false);
-//   }
+  @override
+  checkCredentials(String username, String password) async {
+    return (await storageOfCredentials).get(username)?.$1 == password;
+  }
 
-//   @override
-//   Future<Map<String, List<SubjectEntity>>> getAcademicPerfomance(
-//       String username, String password) {
-//     return storage.get('');
-//   }
+  @override
+  getAcademicPerfomance(
+      String username, String password) async {
+    return (await storageAcademicPerfomance).get((username, password))!;
+  }
 
-//   @override
-//   Future<List<PaymentEntity>> getPayments(String username, String password) {
-//     // TODO: implement getPayments
-//     throw UnimplementedError();
-//   }
+  @override
+  getPayments(String username, String password) async {
+    return (await storagePayments).get((username, password))!;
+  }
 
-//   @override
-//   Future<Map<String, String>> whoami(String username, String password) {
-//     // TODO: implement whoami
-//     throw UnimplementedError();
-//   }
-// }
+  @override
+  getLastCredentials() async {
+    return (await storageOfCredentials).get('_');
+  }
+  
+  @override
+  Future<Map<String, String>> getWhoami(String username, String password) async {
+    return (await storageWhoami).get((username, password))!;
+  }
+  
+  @override
+  Future<void> setAcademicPerfomance(String username, String password, Map<String, List<SubjectEntity>> snapshot) async {
+    return (await storageAcademicPerfomance).put((username, password), snapshot);
+  }
+  
+  @override
+  Future<void> setLastCredentials(String username, String password) async {
+    (await storageOfCredentials)
+    ..put('_',(username, password))
+    ..put(username, (username, password));
+  }
+  
+  @override
+  Future<void> setPayments(String username, String password, List<PaymentEntity> snapshot) async {
+    return (await storagePayments).put((username, password), snapshot);
+  }
+  
+  @override
+  Future<void> setWhoami(String username, String password, Map<String, String> snapshot) async {
+    return (await storageWhoami).put((username, password), snapshot);
+  }
+}

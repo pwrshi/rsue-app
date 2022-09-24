@@ -1,7 +1,6 @@
 import 'package:rsue_app/src/core/error/error.dart';
 import 'package:rsue_app/src/core/error/repository_error.dart';
 import 'package:rsue_app/src/core/resources/data_state.dart';
-import 'package:rsue_app/src/data/datasource/schedule/offical/schedule_offical.dart';
 import 'package:rsue_app/src/data/repositories/schedule_datasource.dart';
 import 'package:rsue_app/src/data/repositories/schedule_service.dart';
 import 'package:rsue_app/src/domain/entities/lesson_entity.dart';

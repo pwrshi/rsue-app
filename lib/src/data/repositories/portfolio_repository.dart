@@ -7,10 +7,11 @@ import 'package:rsue_app/src/core/resources/data_state.dart';
 import 'package:rsue_app/src/domain/repositories/portfolio_repository.dart';
 
 class PortfolioRepositoryImpl implements PortfolioRepository {
-  PortfolioRepositoryImpl(this.source);
+  PortfolioRepositoryImpl(this.source, this.cacheSource);
   String? username;
   String? password;
-  PortfolioDataSource? source;
+  PortfolioDatasource source;
+  PortfolioLocalDatasource cacheSource;
   bool _checkCredits() {
     if ((username == null) || (password == null)) {
       return false;
@@ -24,7 +25,7 @@ class PortfolioRepositoryImpl implements PortfolioRepository {
     if (_checkCredits()) {
       try {
         return DataSuccess(
-            data: await source!.getAcademicPerfomance(username!, password!));
+            data: await source.getAcademicPerfomance(username!, password!));
       } catch (e) {
         return const DataFailed(
             error: RepositoryError(name: "Ошибка получения успеваемости"));
@@ -39,7 +40,7 @@ class PortfolioRepositoryImpl implements PortfolioRepository {
     if (_checkCredits()) {
       try {
         return DataSuccess(
-            data: await source!.getPayments(username!, password!));
+            data: await source.getPayments(username!, password!));
       } catch (e) {
         return const DataFailed(
             error: RepositoryError(name: "Ошибка получения платежей"));
@@ -51,10 +52,10 @@ class PortfolioRepositoryImpl implements PortfolioRepository {
   @override
   Future<DataState<void>> login(String username, String password) async {
     try {
-      if (await source!.checkCredentials(username, password)) {
+      if (await source.checkCredentials(username, password)) {
         this.username = username;
         this.password = password;
-        return const DataSuccess(data: "");
+        return const DataSuccess(data: '');
       } else {
         return const DataFailed(error: ResponseError(name: "неправильно!!!!!"));
       }
@@ -73,7 +74,7 @@ class PortfolioRepositoryImpl implements PortfolioRepository {
   Future<DataState<Map<String, String>>> whoami() async {
     if (_checkCredits()) {
       try {
-        return DataSuccess(data: await source!.whoami(username!, password!));
+        return DataSuccess(data: await source.getWhoami(username!, password!));
       } catch (e) {
         return const DataFailed(
             error: RepositoryError(

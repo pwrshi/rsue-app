@@ -14,8 +14,7 @@ import 'package:rsue_app/src/domain/entities/lesson_entity.dart';
 typedef ScheduleRaw = Map<String, Map<String, List<Map<String, String>>>>;
 
 class ScheduleOfficalDatasource implements ScheduleDatasource {
-  ScheduleOfficalDatasource(this.http);
-  Dio http;
+  Dio http = getDio();
   @override
   Future<Map<int, String>> getFacults() async {
     var response = await http.get(htmlUrl);

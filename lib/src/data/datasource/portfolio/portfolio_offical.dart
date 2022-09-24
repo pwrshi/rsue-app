@@ -1,11 +1,17 @@
+import 'dart:io';
+
+import 'package:dio/adapter.dart';
+import 'package:dio/dio.dart';
+
 import 'package:rsue_app/src/core/error/datasource_error.dart';
 import 'package:rsue_app/src/data/repositories/portfolio_datasource.dart';
 import 'package:rsue_app/src/domain/entities/subject_entity.dart';
 import 'package:rsue_app/src/domain/entities/payment_entity.dart';
+import 'package:dio_cookie_manager/dio_cookie_manager.dart';
+import 'package:cookie_jar/cookie_jar.dart';
 
 import 'package:html/dom.dart';
 import 'package:html/parser.dart';
-import 'package:dio/dio.dart';
 
 const academicPerformanceURL =
     'https://portfolio.rsue.ru/portfolio/index.php?section=23';
@@ -14,13 +20,26 @@ const reportURL = 'https://portfolio.rsue.ru/portfolio/index.php?view=1';
 const whoamiURL = 'https://portfolio.rsue.ru/portfolio/index.php?section=11';
 const accountingURL = 'https://portfolio.rsue.ru/accounting/index.php';
 
-class PortfolioOfficalDataSource implements PortfolioDataSource {
-  Dio http;
-  PortfolioOfficalDataSource(this.http);
+class PortfolioOfficalDataSource implements PortfolioDatasource {
+  PortfolioOfficalDataSource() {
+    http = Dio();
+    // Игнорирует всратый сертификат
+    (http.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+        (HttpClient client) {
+      // коллбэчит что всё ок
+      client.badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+      return client;
+    };
+    var cookieJar = CookieJar();
+    http.interceptors.add(CookieManager(cookieJar));
+  }
+  late final Dio http;
 
   bool? _checkAuthByDataRaw(String data) {
     if (data.contains(
-        '<script type="text/javascript">document.location.replace("/login/index.php");</script>')) {
+            '<script type="text/javascript">document.location.replace("/login/index.php");</script>') ||
+        data.contains("err_div")) {
       return false;
     }
     if (data.contains(
@@ -89,6 +108,7 @@ class PortfolioOfficalDataSource implements PortfolioDataSource {
   @override
   Future<bool> checkCredentials(String username, String password) {
     return _autorize(username, password);
+    //
   }
 
   SubjectEntity _parseSubject(Element raw) {
@@ -265,7 +285,8 @@ class PortfolioOfficalDataSource implements PortfolioDataSource {
   }
 
   @override
-  Future<Map<String, String>> whoami(String username, String password) async {
+  Future<Map<String, String>> getWhoami(
+      String username, String password) async {
     String page = await getPage(whoamiURL, username, password);
     return _whoamiParser(page);
   }
