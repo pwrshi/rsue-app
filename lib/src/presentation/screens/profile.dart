@@ -1,8 +1,10 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rsue_app/src/core/api/response.dart';
 import 'package:rsue_app/src/core/resources/data_state.dart';
 import 'package:rsue_app/src/domain/repositories/portfolio_repository.dart';
+import 'package:rsue_app/src/presentation/providers/data/portfolio_snapshot.dart';
 import 'package:rsue_app/src/presentation/widgets/schedule/subject.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -55,16 +57,18 @@ class ProfileScreen extends StatelessWidget {
                         const SizedBox(
                           width: 9,
                         ),
-                        FutureBuilder(
-                            future: Provider.of<PortfolioRepository>(context)
-                                .getPayments(),
-                            builder: (context, snapshot) {
-                              if (snapshot.hasData) {
-                                return Text(
-                                    "${snapshot.data!.data?.length}\nПлатежи");
-                              }
+                        Builder(builder: (context) {
+                          var value = context.watch<PaymentSnapshot>();
+                          switch (value.data.status) {
+                            case ResponseStatus.loading:
                               return const Text("--\nПлатежи");
-                            })
+                            case ResponseStatus.error:
+                              return const Text("-_-\nПлатежи");
+                            default:
+                              return Text(
+                                  "${value.data.content?.length}\nПлатежи");
+                          }
+                        })
                       ],
                     ),
                   ),
@@ -107,42 +111,50 @@ class ProfileScreen extends StatelessWidget {
               ],
             ),
           ),
-          FutureBuilder(
-              future: Provider.of<PortfolioRepository>(context)
-                  .getAcademicPerfomance(),
-              builder: (c, snapshot) {
-                if (snapshot.hasData) {
-                  if (snapshot.data is DataFailed) {
-                    return Container(
-                      color: const Color(0xFF486581),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 8, vertical: 20),
-                      child: Text(snapshot.data!.error!.name),
-                    );
-                  }
-                  return Column(
-                    children: [
-                      for (var s in snapshot.data!.data!.entries) ...[
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              top: 20.0, left: 8, right: 8, bottom: 8),
-                          child: Text(s.key),
-                        ),
-                        for (var subject in s.value)
-                          SubjectWidget(
-                              name: subject.name,
-                              controlPoints: subject.controlPoints,
-                              teacher: subject.teachersname,
-                              isClosed: subject.isClosed,
-                              statement: subject.statement,
-                              type: SubjectWidget.sessionTypeToString(
-                                  subject.type))
-                      ]
-                    ],
-                  );
-                }
-                return const CircularProgressIndicator();
-              })
+          Builder(builder: (c) {
+            var value = context.watch<AcademicPerfomanceSnapshot>();
+            switch (value.data.status) {
+              case ResponseStatus.loading:
+                return const SizedBox.shrink(
+                  child: CircularProgressIndicator(),
+                );
+              case ResponseStatus.error:
+                return SizedBox.shrink(
+                  child: Text(value.data.error.toString()),
+                );
+              default:
+                return Column(
+                  children: [
+                    for (var s
+                        in (value.data.content?.entries.toList() ?? [])) ...[
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            top: 20.0, left: 8, right: 8, bottom: 8),
+                        child: Text(s.key),
+                      ),
+                      for (var subject in s.value)
+                        SubjectWidget(
+                            name: subject.name,
+                            controlPoints: subject.controlPoints,
+                            teacher: subject.teachersname,
+                            isClosed: subject.isClosed,
+                            statement: subject.statement,
+                            type:
+                                SubjectWidget.sessionTypeToString(subject.type))
+                    ]
+                  ],
+                );
+            }
+            // if (snapshot.hasData) {
+            //   if (snapshot.data is DataFailed) {
+            //     return Container(
+            //       color: const Color(0xFF486581),
+            //       padding:
+            //           const EdgeInsets.symmetric(horizontal: 8, vertical: 20),
+            //       child: Text(snapshot.data!.error!.name),
+            //     );
+            //   }
+          })
           // const SubjectWidget(
           //   teacher: "доц.Рутта. Н.А.",
           //   name: "Математика",

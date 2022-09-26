@@ -10,10 +10,8 @@ import 'package:rsue_app/src/data/repositories/portfolio_repository.dart';
 import 'package:rsue_app/src/data/repositories/schedule_repository.dart';
 import 'package:rsue_app/src/domain/repositories/portfolio_repository.dart';
 import 'package:rsue_app/src/domain/repositories/schedule_repository.dart';
-import 'package:rsue_app/src/domain/usecases/get_academic_perfomance.dart';
-import 'package:rsue_app/src/domain/usecases/get_payments.dart';
-import 'package:rsue_app/src/domain/usecases/get_whoami.dart';
 import 'package:rsue_app/src/presentation/providers/data/portfolio_snapshot.dart';
+import 'package:rsue_app/src/presentation/providers/widget/short_info.dart';
 import 'package:rsue_app/src/presentation/screens/home.dart';
 import 'package:rsue_app/src/presentation/screens/introduction.dart';
 import 'package:rsue_app/src/presentation/screens/payments.dart';
@@ -65,17 +63,26 @@ class RsueApplication extends StatelessWidget {
           // }),
 
           // прокся для данных
-          ProxyProvider<PortfolioRepository, WhoamiSnapshot>(
+          ChangeNotifierProxyProvider<PortfolioRepository, WhoamiSnapshot>(
+            create: (context) => WhoamiSnapshot(null),
             update: (context, value, previous) => WhoamiSnapshot(value),
           ),
-          ProxyProvider<PortfolioRepository, AcademicPerfomanceSnapshot>(
+          ChangeNotifierProxyProvider<PortfolioRepository,
+              AcademicPerfomanceSnapshot>(
+            create: (context) => AcademicPerfomanceSnapshot(null),
             update: (context, value, previous) =>
                 AcademicPerfomanceSnapshot(value),
           ),
-          ProxyProvider<PortfolioRepository, PaymentSnapshot>(
+          ChangeNotifierProxyProvider<PortfolioRepository, PaymentSnapshot>(
+            create: (context) => PaymentSnapshot(null),
             update: (context, value, previous) => PaymentSnapshot(value),
           ),
           // непосредственно прокся для виджетов
+          ChangeNotifierProxyProvider<AcademicPerfomanceSnapshot,
+                  ShortInfoProvider>(
+              create: (context) => ShortInfoProvider(null),
+              update: (context, value, previous) => ShortInfoProvider(value)),
+
           Provider<ZoomDrawerController>(
             create: (context) => ZoomDrawerController(),
           ),

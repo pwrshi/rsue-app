@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/config.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:rsue_app/src/core/api/response.dart';
 import 'package:rsue_app/src/core/resources/data_state.dart';
-import 'package:rsue_app/src/data/repositories/schedule_repository.dart';
 import 'package:rsue_app/src/domain/repositories/schedule_repository.dart';
+import 'package:rsue_app/src/presentation/providers/data/portfolio_snapshot.dart';
 import 'package:rsue_app/src/presentation/widgets/short_info/short_info.dart';
 
 import '../widgets/schedule/lesson.dart';
@@ -32,14 +33,31 @@ class HomeScreen extends StatelessWidget {
         ),
       ),
       body: ListView(padding: const EdgeInsets.all(8), children: [
-        const Padding(
-          padding: EdgeInsets.only(bottom: 15.0),
-          child: Text(
-            "Добрый день, Станислав!",
-            style: TextStyle(fontSize: 24),
-            textAlign: TextAlign.center,
-          ),
-        ),
+        Padding(
+            padding: const EdgeInsets.only(bottom: 15.0),
+            child: Builder(builder: (context) {
+              var value = context.watch<WhoamiSnapshot>();
+              switch (value.data.status) {
+                case ResponseStatus.loading:
+                  return const Text(
+                    "Добрый день!",
+                    style: TextStyle(fontSize: 24),
+                    textAlign: TextAlign.center,
+                  );
+                case ResponseStatus.error:
+                  return const Text(
+                    "Добрый день, -_-!",
+                    style: TextStyle(fontSize: 24),
+                    textAlign: TextAlign.center,
+                  );
+                default:
+                  return Text(
+                    "Добрый день, ${value.data.content?['Имя']}!",
+                    style: const TextStyle(fontSize: 24),
+                    textAlign: TextAlign.center,
+                  );
+              }
+            })),
         const ShortInfo(),
         Padding(
           padding: const EdgeInsets.only(
@@ -75,7 +93,7 @@ class HomeScreen extends StatelessWidget {
               if (snapshot.hasData) {
                 if (snapshot.data is DataSuccess) {
                   var massive = buildLessonList(snapshot.data!.data!);
-                  if (massive.length == 0) {
+                  if (massive.isEmpty) {
                     return const Center(
                         child: Text(
                       "Похоже, это выходной",

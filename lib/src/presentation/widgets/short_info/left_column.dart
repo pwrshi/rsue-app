@@ -1,5 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:rsue_app/src/presentation/providers/widget/short_info.dart';
 
 class TopLeftInfoWidget extends StatelessWidget {
   const TopLeftInfoWidget({
@@ -14,49 +16,48 @@ class TopLeftInfoWidget extends StatelessWidget {
         decoration: const BoxDecoration(
             color: Color(0xFF486581),
             borderRadius: BorderRadius.all(Radius.circular(15))),
-        child: CarouselSlider(
-          items: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: const [
-                Text(
-                  "Нужно сдать",
-                  style: TextStyle(color: Colors.white70),
-                ),
-                Text(
-                  "3/4",
-                  style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.w700,
-                      fontFamily: "Rubik"),
-                ),
-                Text("Зачетов", style: TextStyle(color: Colors.white70))
+        child: Builder(
+          builder: (context) {
+            var l = context.watch<ShortInfoProvider>();
+
+            return CarouselSlider(
+              items: [
+                for (var el in l.numberWidgetData) NumberWidget(data: el)
               ],
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: const [
-                Text("Нужно сдать", style: TextStyle(color: Colors.white70)),
-                Text(
-                  "12/13",
-                  style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.w700,
-                      fontFamily: "Rubik"),
-                ),
-                Text("Экзаменов", style: TextStyle(color: Colors.white70))
-              ],
-            )
-          ],
-          options: CarouselOptions(
-            autoPlayInterval: const Duration(milliseconds: 10000),
-            enlargeCenterPage: true,
-            autoPlay: true,
-            height: 150,
-            initialPage: 1,
-            viewportFraction: 1,
-          ),
+              options: CarouselOptions(
+                autoPlayInterval: const Duration(milliseconds: 10000),
+                enlargeCenterPage: true,
+                autoPlay: true,
+                height: 150,
+                initialPage: 1,
+                viewportFraction: 1,
+              ),
+            );
+          },
         ));
+  }
+}
+
+class NumberWidget extends StatelessWidget {
+  const NumberWidget({super.key, required this.data});
+  final NumberForm data;
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Text(
+          data.topText,
+          style: const TextStyle(color: Colors.white70),
+        ),
+        Text(
+          data.centerText,
+          style: const TextStyle(
+              fontSize: 30, fontWeight: FontWeight.w700, fontFamily: "Rubik"),
+        ),
+        Text(data.bottomText, style: const TextStyle(color: Colors.white70))
+      ],
+    );
   }
 }
 
@@ -73,38 +74,31 @@ class BottomLeftInfoWidget extends StatelessWidget {
         decoration: const BoxDecoration(
             color: Color(0xFF486581),
             borderRadius: BorderRadius.all(Radius.circular(15))),
-        child: CarouselSlider(
-          items: const [
-            CircularChartInfoWidget(
-              topText: "По экзаменам",
-              score: 76,
-            ),
-            CircularChartInfoWidget(
-              topText: "По зачётам",
-              score: 98,
-            )
-          ],
-          options: CarouselOptions(
-            enlargeCenterPage: true,
-            reverse: true,
-            autoPlayInterval: const Duration(milliseconds: 10000),
-            autoPlay: true,
-            height: 150,
-            initialPage: 1,
-            viewportFraction: 1,
-          ),
+        child: Builder(
+          builder: (context) {
+            var list = context.watch<ShortInfoProvider>().circularWidgetData;
+            return CarouselSlider(
+              items: [for (var e in list) CircularChartInfoWidget(data: e)],
+              options: CarouselOptions(
+                enlargeCenterPage: true,
+                reverse: true,
+                autoPlayInterval: const Duration(milliseconds: 10000),
+                autoPlay: true,
+                height: 150,
+                initialPage: 1,
+                viewportFraction: 1,
+              ),
+            );
+          },
         ));
   }
 }
 
 class CircularChartInfoWidget extends StatelessWidget {
-  const CircularChartInfoWidget(
-      {Key? key, required this.topText, required this.score})
+  const CircularChartInfoWidget({Key? key, required this.data})
       : super(key: key);
 
-  final String topText;
-  final int score;
-
+  final CircularForm data;
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -116,7 +110,7 @@ class CircularChartInfoWidget extends StatelessWidget {
                   height: 80,
                   width: 80,
                   child: CircularProgressIndicator(
-                    value: score / 100,
+                    value: data.score / 100,
                     color: Colors.white,
                     backgroundColor: Colors.white.withAlpha(70),
                   ))),
@@ -127,17 +121,17 @@ class CircularChartInfoWidget extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(topText,
+                Text(data.topText,
                     style:
                         const TextStyle(color: Colors.white70, fontSize: 14)),
-                Text(score.toString(),
+                Text(data.score.toString(),
                     style: const TextStyle(
                         fontSize: 30,
                         fontWeight: FontWeight.w400,
                         fontFamily: "Rubik",
                         color: Colors.white)),
-                const Text("средний балл",
-                    style: TextStyle(color: Colors.white70, fontSize: 14))
+                Text(data.bottomText,
+                    style: const TextStyle(color: Colors.white70, fontSize: 14))
               ],
             ),
           ),

@@ -3,12 +3,13 @@ import 'package:rsue_app/src/core/api/response.dart';
 import 'package:rsue_app/src/core/error/response_error.dart';
 import 'package:rsue_app/src/core/resources/data_state.dart';
 
-abstract class DataSnapshot<T> {
+abstract class DataSnapshot<T> extends ChangeNotifier {
   Response<T> _data = const Response(status: ResponseStatus.init);
 
   Future<DataState<T>> call();
   void update(T t) {
     _data = Response(status: ResponseStatus.done, content: t);
+    notifyListeners();
   }
 
   Future<void> tryUpdate() async {
@@ -37,6 +38,7 @@ abstract class DataSnapshot<T> {
               status: ResponseStatus.error,
               error: ResponseError(name: 'Невозможный тип'));
         }
+        notifyListeners();
       });
     }
     return _data;

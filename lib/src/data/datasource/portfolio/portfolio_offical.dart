@@ -117,7 +117,8 @@ class PortfolioOfficalDataSource implements PortfolioDatasource {
 
       String name, teacher;
       SessionType type;
-      int statement, controlPoint1, controlPoint2;
+      int statement, controlPoint1;
+      int? controlPoint2;
       bool isClosed = true;
 
       if (text.contains(" (Экзамен)")) {
@@ -141,13 +142,18 @@ class PortfolioOfficalDataSource implements PortfolioDatasource {
       teacher = RegExp(r'<i>Преподаватель:<\/i> ([^\n]+)')
               .firstMatch(raw.children[0].innerHtml)?[1] ??
           '';
-
-      controlPoint1 = int.parse(
-          RegExp(r'КТ1 = (\d+)').firstMatch(raw.children[0].innerHtml)?[1] ??
-              '0');
-      controlPoint2 = int.parse(
-          RegExp(r'КТ2 = (\d+)').firstMatch(raw.children[0].innerHtml)?[1] ??
-              '0');
+      if (type == SessionType.practice) {
+        var raww = raw.children[0].innerHtml;
+        var dec = RegExp(r'\ (\d+) от').firstMatch(raww);
+        controlPoint1 = int.parse(dec?[1] ?? '0');
+      } else {
+        controlPoint1 = int.parse(
+            RegExp(r'КТ1 = (\d+)').firstMatch(raw.children[0].innerHtml)?[1] ??
+                '0');
+        controlPoint2 = int.parse(
+            RegExp(r'КТ2 = (\d+)').firstMatch(raw.children[0].innerHtml)?[1] ??
+                '0');
+      }
 
       //
       return SubjectEntity(
@@ -156,7 +162,9 @@ class PortfolioOfficalDataSource implements PortfolioDatasource {
           type: type,
           isClosed: isClosed,
           statement: statement,
-          controlPoints: [controlPoint1, controlPoint2]);
+          controlPoints: (type == SessionType.practice
+              ? [controlPoint1]
+              : [controlPoint1, controlPoint2!]));
     } catch (e) {
       throw const DatasourceError(name: "Ошибка парсинга успеваемости");
     }

@@ -1,11 +1,17 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:rsue_app/src/domain/repositories/portfolio_repository.dart';
+import 'package:rsue_app/src/core/api/response.dart';
+import 'package:rsue_app/src/presentation/providers/data/portfolio_snapshot.dart';
 
-class PaymentScreen extends StatelessWidget {
+class PaymentScreen extends StatefulWidget {
   const PaymentScreen({super.key});
 
+  @override
+  State<StatefulWidget> createState() => _PaymentScreenState();
+}
+
+class _PaymentScreenState extends State<PaymentScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,31 +28,39 @@ class PaymentScreen extends StatelessWidget {
               "Платежи",
               style: TextStyle(fontFamily: "Rubik_glitch"),
             )),
-        body: FutureBuilder(
-          future: Provider.of<PortfolioRepository>(context).getPayments(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return ListView(
-                padding: const EdgeInsets.all(8),
-                children: [
-                  for (var p in snapshot.data!.data!) ...[
-                    PaymentWidget(
-                      name: p.name,
-                      dateOfReceiptFormation: p.dateOfReceiptFormation,
-                      dateOfServiceEnding: p.dateOfServiceEnding,
-                      dateOfServiceStarting: p.dateOfServiceStarting,
-                      url: p.url,
-                    ),
-                    SizedBox(
-                      height: 8,
-                    )
-                  ]
-                ],
-              );
+        body: Builder(
+          builder: (context) {
+            var value = context.watch<PaymentSnapshot>();
+            switch (value.data.status) {
+              case ResponseStatus.error:
+                return ListView(
+                  padding: const EdgeInsets.all(8),
+                  children: [Text(value.data.error.toString())],
+                );
+              case ResponseStatus.loading:
+                return ListView(
+                  padding: const EdgeInsets.all(8),
+                  children: const [CircularProgressIndicator()],
+                );
+              default:
+                return ListView(
+                  padding: const EdgeInsets.all(8),
+                  children: [
+                    for (var p in value.data.content!) ...[
+                      PaymentWidget(
+                        name: p.name,
+                        dateOfReceiptFormation: p.dateOfReceiptFormation,
+                        dateOfServiceEnding: p.dateOfServiceEnding,
+                        dateOfServiceStarting: p.dateOfServiceStarting,
+                        url: p.url,
+                      ),
+                      const SizedBox(
+                        height: 8,
+                      )
+                    ]
+                  ],
+                );
             }
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
           },
         ));
   }

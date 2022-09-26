@@ -1,5 +1,8 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:rsue_app/src/domain/entities/subject_entity.dart';
+import 'package:rsue_app/src/presentation/providers/widget/short_info.dart';
 
 class ChartWhatNeedsToBeImproved extends StatefulWidget {
   const ChartWhatNeedsToBeImproved({Key? key}) : super(key: key);
@@ -32,93 +35,35 @@ class ChartWhatNeedsToBeImprovedState
                     fontWeight: FontWeight.w500,
                   )),
             )),
-        Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              RadioPerfomanceButton(
-                  label:
-                      "Элективные дисциплины (модули) по физической культуре и спорту",
-                  firstPoint: 40,
-                  secondPoint: 63,
-                  selected: selectedItem == 1,
-                  onTap: () {
-                    setState(() {
-                      if (selectedItem == 1) {
-                        nameOfSelectedItem = null;
-                        selectedItem = null;
-                      } else {
-                        nameOfSelectedItem =
-                            "Элективные дисциплины (модули) по физической культуре и спорту";
-                        selectedItem = 1;
-                      }
-                    });
-                  }),
-              RadioPerfomanceButton(
-                  label: "Математика",
-                  firstPoint: 62,
-                  secondPoint: 73,
-                  selected: selectedItem == 2,
-                  onTap: () {
-                    setState(() {
-                      if (selectedItem == 2) {
-                        nameOfSelectedItem = null;
-                        selectedItem = null;
-                      } else {
-                        nameOfSelectedItem = "Математика";
-                        selectedItem = 2;
-                      }
-                    });
-                  }),
-              RadioPerfomanceButton(
-                  label: "Иностранный язык",
-                  firstPoint: 76,
-                  secondPoint: 88,
-                  selected: selectedItem == 3,
-                  onTap: () {
-                    setState(() {
-                      if (selectedItem == 3) {
-                        nameOfSelectedItem = null;
-                        selectedItem = null;
-                      } else {
-                        nameOfSelectedItem = "Иностранный язык";
-                        selectedItem = 3;
-                      }
-                    });
-                  }),
-              RadioPerfomanceButton(
-                  label: "Низкоуровневое программирование ",
-                  firstPoint: 80,
-                  secondPoint: 93,
-                  selected: selectedItem == 4,
-                  onTap: () {
-                    setState(() {
-                      if (selectedItem == 4) {
-                        nameOfSelectedItem = null;
-                        selectedItem = null;
-                      } else {
-                        nameOfSelectedItem = "Низкоуровневое программирование ";
-                        selectedItem = 4;
-                      }
-                    });
-                  }),
-              RadioPerfomanceButton(
-                  label: "Информационные технологии ",
-                  firstPoint: 92,
-                  secondPoint: 98,
-                  selected: selectedItem == 5,
-                  onTap: () {
-                    setState(() {
-                      if (selectedItem == 5) {
-                        nameOfSelectedItem = null;
-                        selectedItem = null;
-                      } else {
-                        nameOfSelectedItem = "Информационные технологии ";
-                        selectedItem = 5;
-                      }
-                    });
-                  })
-            ]),
+        Expanded(
+          child: Builder(
+            builder: (context) {
+              var list =
+                  context.watch<ShortInfoProvider>().listOf5MostLowRatedSubject;
+              return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    for (var el in list)
+                      RadioPerfomanceButton(
+                        selected: selectedItem == el.hashCode,
+                        onTap: () {
+                          setState(() {
+                            if (selectedItem == el.hashCode) {
+                              nameOfSelectedItem = null;
+                              selectedItem = null;
+                            } else {
+                              nameOfSelectedItem = el.name;
+                              selectedItem = el.hashCode;
+                            }
+                          });
+                        },
+                        entity: el,
+                      ),
+                  ]);
+            },
+          ),
+        ),
       ],
     );
   }
@@ -126,26 +71,31 @@ class ChartWhatNeedsToBeImprovedState
 
 class RadioPerfomanceButton extends StatelessWidget {
   const RadioPerfomanceButton(
-      {Key? key,
-      required this.label,
-      required this.firstPoint,
-      required this.secondPoint,
-      this.onTap,
-      this.selected = false})
+      {Key? key, required this.entity, this.onTap, this.selected = false})
       : super(key: key);
 
-  final int firstPoint, secondPoint;
+  final SubjectEntity entity;
   final bool selected;
   final void Function()? onTap;
-  final String label;
   static const animationSpeed = Duration(milliseconds: 200);
 
   static const animationCurveIn = Curves.easeIn;
   static const animationCurveOut = Curves.easeOut;
   final _colorOfInnerColumn = const Color(0xFF0FCA7A);
   final _colorOfOuterColumn = const Color(0xFF334E68);
+  String calcString() {
+    var result = "";
+    for (var i = 0, ma = 0; i < entity.controlPoints.length;) {
+      ma = entity.controlPoints[i++];
+      result += "КТ$i:\n$ma\n";
+    }
+    return result;
+  }
+
   @override
   Widget build(BuildContext context) {
+    var absoluteHeight = entity.controlPoints
+        .fold<int>(0, (previousValue, element) => previousValue + element);
     return InkWell(
       splashColor: Colors.white,
       onTap: onTap,
@@ -155,10 +105,7 @@ class RadioPerfomanceButton extends StatelessWidget {
           alignment: Alignment.bottomLeft,
           children: [
             AnimatedContainer(
-                height: ((firstPoint + secondPoint < 70)
-                        ? 70
-                        : firstPoint + secondPoint)
-                    .toDouble(),
+                height: (absoluteHeight <= 70 ? 70 : absoluteHeight).toDouble(),
                 width: selected ? 55 : 23,
                 alignment: Alignment.centerRight,
                 curve: animationCurveIn,
@@ -167,7 +114,7 @@ class RadioPerfomanceButton extends StatelessWidget {
                   switchInCurve: animationCurveIn,
                   switchOutCurve: animationCurveOut,
                   duration: animationSpeed,
-                  child: Text("КТ2:\n$secondPoint\n\nКТ1:\n$firstPoint",
+                  child: Text(calcString(),
                       key: ValueKey(selected),
                       style: TextStyle(
                           color: selected ? Colors.white : Colors.transparent,
@@ -188,7 +135,7 @@ class RadioPerfomanceButton extends StatelessWidget {
                           color: Colors.white,
                         )
                       : Text(
-                          ((firstPoint + secondPoint) / 2).round().toString(),
+                          entity.finalMark.toString(),
                           style: const TextStyle(
                               color: Colors.white, fontSize: 12),
                         )),
@@ -204,30 +151,36 @@ class RadioPerfomanceButton extends StatelessWidget {
                     borderRadius: const BorderRadius.all(Radius.circular(20))),
                 child: Column(
                   children: [
-                    AnimatedContainer(
-                      curve: animationCurveIn,
-                      margin: const EdgeInsets.only(top: 3, left: 3, right: 3),
-                      duration: animationSpeed,
-                      width: (selected ? 17 : 9),
-                      height: (selected ? secondPoint : secondPoint).toDouble(),
-                      decoration: BoxDecoration(
-                          color: _colorOfInnerColumn,
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(20))),
-                    ),
-                    AnimatedContainer(
-                      curve: animationCurveIn,
-                      margin: const EdgeInsets.all(3),
-                      duration: animationSpeed,
-                      width: (selected ? 17 : 9),
-                      height: (selected ? firstPoint : firstPoint).toDouble(),
-                      decoration: BoxDecoration(
-                          color: selected
-                              ? _colorOfInnerColumn
-                              : _colorOfOuterColumn,
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(20))),
-                    ),
+                    for (var i = 0, mark = 0; i < entity.controlPoints.length;)
+                      () {
+                        mark = entity.controlPoints[i++];
+                        return (i == 1
+                            ? AnimatedContainer(
+                                curve: animationCurveIn,
+                                margin: const EdgeInsets.only(
+                                    top: 3, left: 3, right: 3),
+                                duration: animationSpeed,
+                                width: (selected ? 17 : 9),
+                                height: mark.toDouble(),
+                                decoration: BoxDecoration(
+                                    color: _colorOfInnerColumn,
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(20))),
+                              )
+                            : AnimatedContainer(
+                                curve: animationCurveIn,
+                                margin: const EdgeInsets.all(3),
+                                duration: animationSpeed,
+                                width: (selected ? 17 : 9),
+                                height: mark.toDouble(),
+                                decoration: BoxDecoration(
+                                    color: selected
+                                        ? _colorOfInnerColumn
+                                        : _colorOfOuterColumn,
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(20))),
+                              ));
+                      }.call(),
                   ],
                 ),
               ),
