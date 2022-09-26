@@ -5,6 +5,7 @@ publish_to: none
 environment:
   sdk: ">=2.19.0-214.0.dev <3.0.0"
 dependencies:
+  url_launcher: ^6.1.5
   hive: ^2.2.3
   intl: ^0.17.0
   rounded_loading_button: ^2.1.0
@@ -33,6 +34,7 @@ dev_dependencies:
   build_runner: ^2.2.1
   freezed: ^2.1.0+1
   json_serializable: ^6.3.2
+
 flutter:
   uses-material-design: true
   fonts:
@@ -64,4 +66,5 @@ flutter:
     - assets/icons/faculty/td/
     - assets/icons/faculty/u/
     - assets/icons/faculty/uef/
+    - assets/images/
 

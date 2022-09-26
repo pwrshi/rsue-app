@@ -12,6 +12,7 @@ import 'package:rsue_app/src/domain/repositories/portfolio_repository.dart';
 import 'package:rsue_app/src/domain/repositories/schedule_repository.dart';
 import 'package:rsue_app/src/presentation/providers/data/portfolio_snapshot.dart';
 import 'package:rsue_app/src/presentation/providers/widget/short_info.dart';
+import 'package:rsue_app/src/presentation/screens/autor.dart';
 import 'package:rsue_app/src/presentation/screens/home.dart';
 import 'package:rsue_app/src/presentation/screens/introduction.dart';
 import 'package:rsue_app/src/presentation/screens/payments.dart';
@@ -139,14 +140,20 @@ class RsueApplication extends StatelessWidget {
                     MenuButton(
                       icon: FluentIcons.bug_24_filled,
                       text: "О приложении",
-                      onPressed: () {},
+                      onPressed: () {
+                        Provider.of<ZoomDrawerController>(context,
+                                listen: false)
+                            .toggle!();
+                        Navigator.pushNamed(context, '/autor');
+                      },
                     ),
                   ]),
               '/schedule': (context) => const ScheduleScreen(),
               '/profile/whoami': (context) => WhoamiScreen(),
               '/profile/payments': (context) => const PaymentScreen(),
               '/profile': (context) => const ProfileScreen(),
-              '/introduction': (context) => const IntroductionScreen()
+              '/introduction': (context) => const IntroductionScreen(),
+              '/autor': (context) => const AutorScreen()
             }));
   }
 }

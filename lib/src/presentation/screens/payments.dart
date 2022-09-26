@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rsue_app/src/core/api/response.dart';
 import 'package:rsue_app/src/presentation/providers/data/portfolio_snapshot.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class PaymentScreen extends StatefulWidget {
   const PaymentScreen({super.key});
@@ -87,62 +88,68 @@ class PaymentWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FittedBox(
-      child: Container(
-        width: 343,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(15),
+        child: Material(
           color: const Color(0xff486581),
-        ),
-        padding: const EdgeInsets.all(10),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: 275,
-                  child: Text(
-                    "$name c ${getDateString(dateOfServiceStarting)} по ${getDateString(dateOfServiceEnding)}",
-                    style: const TextStyle(
-                      color: Color(0xffbcccdc),
-                      fontSize: 13,
-                      fontFamily: "Rubik",
-                      fontWeight: FontWeight.w500,
-                    ),
+          child: InkWell(
+            onTap: (() async {
+              await launchUrlString(url);
+            }),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: 275,
+                        child: Text(
+                          "$name c ${getDateString(dateOfServiceStarting)} по ${getDateString(dateOfServiceEnding)}",
+                          style: const TextStyle(
+                            color: Color(0xffbcccdc),
+                            fontSize: 13,
+                            fontFamily: "Rubik",
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 5, vertical: 2),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(8),
+                          color: const Color(0xff334e68),
+                        ),
+                        child: Text(
+                          getDateString(dateOfReceiptFormation),
+                          style: const TextStyle(
+                            color: Colors.white54,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: "Rubik",
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: const Color(0xff334e68),
+                  const Icon(
+                    FluentIcons.qr_code_28_regular,
+                    size: 45,
                   ),
-                  child: Text(
-                    getDateString(dateOfReceiptFormation),
-                    style: const TextStyle(
-                      color: Colors.white54,
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                      fontFamily: "Rubik",
-                    ),
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
-            const Icon(
-              FluentIcons.qr_code_28_regular,
-              size: 45,
-            ),
-          ],
+          ),
         ),
       ),
     );
