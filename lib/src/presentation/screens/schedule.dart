@@ -253,7 +253,7 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                               // )
                             ]);
                       }
-                      return Text("wait...");
+                      return const Text("wait...");
                     }));
               }),
             ))
