@@ -1,3 +1,4 @@
+import 'package:rsue_app/src/core/error/error.dart';
 import 'package:rsue_app/src/core/error/repository_error.dart';
 import 'package:rsue_app/src/core/error/response_error.dart';
 import 'package:rsue_app/src/data/repositories/portfolio_datasource.dart';
@@ -19,32 +20,69 @@ class PortfolioRepositoryImpl implements PortfolioRepository {
     return true;
   }
 
+  Future<DataState<T>> _invokeDSs<T>(
+      Future<T?> onlineDs,
+      Future<T?> localDs,
+      Future<void> Function(T snapshot) saveDsCallback,
+      String localErr,
+      String onlineErr) async {
+    DataState<T> result;
+    try {
+      var snapshot = await onlineDs;
+      if (snapshot == null) {
+        throw const RepositoryError(name: "no data");
+      }
+      saveDsCallback(snapshot);
+      result = DataSuccess(data: snapshot);
+    } catch (e) {
+      if (e is RsError) {
+        result = DataFailed(error: e);
+      } else {
+        result = DataFailed(error: RepositoryError(name: onlineErr));
+      }
+
+      // попытка взять из локального источника
+      try {
+        var localSnap = await localDs;
+        if (localSnap == null) {
+          throw const ResponseError(name: "no local data");
+        }
+        result = DataRestored(data: localSnap);
+      } catch (e) {
+        if (e is RsError) {
+          result = DataFailed(error: e);
+        } else {
+          result = DataFailed(error: RepositoryError(name: localErr));
+        }
+      }
+    }
+    return result;
+  }
+
   @override
   Future<DataState<Map<String, List<SubjectEntity>>>>
       getAcademicPerfomance() async {
     if (_checkCredits()) {
-      try {
-        return DataSuccess(
-            data: await source.getAcademicPerfomance(username!, password!));
-      } catch (e) {
-        return const DataFailed(
-            error: RepositoryError(name: "Ошибка получения успеваемости"));
-      }
+      return await _invokeDSs(
+          source.getAcademicPerfomance(username!, password!),
+          cacheSource.getAcademicPerfomance(username!, password!),
+          (snapshot) =>
+              cacheSource.setAcademicPerfomance(username!, password!, snapshot),
+          "ошибка воостановления из кэша успеваемости",
+          "ошибка скачивания успеваемости");
     }
-
     return const DataFailed(error: RepositoryError(name: "вы не залогинены"));
   }
 
   @override
   Future<DataState<List<PaymentEntity>>> getPayments() async {
     if (_checkCredits()) {
-      try {
-        return DataSuccess(
-            data: await source.getPayments(username!, password!));
-      } catch (e) {
-        return const DataFailed(
-            error: RepositoryError(name: "Ошибка получения платежей"));
-      }
+      return await _invokeDSs(
+          source.getPayments(username!, password!),
+          cacheSource.getPayments(username!, password!),
+          (snapshot) => cacheSource.setPayments(username!, password!, snapshot),
+          "ошибка воостановления из кэша платежей",
+          "ошибка скачивания платежей");
     }
     return const DataFailed(error: RepositoryError(name: "вы не залогинены"));
   }
@@ -55,6 +93,7 @@ class PortfolioRepositoryImpl implements PortfolioRepository {
       if (await source.checkCredentials(username, password)) {
         this.username = username;
         this.password = password;
+        await cacheSource.setLastCredentials(username, password);
         return const DataSuccess(data: '');
       } else {
         return const DataFailed(error: ResponseError(name: "неправильно!!!!!"));
@@ -73,15 +112,27 @@ class PortfolioRepositoryImpl implements PortfolioRepository {
   @override
   Future<DataState<Map<String, String>>> whoami() async {
     if (_checkCredits()) {
+      return await _invokeDSs(
+          source.getWhoami(username!, password!),
+          cacheSource.getWhoami(username!, password!),
+          (snapshot) => cacheSource.setWhoami(username!, password!, snapshot),
+          "ошибка воостановления из кэша хтоя",
+          "ошибка скачивания хтоя");
+    }
+    return const DataFailed(error: RepositoryError(name: "вы не залогинены"));
+  }
+
+  @override
+  Future<bool> isAuthorized() async {
+    if (!_checkCredits()) {
       try {
-        return DataSuccess(data: await source.getWhoami(username!, password!));
+        var lp = await cacheSource.getLastCredentials();
+        username = lp!.$0;
+        password = lp.$1;
       } catch (e) {
-        return const DataFailed(
-            error: RepositoryError(
-                name: "Ошибка получения информации о пользователе"));
+        return false;
       }
     }
-
-    return const DataFailed(error: RepositoryError(name: "вы не залогинены"));
+    return _checkCredits();
   }
 }

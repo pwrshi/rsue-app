@@ -20,6 +20,7 @@ class MenuScaffold extends StatelessWidget {
           padding: const EdgeInsets.only(bottom: 20.0, left: 5.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: menu,
           ),
         ),

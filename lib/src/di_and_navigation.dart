@@ -15,6 +15,7 @@ import 'package:rsue_app/src/presentation/providers/widget/short_info.dart';
 import 'package:rsue_app/src/presentation/screens/autor.dart';
 import 'package:rsue_app/src/presentation/screens/home.dart';
 import 'package:rsue_app/src/presentation/screens/introduction.dart';
+import 'package:rsue_app/src/presentation/screens/loading.dart';
 import 'package:rsue_app/src/presentation/screens/payments.dart';
 import 'package:rsue_app/src/presentation/screens/profile.dart';
 import 'package:rsue_app/src/presentation/screens/schedule.dart';
@@ -91,13 +92,13 @@ class RsueApplication extends StatelessWidget {
         child: MaterialApp(
             theme: mainTheme,
             title: 'app',
-            initialRoute: '/introduction',
+            initialRoute: '/loading',
             locale: const Locale('ru'),
             routes: {
               '/home': (context) =>
                   MenuScaffold(mainScreen: const HomeScreen(), menu: [
                     const Text(
-                      "Станислав",
+                      "Меню",
                       style: TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
@@ -148,6 +149,7 @@ class RsueApplication extends StatelessWidget {
                       },
                     ),
                   ]),
+              '/loading': (context) => const LoadingScreen(),
               '/schedule': (context) => const ScheduleScreen(),
               '/profile/whoami': (context) => WhoamiScreen(),
               '/profile/payments': (context) => const PaymentScreen(),

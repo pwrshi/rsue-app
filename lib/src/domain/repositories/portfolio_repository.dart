@@ -6,7 +6,7 @@ abstract class PortfolioRepository {
   //
   //  LOGIN
   //
-
+  Future<bool> isAuthorized();
   Future<DataState<void>> login(String username, String password);
   void logout();
 
