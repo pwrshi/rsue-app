@@ -85,11 +85,14 @@ class RsueApplication extends StatelessWidget {
             routes: {
               '/home': (context) =>
                   MenuScaffold(mainScreen: const HomeScreen(), menu: [
-                    const Text(
-                      "Меню",
-                      style: TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
+                    const Padding(
+                      padding: EdgeInsets.only(left: 8.0),
+                      child: Text(
+                        "Меню",
+                        style: TextStyle(
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                     MenuButton(

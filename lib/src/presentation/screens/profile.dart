@@ -2,9 +2,8 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rsue_app/src/core/api/response.dart';
-import 'package:rsue_app/src/core/resources/data_state.dart';
-import 'package:rsue_app/src/domain/repositories/portfolio_repository.dart';
 import 'package:rsue_app/src/presentation/providers/data/portfolio_snapshot.dart';
+import 'package:rsue_app/src/presentation/widgets/app_bar.dart';
 import 'package:rsue_app/src/presentation/widgets/schedule/subject.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -13,19 +12,9 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.background,
-        centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(FluentIcons.arrow_left_16_filled),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        title: const Text(
-          "Профиль",
-          style: TextStyle(fontFamily: "Rubik_glitch"),
-        ),
+      appBar: CustomAppBar.withBack(
+        context: context,
+        titleText: "Профиль",
       ),
       body: Center(
         child: ListView(padding: const EdgeInsets.all(8), children: [

@@ -1,5 +1,6 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:rsue_app/src/presentation/widgets/app_bar.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class AutorScreen extends StatefulWidget {
@@ -13,19 +14,15 @@ class _AutorScreenState extends State<AutorScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-            backgroundColor: Theme.of(context).colorScheme.background,
-            centerTitle: true,
-            leading: IconButton(
-              icon: const Icon(FluentIcons.arrow_left_16_filled),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-            title: const Text(
-              "О приложении",
-              style: TextStyle(fontFamily: "Rubik_glitch"),
-            )),
+        appBar: CustomAppBar(
+          leading: IconButton(
+            icon: const Icon(FluentIcons.arrow_left_16_filled),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          titleText: "О приложении",
+        ),
         body: ListView(
           children: [
             const SizedBox(

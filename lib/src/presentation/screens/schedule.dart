@@ -1,10 +1,9 @@
-import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:rsue_app/src/core/api/response.dart';
-import 'package:rsue_app/src/domain/repositories/schedule_repository.dart';
 import 'package:rsue_app/src/presentation/providers/data/schedule_snapshot.dart';
+import 'package:rsue_app/src/presentation/widgets/app_bar.dart';
 import 'package:rsue_app/src/presentation/widgets/schedule/lesson.dart';
 
 const int maxWeekPages = 15;
@@ -96,7 +95,9 @@ class IndexedDateWithWeek {
 
   set dayId(int newDayId) {
     _initDays(newDayId);
-    week.animateToPage(weekId, curve: typeAnimation, duration: animationSpeed);
+    week.jumpToPage(
+      weekId,
+    );
   }
 }
 
@@ -116,19 +117,9 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.background,
-        centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(FluentIcons.arrow_left_16_filled),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        title: const Text(
-          "Расписание",
-          style: TextStyle(fontFamily: "Rubik_glitch"),
-        ),
+      appBar: CustomAppBar.withBack(
+        context: context,
+        titleText: "Расписание",
       ),
       body: SizedBox.expand(
         child: Column(
@@ -147,8 +138,10 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                       children: idxw
                           .getWeek(index)
                           .map((e) => DayButton(
+                                key: ValueKey(
+                                    MapEntry(e, idxw.selectedDay == e)),
                                 date: e,
-                                selected: idxw.selectedDay,
+                                selected: idxw.selectedDay == e,
                                 onTap: () {
                                   idxw.setDayIdByDate(e);
                                 },
@@ -176,21 +169,26 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                       Provider.of<ScheduleServiceSnapshot>(context).data;
 
                   List<Widget> result = [
-                    Row(
-                      children: [
-                        Text(
-                          "${s[0].toUpperCase() + s.substring(1)}, ",
-                          style: TextStyle(
-                              fontSize: 24,
-                              color:
-                                  Theme.of(context).textTheme.bodyLarge?.color),
-                        ),
-                        Text(
-                          "${date.day} ${DateFormat.MMMM('ru').format(date)}",
-                          style: const TextStyle(
-                              fontSize: 24, color: Color(0xFFBCCCDC)),
-                        )
-                      ],
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        children: [
+                          Text(
+                            "${s[0].toUpperCase() + s.substring(1)}, ",
+                            style: TextStyle(
+                                fontSize: 24,
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .bodyLarge
+                                    ?.color),
+                          ),
+                          Text(
+                            "${date.day} ${DateFormat.MMMM('ru').format(date)}",
+                            style: const TextStyle(
+                                fontSize: 24, color: Color(0xFFBCCCDC)),
+                          )
+                        ],
+                      ),
                     )
                   ];
                   switch (service.status) {
@@ -248,21 +246,27 @@ class DayButton extends StatelessWidget {
   const DayButton(
       {super.key, required this.date, required this.selected, this.onTap});
   final DateTime date;
-  final DateTime selected;
+  final bool selected;
   final void Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Container(
+    return FilledButton(
+      onPressed: onTap,
+      style: FilledButton.styleFrom(
+        shadowColor: Colors.transparent,
+        foregroundColor: const Color(0xFF486581),
+        maximumSize: const Size(50, 75),
+        minimumSize: const Size(50, 75),
         padding: const EdgeInsets.all(5),
-        decoration: selected == date
-            ? BoxDecoration(
-                color: const Color(0xFF486581),
-                borderRadius: BorderRadius.circular(15))
-            : null,
-        width: 45,
+        backgroundColor:
+            selected ? const Color(0xFF486581) : Colors.transparent,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.0),
+        ),
+      ),
+      child: SizedBox(
+        width: 35,
         height: 70,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -271,7 +275,8 @@ class DayButton extends StatelessWidget {
               DateFormat.MMM('ru').format(date).replaceAll('.', ''),
               style: const TextStyle(color: Colors.white70, fontSize: 10),
             ),
-            Text(date.day.toString(), style: const TextStyle(fontSize: 20)),
+            Text(date.day.toString(),
+                style: const TextStyle(fontSize: 20, color: Colors.white)),
             Text(DateFormat.E('ru').format(date),
                 style: const TextStyle(color: Colors.white70, fontSize: 12))
           ],

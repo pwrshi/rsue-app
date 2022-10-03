@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:rsue_app/src/core/api/response.dart';
 import 'package:rsue_app/src/presentation/providers/data/portfolio_snapshot.dart';
 import 'package:rsue_app/src/presentation/providers/data/schedule_snapshot.dart';
+import 'package:rsue_app/src/presentation/widgets/app_bar.dart';
 import 'package:rsue_app/src/presentation/widgets/short_info/short_info.dart';
 
 import '../widgets/schedule/lesson.dart';
@@ -17,19 +18,14 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var date = DateTime.now();
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.background,
-        centerTitle: true,
+      appBar: CustomAppBar(
         leading: IconButton(
           icon: const Icon(FluentIcons.navigation_16_filled),
           onPressed: () {
             Provider.of<ZoomDrawerController>(context, listen: false).toggle!();
           },
         ),
-        title: const Text(
-          "RSUE",
-          style: TextStyle(fontFamily: "Rubik_glitch"),
-        ),
+        titleText: "RSUE",
       ),
       body: ListView(padding: const EdgeInsets.all(8), children: [
         Padding(
@@ -59,13 +55,15 @@ class HomeScreen extends StatelessWidget {
             })),
         const ShortInfo(),
         Padding(
-          padding: const EdgeInsets.only(
-            top: 30,
-          ),
-          child: Row(
-            children: [
-              TextButton(
-                onPressed: () {},
+            padding: const EdgeInsets.only(
+              top: 30,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/schedule');
+                },
                 child: Row(
                   children: [
                     Text(
@@ -81,10 +79,8 @@ class HomeScreen extends StatelessWidget {
                     )
                   ],
                 ),
-              )
-            ],
-          ),
-        ),
+              ),
+            )),
         Builder(builder: (context) {
           var service = Provider.of<ScheduleServiceSnapshot>(context).data;
 

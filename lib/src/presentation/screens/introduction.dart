@@ -9,6 +9,7 @@ import 'dart:async';
 import 'package:rsue_app/src/domain/entities/group_entity.dart';
 import 'package:rsue_app/src/domain/repositories/portfolio_repository.dart';
 import 'package:rsue_app/src/domain/repositories/schedule_repository.dart';
+import 'package:rsue_app/src/presentation/widgets/app_bar.dart';
 
 // Фейковые данные
 
@@ -101,6 +102,9 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: const CustomAppBar(
+        titleText: "Вход",
+      ),
       body: PageView(
         physics: const NeverScrollableScrollPhysics(),
         controller: pctrl,

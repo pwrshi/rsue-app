@@ -85,17 +85,27 @@ class RadioPerfomanceButton extends StatelessWidget {
   final _colorOfOuterColumn = const Color(0xFF334E68);
   String calcString() {
     var result = "";
-    for (var i = 0, ma = 0; i < entity.controlPoints.length;) {
-      ma = entity.controlPoints[i++];
-      result += "КТ$i:\n$ma\n";
+    if (entity.controlPoints.length == 1) {
+      result += "ЭКЗ:\n${entity.controlPoints.first}";
+    } else {
+      for (var i = 0, ma = 0; i < entity.controlPoints.length;) {
+        ma = entity.controlPoints[i++];
+        result += "КТ$i:\n$ma";
+        if (i == (entity.controlPoints.length - 1)) {
+          result += "\n\n";
+        }
+      }
     }
+
     return result;
   }
 
   @override
   Widget build(BuildContext context) {
-    var absoluteHeight = entity.controlPoints
-        .fold<int>(0, (previousValue, element) => previousValue + element);
+    var absoluteHeight = entity.controlPoints.fold<int>(
+            0, (previousValue, element) => previousValue + element) ~/
+        entity.controlPoints.length *
+        2;
     return InkWell(
       splashColor: Colors.white,
       onTap: onTap,
@@ -151,14 +161,17 @@ class RadioPerfomanceButton extends StatelessWidget {
                     borderRadius: const BorderRadius.all(Radius.circular(20))),
                 child: Column(
                   children: [
-                    for (var i = 0, mark = 0; i < entity.controlPoints.length;)
+                    for (var i = 0, mark = 0;
+                        i < entity.absoluteControlPoints.length;)
                       () {
-                        mark = entity.controlPoints[i++];
+                        mark = entity.absoluteControlPoints[i++] * 2;
                         return (i == 1
                             ? AnimatedContainer(
                                 curve: animationCurveIn,
-                                margin: const EdgeInsets.only(
-                                    top: 3, left: 3, right: 3),
+                                margin: entity.absoluteControlPoints.length == 1
+                                    ? const EdgeInsets.all(3)
+                                    : const EdgeInsets.only(
+                                        top: 3, left: 3, right: 3),
                                 duration: animationSpeed,
                                 width: (selected ? 17 : 9),
                                 height: mark.toDouble(),
