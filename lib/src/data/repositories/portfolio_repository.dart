@@ -34,11 +34,11 @@ class PortfolioRepositoryImpl implements PortfolioRepository {
       }
       saveDsCallback(snapshot);
       result = DataSuccess(data: snapshot);
-    } catch (e) {
-      if (e is RsError) {
-        result = DataFailed(error: e);
+    } catch (onlineErr) {
+      if (onlineErr is RsError) {
+        result = DataFailed(error: onlineErr);
       } else {
-        result = DataFailed(error: RepositoryError(name: onlineErr));
+        result = DataFailed(error: RepositoryError(name: onlineErr.toString()));
       }
 
       // попытка взять из локального источника
@@ -48,11 +48,12 @@ class PortfolioRepositoryImpl implements PortfolioRepository {
           throw const ResponseError(name: "no local data");
         }
         result = DataRestored(data: localSnap);
-      } catch (e) {
-        if (e is RsError) {
-          result = DataFailed(error: e);
+      } catch (localErr) {
+        if (localErr is RsError) {
+          result = DataFailed(error: localErr);
         } else {
-          result = DataFailed(error: RepositoryError(name: localErr));
+          result =
+              DataFailed(error: RepositoryError(name: localErr.toString()));
         }
       }
     }

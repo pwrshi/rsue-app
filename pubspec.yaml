@@ -5,6 +5,7 @@ publish_to: none
 environment:
   sdk: ">=2.19.0-214.0.dev <3.0.0"
 dependencies:
+  shared_preferences: ^2.0.15
   hive_flutter: ^1.1.0
   url_launcher: ^6.1.5
   hive: ^2.2.3
@@ -12,10 +13,8 @@ dependencies:
   rounded_loading_button: ^2.1.0
   fluentui_system_icons: ^1.1.178
   flutter_zoom_drawer: ^3.0.3
-  table_calendar: ^3.0.6
   flutter:
     sdk: flutter
-  shared_preferences: ^2.0.15
   provider: ^6.0.3
   dio: ^4.0.6
   dio_cookie_manager: ^2.0.0
@@ -26,7 +25,6 @@ dependencies:
   week_of_year: ^2.0.0
   json_annotation: ^4.6.0
   freezed_annotation: ^2.1.0
-  path_provider: ^2.0.11
 dev_dependencies:
   flutter_test:
     sdk: flutter

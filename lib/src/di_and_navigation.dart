@@ -3,14 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/config.dart';
 import 'package:provider/provider.dart';
 import 'package:rsue_app/src/config/theme.dart';
-import 'package:rsue_app/src/data/datasource/portfolio/portfolio_cache.dart';
+import 'package:rsue_app/src/data/datasource/portfolio/portfolio_cache_sp.dart';
 import 'package:rsue_app/src/data/datasource/portfolio/portfolio_offical.dart';
 import 'package:rsue_app/src/data/datasource/schedule/offical/schedule_offical.dart';
+import 'package:rsue_app/src/data/datasource/schedule/schedule_cache_sp.dart';
 import 'package:rsue_app/src/data/repositories/portfolio_repository.dart';
 import 'package:rsue_app/src/data/repositories/schedule_repository.dart';
 import 'package:rsue_app/src/domain/repositories/portfolio_repository.dart';
 import 'package:rsue_app/src/domain/repositories/schedule_repository.dart';
 import 'package:rsue_app/src/presentation/providers/data/portfolio_snapshot.dart';
+import 'package:rsue_app/src/presentation/providers/data/schedule_snapshot.dart';
 import 'package:rsue_app/src/presentation/providers/widget/short_info.dart';
 import 'package:rsue_app/src/presentation/screens/autor.dart';
 import 'package:rsue_app/src/presentation/screens/home.dart';
@@ -35,36 +37,15 @@ class RsueApplication extends StatelessWidget {
 
           Provider<ScheduleRepository>(
               create: (context) => ScheduleRepositoryRsueOfficalImpl(
-                  {"Сайт РГЭУ (РИНХ)": ScheduleOfficalDatasource()})),
+                  {"Сайт РГЭУ (РИНХ)": (ScheduleOfficalDatasource(), SharedPreferencesScheduleCacheDatasource())},
+                  )),
           Provider<PortfolioRepository>(
               create: (context) => PortfolioRepositoryImpl(
-                  PortfolioOfficalDataSource(), PortfolioCacheDatasource())),
-
-          //
-          // юзкейсы
-          //
-
-          // Portfolio
-
-          // /// Платежи
-          // ProxyProvider<PortfolioRepository, GetPayments>(
-          //     update: (context, value, previous) {
-          //   return GetPayments(value);
-          // }),
-
-          // /// Кто я
-          // ProxyProvider<PortfolioRepository, GetWhoami>(
-          //     update: (context, value, previous) {
-          //   return GetWhoami(value);
-          // }),
-
-          // /// Успеваемость
-          // ProxyProvider<PortfolioRepository, GetAcademicPerfomance>(
-          //     update: (context, value, previous) {
-          //   return GetAcademicPerfomance(value);
-          // }),
+                  PortfolioOfficalDataSource(),
+                  SharedPreferencesPortfolioCacheDatasource())),
 
           // прокся для данных
+          // Portfolio
           ChangeNotifierProxyProvider<PortfolioRepository, WhoamiSnapshot>(
             create: (context) => WhoamiSnapshot(null),
             update: (context, value, previous) => WhoamiSnapshot(value),
@@ -79,6 +60,13 @@ class RsueApplication extends StatelessWidget {
             create: (context) => PaymentSnapshot(null),
             update: (context, value, previous) => PaymentSnapshot(value),
           ),
+          // Schedule
+          ChangeNotifierProxyProvider<ScheduleRepository,
+              ScheduleServiceSnapshot>(
+            create: (context) => ScheduleServiceSnapshot(null),
+            update: (context, value, previous) =>
+                ScheduleServiceSnapshot(value),
+          ),
           // непосредственно прокся для виджетов
           ChangeNotifierProxyProvider<AcademicPerfomanceSnapshot,
                   ShortInfoProvider>(
@@ -91,7 +79,7 @@ class RsueApplication extends StatelessWidget {
         ],
         child: MaterialApp(
             theme: mainTheme,
-            title: 'app',
+            title: 'РИНХ',
             initialRoute: '/loading',
             locale: const Locale('ru'),
             routes: {

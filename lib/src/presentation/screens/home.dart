@@ -4,9 +4,8 @@ import 'package:flutter_zoom_drawer/config.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:rsue_app/src/core/api/response.dart';
-import 'package:rsue_app/src/core/resources/data_state.dart';
-import 'package:rsue_app/src/domain/repositories/schedule_repository.dart';
 import 'package:rsue_app/src/presentation/providers/data/portfolio_snapshot.dart';
+import 'package:rsue_app/src/presentation/providers/data/schedule_snapshot.dart';
 import 'package:rsue_app/src/presentation/widgets/short_info/short_info.dart';
 
 import '../widgets/schedule/lesson.dart';
@@ -86,28 +85,42 @@ class HomeScreen extends StatelessWidget {
             ],
           ),
         ),
-        FutureBuilder(
-            future:
-                Provider.of<ScheduleRepository>(context).getLessonsOnDay(date),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                if (snapshot.data is DataSuccess) {
-                  var massive = buildLessonList(snapshot.data!.data!);
-                  if (massive.isEmpty) {
-                    return const Center(
-                        child: Text(
-                      "Похоже, это выходной",
-                      style: TextStyle(fontSize: 24),
-                    ));
-                  }
-                  return Column(
-                    children: massive,
-                  );
-                }
-                return Text("Ошибочка ${snapshot.data!.error}");
+        Builder(builder: (context) {
+          var service = Provider.of<ScheduleServiceSnapshot>(context).data;
+
+          switch (service.status) {
+            case ResponseStatus.done:
+              var w = buildLessonList(service.content!.getLessonsOnDay(date));
+              if (w.isEmpty) {
+                return const Center(
+                    child: Text(
+                  "Похоже, это выходной",
+                  style: TextStyle(fontSize: 24),
+                ));
               }
-              return const CircularProgressIndicator();
-            })
+              return Column(children: w);
+            case ResponseStatus.error:
+              return Center(
+                  child: Text(
+                service.error.toString(),
+                style: const TextStyle(fontSize: 24),
+              ));
+            case ResponseStatus.restored:
+              var w = buildLessonList(service.content!.getLessonsOnDay(date));
+              if (w.isEmpty) {
+                return const Center(
+                    child: Text(
+                  "Похоже, это выходной",
+                  style: TextStyle(fontSize: 24),
+                ));
+              }
+              return Column(children: w);
+            default:
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+          }
+        })
       ]),
     );
   }

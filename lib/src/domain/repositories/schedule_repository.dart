@@ -1,6 +1,6 @@
 import 'package:rsue_app/src/core/resources/data_state.dart';
 import 'package:rsue_app/src/domain/entities/group_entity.dart';
-import 'package:rsue_app/src/domain/entities/lesson_entity.dart';
+import 'package:rsue_app/src/domain/entities/schedule_service.dart';
 
 abstract class ScheduleRepository {
   //
@@ -9,6 +9,7 @@ abstract class ScheduleRepository {
 
   // identity api
   void setGroup(Group group);
+  Future<bool> isAuthorized();
   void setGroupByGroupId(GroupId groupId);
   void unsetGroup();
   Future<DataState<List<Group>>> getGroups();
@@ -25,5 +26,5 @@ abstract class ScheduleRepository {
   //  FEATURES
   //
 
-  Future<DataState<List<ConcreteLesson>>> getLessonsOnDay(DateTime date);
+  Future<DataState<ScheduleService>> getScheduleService();
 }

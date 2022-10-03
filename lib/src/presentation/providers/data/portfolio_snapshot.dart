@@ -36,7 +36,6 @@ class WhoamiSnapshot extends DataSnapshot<Map<String, String>> {
   @override
   Future<DataState<Map<String, String>>> call() async {
     return await repo?.whoami() ?? const DataFailed(error: reposNotFound);
-    ;
   }
 
   @override
