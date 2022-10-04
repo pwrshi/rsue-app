@@ -15,6 +15,7 @@ import 'package:rsue_app/src/presentation/providers/data/portfolio_snapshot.dart
 import 'package:rsue_app/src/presentation/providers/data/schedule_snapshot.dart';
 import 'package:rsue_app/src/presentation/providers/widget/short_info.dart';
 import 'package:rsue_app/src/presentation/screens/autor.dart';
+import 'package:rsue_app/src/presentation/screens/dzen_mode.dart';
 import 'package:rsue_app/src/presentation/screens/home.dart';
 import 'package:rsue_app/src/presentation/screens/introduction.dart';
 import 'package:rsue_app/src/presentation/screens/loading.dart';
@@ -146,7 +147,8 @@ class RsueApplication extends StatelessWidget {
               '/profile/payments': (context) => const PaymentScreen(),
               '/profile': (context) => const ProfileScreen(),
               '/introduction': (context) => const IntroductionScreen(),
-              '/autor': (context) => const AutorScreen()
+              '/autor': (context) => const AutorScreen(),
+              '/dzen_mode': (context) => const DzenModeScreen()
             }));
   }
 }

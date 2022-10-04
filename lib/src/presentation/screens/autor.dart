@@ -1,7 +1,7 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:rsue_app/src/presentation/widgets/app_bar.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class AutorScreen extends StatefulWidget {
   const AutorScreen({super.key});
@@ -53,8 +53,8 @@ class _AutorScreenState extends State<AutorScreen> {
                   height: 50,
                   child: TextButton(
                       onPressed: () async {
-                        var url = Uri.parse("https://github.com/pwrshi");
-                        await launchUrl(url);
+                        await launchUrlString("https://github.com/pwrshi",
+                            mode: LaunchMode.externalApplication);
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -82,8 +82,8 @@ class _AutorScreenState extends State<AutorScreen> {
                   height: 50,
                   child: TextButton(
                       onPressed: () async {
-                        var url = Uri.parse("https://vk.com/pwrshi");
-                        await launchUrl(url);
+                        await launchUrlString("https://vk.com/pwrshi",
+                            mode: LaunchMode.externalApplication);
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,

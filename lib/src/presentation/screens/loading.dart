@@ -14,6 +14,9 @@ class LoadingScreen extends StatelessWidget {
         ]).then((List<bool> value) {
       if (value[0] && value[1]) {
         Navigator.pushNamedAndRemoveUntil(context, "/home", (route) => false);
+      } else if (value[1]) {
+        Navigator.pushNamedAndRemoveUntil(
+            context, "/dzen_mode", (route) => false);
       } else {
         Navigator.pushNamedAndRemoveUntil(
             context, "/introduction", (route) => false);

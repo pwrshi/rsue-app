@@ -2,12 +2,15 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const CustomAppBar({super.key, required this.titleText, this.leading});
+  const CustomAppBar(
+      {super.key, required this.titleText, this.leading, this.actions});
   final String titleText;
   final Widget? leading;
+  final List<Widget>? actions;
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      actions: actions,
       leading: leading,
       elevation: 0,
       backgroundColor: Theme.of(context).colorScheme.background,

@@ -91,7 +91,7 @@ class PaymentWidget extends StatelessWidget {
           color: const Color(0xff486581),
           child: InkWell(
             onTap: (() async {
-              await launchUrlString(url);
+              await launchUrlString(url, mode: LaunchMode.externalApplication);
             }),
             child: Padding(
               padding: const EdgeInsets.all(8.0),

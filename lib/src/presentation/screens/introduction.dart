@@ -11,35 +11,6 @@ import 'package:rsue_app/src/domain/repositories/portfolio_repository.dart';
 import 'package:rsue_app/src/domain/repositories/schedule_repository.dart';
 import 'package:rsue_app/src/presentation/widgets/app_bar.dart';
 
-// Фейковые данные
-
-Future<Map<int, String>> getFacults() {
-  return Future.delayed(
-      const Duration(seconds: 2),
-      (() => {
-            1: "Менеджмента и предпринимательства",
-            2: "Торгового дела",
-            3: "Компьютерных технологий и информационной безопасности",
-            4: "Учетно-экономический",
-          }));
-}
-
-Future<Map<int, String>> getCourses() {
-  return Future.delayed(
-      const Duration(seconds: 2), (() => {1: "1 курс", 2: "2 курс"}));
-}
-
-Future<Map<int, String>> getGroups() {
-  return Future.delayed(
-      const Duration(seconds: 2), (() => {1: "ПРИ-322", 2: "ПРИ-312"}));
-}
-
-Future<bool> checkAccount(String login, String password) {
-  return Future.delayed(const Duration(seconds: 2), () {
-    return true;
-  });
-}
-
 // Непосредственно реализация экрана
 
 class IntroductionScreen extends StatefulWidget {
@@ -59,6 +30,7 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
   String? dsName;
   GroupId? group;
   String? login, password;
+  bool skipPortfolio = false;
   int pageBuffer = 0;
 
   @override
@@ -93,10 +65,30 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
     if ((group == null) && (currentpage == 2.0)) {
       return false;
     }
-    if (((login == null) || (password == null)) && (currentpage == 3.0)) {
+    if (((login == null) || (password == null)) &&
+        (currentpage == 3.0) &&
+        !skipPortfolio) {
       return false;
     }
     return true;
+  }
+
+  void turnPage() {
+    if (mayITurnPage()) {
+      pctrl.animateToPage((pctrl.page!.toInt() + 1),
+          duration: animationSpeed, curve: typeAnimation);
+      double currentpage;
+      try {
+        currentpage = pctrl.page!;
+      } catch (e) {
+        currentpage = 0;
+      }
+      if ((((login != null) || (password != null)) && (currentpage == 3.0)) ||
+          skipPortfolio) {
+        Navigator.pushNamedAndRemoveUntil(
+            context, "/loading", (route) => false);
+      }
+    }
   }
 
   @override
@@ -140,19 +132,20 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
                     .setGroupByGroupId(
                         group = GroupId(facult: f, course: c, group: g));
               });
-              ScaffoldMessenger.of(context)
-                  .showSnackBar(SnackBar(content: Text("$f, $c, $g")));
             },
           ),
           // четвёртая страница
-          FourthPage(
-            onLogin: (login, password) {
-              setState(() {
-                this.login = login;
-                this.password = password;
-              });
-            },
-          ),
+          FourthPage(onLogin: (login, password) {
+            setState(() {
+              this.login = login;
+              this.password = password;
+            });
+          }, onSkip: () {
+            setState(() {
+              skipPortfolio = true;
+              turnPage();
+            });
+          }),
         ],
       ),
       bottomNavigationBar: Padding(
@@ -179,22 +172,7 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
             ),
             Expanded(
               child: FilledButton(
-                  onPressed: () {
-                    if (mayITurnPage()) {
-                      pctrl.animateToPage((pctrl.page!.toInt() + 1),
-                          duration: animationSpeed, curve: typeAnimation);
-                      double currentpage;
-                      try {
-                        currentpage = pctrl.page!;
-                      } catch (e) {
-                        currentpage = 0;
-                      }
-                      if (((login != null) || (password != null)) &&
-                          (currentpage == 3.0)) {
-                        Navigator.pushNamed(context, "/home");
-                      }
-                    }
-                  },
+                  onPressed: turnPage,
                   style: mayITurnPage()
                       ? FilledButton.styleFrom(
                           shape: RoundedRectangleBorder(
@@ -220,8 +198,9 @@ class _IntroductionScreenState extends State<IntroductionScreen> {
 }
 
 class FourthPage extends StatefulWidget {
-  const FourthPage({super.key, required this.onLogin});
+  const FourthPage({super.key, required this.onLogin, required this.onSkip});
   final void Function(String login, String password) onLogin;
+  final void Function() onSkip;
   @override
   State<StatefulWidget> createState() => _FourthPageState();
 }
@@ -316,7 +295,12 @@ class _FourthPageState extends State<FourthPage> {
                   });
                 },
                 controller: lbc,
-                child: const Text("Проверить"))
+                child: const Text("Проверить")),
+            const SizedBox(
+              height: 20,
+            ),
+            TextButton(
+                onPressed: widget.onSkip, child: const Text("Пропустить"))
           ],
         ))
       ],
@@ -570,7 +554,7 @@ class FirstPage extends StatelessWidget {
       child: Padding(
         padding: EdgeInsets.all(20),
         child: Text(
-          "Привет!\n\nэто альтернативное приложения для доступа к сервисам РИНХ",
+          "Привет!\n\nЭто альтернативное приложение для доступа к сервисам РИНХ\n\nby pwrshi",
           style: TextStyle(fontSize: 18),
         ),
       ),
