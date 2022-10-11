@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:rsue_app/src/core/error/error.dart';
 
 abstract class DataState<T> {

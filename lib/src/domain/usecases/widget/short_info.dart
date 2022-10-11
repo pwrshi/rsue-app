@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rsue_app/src/core/api/response.dart';
 import 'package:rsue_app/src/core/error/error.dart';
 import 'package:rsue_app/src/domain/entities/subject_entity.dart';
-import 'package:rsue_app/src/presentation/providers/data/portfolio_snapshot.dart';
+import 'package:rsue_app/src/domain/usecases/data/portfolio_snapshot.dart';
 
 class NumberForm {
   const NumberForm(this.topText, this.centerText, this.bottomText);

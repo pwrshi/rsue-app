@@ -1,5 +1,4 @@
 import 'package:rsue_app/src/core/error/error.dart';
-import 'package:rsue_app/src/core/error/response_error.dart';
 
 class Response<T> {
   const Response({

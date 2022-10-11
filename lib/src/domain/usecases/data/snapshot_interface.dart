@@ -15,10 +15,10 @@ abstract class DataSnapshot<T> extends ChangeNotifier {
   Future<void> tryUpdate() async {
     var result = await call();
     if (result is DataSuccess) {
-      update(result.data!);
+      update(result.data as T);
     }
     if ((result is DataRestored) && (_data.status == ResponseStatus.error)) {
-      update(result.data!);
+      update(result.data as T);
     }
   }
 
