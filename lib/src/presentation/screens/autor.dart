@@ -120,6 +120,13 @@ class _AutorScreenState extends State<AutorScreen> {
               child: Center(
                 child: Image.asset("assets/images/ktiib_short.png"),
               ),
+            ),
+            TextButton(
+              onPressed: () async {
+                Navigator.pushNamed(context, '/licenses');
+              },
+              child: const Text("Лицензии открытого ПО",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
             )
           ],
         ));

@@ -18,6 +18,7 @@ import 'package:rsue_app/src/presentation/screens/autor.dart';
 import 'package:rsue_app/src/presentation/screens/dzen_mode.dart';
 import 'package:rsue_app/src/presentation/screens/home.dart';
 import 'package:rsue_app/src/presentation/screens/introduction.dart';
+import 'package:rsue_app/src/presentation/screens/licenses.dart';
 import 'package:rsue_app/src/presentation/screens/loading.dart';
 import 'package:rsue_app/src/presentation/screens/payments.dart';
 import 'package:rsue_app/src/presentation/screens/profile.dart';
@@ -115,11 +116,13 @@ class RsueApplication extends StatelessWidget {
                         Navigator.pushNamed(context, '/schedule');
                       },
                     ),
-                    MenuButton(
-                      icon: FluentIcons.people_48_filled,
-                      text: "Преподаватели",
-                      onPressed: () {},
-                    ),
+
+                    // [TODO]: реализовать экран преподавателей
+                    // MenuButton(
+                    //   icon: FluentIcons.people_48_filled,
+                    //   text: "Преподаватели",
+                    //   onPressed: () {},
+                    // ),
                     MenuButton(
                       icon: FluentIcons.person_48_filled,
                       text: "Профиль",
@@ -143,6 +146,7 @@ class RsueApplication extends StatelessWidget {
                   ]),
               '/loading': (context) => const LoadingScreen(),
               '/schedule': (context) => const ScheduleScreen(),
+              '/licenses': (context) => const OssLicensesPage(),
               '/profile/whoami': (context) => WhoamiScreen(),
               '/profile/payments': (context) => const PaymentScreen(),
               '/profile': (context) => const ProfileScreen(),
