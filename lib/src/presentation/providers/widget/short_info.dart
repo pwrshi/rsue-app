@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rsue_app/src/core/api/response.dart';
 import 'package:rsue_app/src/core/error/error.dart';
 import 'package:rsue_app/src/domain/entities/subject_entity.dart';
-import 'package:rsue_app/src/domain/usecases/data/portfolio_snapshot.dart';
+import 'package:rsue_app/src/presentation/providers/data/portfolio_snapshot.dart';
 
 class NumberForm {
   const NumberForm(this.topText, this.centerText, this.bottomText);
@@ -27,6 +27,7 @@ class ShortInfoProvider extends ChangeNotifier {
       return true;
     }
     notifyListeners();
+
     return false;
   }
 
@@ -84,17 +85,17 @@ class ShortInfoProvider extends ChangeNotifier {
     if (_checkData()) {
       var lastSemester = snapshot!.data.content?.entries.first.value;
       int count = 0;
-      return CircularForm(
-          "По экзаменам",
-          lastSemester!.fold<int>(0, (p, element) {
-                if (element.type == SessionType.exam) {
-                  count++;
-                  p += element.finalMark;
-                }
-                return p;
-              }) ~/
-              count,
-          "средний балл");
+      int summary = lastSemester!.fold<int>(0, (p, element) {
+        if (element.type == SessionType.exam) {
+          count++;
+          p += element.finalMark;
+        }
+        return p;
+      });
+       int average = (count > 0 ? summary ~/
+              count: 0);
+
+      return CircularForm("По экзаменам", average, "средний балл");
     }
     throw const RsError(name: "Нет данных, а ты их просишь");
   }
@@ -103,16 +104,19 @@ class ShortInfoProvider extends ChangeNotifier {
     if (_checkData()) {
       var lastSemester = snapshot!.data.content?.entries.first.value;
       int count = 0;
-      return CircularForm(
-          "По зачётам",
-          lastSemester!.fold<int>(0, (p, element) {
+      int summary = lastSemester!.fold<int>(0, (p, element) {
                 if (element.type == SessionType.credit) {
                   count++;
                   p += element.finalMark;
                 }
                 return p;
-              }) ~/
-              count,
+              });
+      int average = (count > 0 ? summary ~/
+              count: 0); 
+
+      return CircularForm(
+          "По зачётам",
+           average,
           "средний балл");
     }
     throw const RsError(name: "Нет данных, а ты их просишь");
@@ -126,7 +130,8 @@ class ShortInfoProvider extends ChangeNotifier {
     if (_checkData()) {
       var lastSemester = snapshot!.data.content!.entries.first.value;
       lastSemester.sort((a, b) => a.finalMark.compareTo(b.finalMark));
-      return lastSemester.sublist(0, 5);
+
+      return (lastSemester.length > 5? lastSemester.sublist(0, 5): lastSemester);
     }
     throw const RsError(name: "Нет данных, а ты их просишь");
   }

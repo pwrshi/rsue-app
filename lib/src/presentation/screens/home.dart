@@ -4,8 +4,8 @@ import 'package:flutter_zoom_drawer/config.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:rsue_app/src/core/api/response.dart';
-import 'package:rsue_app/src/domain/usecases/data/portfolio_snapshot.dart';
-import 'package:rsue_app/src/domain/usecases/data/schedule_snapshot.dart';
+import 'package:rsue_app/src/presentation/providers/data/portfolio_snapshot.dart';
+import 'package:rsue_app/src/presentation/providers/data/schedule_snapshot.dart';
 import 'package:rsue_app/src/presentation/widgets/app_bar.dart';
 import 'package:rsue_app/src/presentation/widgets/short_info/short_info.dart';
 

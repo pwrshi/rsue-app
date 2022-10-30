@@ -11,9 +11,9 @@ import 'package:rsue_app/src/data/repositories/portfolio_repository.dart';
 import 'package:rsue_app/src/data/repositories/schedule_repository.dart';
 import 'package:rsue_app/src/domain/repositories/portfolio_repository.dart';
 import 'package:rsue_app/src/domain/repositories/schedule_repository.dart';
-import 'package:rsue_app/src/domain/usecases/data/portfolio_snapshot.dart';
-import 'package:rsue_app/src/domain/usecases/data/schedule_snapshot.dart';
-import 'package:rsue_app/src/domain/usecases/widget/short_info.dart';
+import 'package:rsue_app/src/presentation/providers/data/portfolio_snapshot.dart';
+import 'package:rsue_app/src/presentation/providers/data/schedule_snapshot.dart';
+import 'package:rsue_app/src/presentation/providers/widget/short_info.dart';
 import 'package:rsue_app/src/presentation/screens/autor.dart';
 import 'package:rsue_app/src/presentation/screens/dzen_mode.dart';
 import 'package:rsue_app/src/presentation/screens/home.dart';
@@ -147,7 +147,7 @@ class RsueApplication extends StatelessWidget {
               '/loading': (context) => const LoadingScreen(),
               '/schedule': (context) => const ScheduleScreen(),
               '/licenses': (context) => const OssLicensesPage(),
-              '/profile/whoami': (context) => WhoamiScreen(),
+              '/profile/whoami': (context) => const WhoamiScreen(),
               '/profile/payments': (context) => const PaymentScreen(),
               '/profile': (context) => const ProfileScreen(),
               '/introduction': (context) => const IntroductionScreen(),

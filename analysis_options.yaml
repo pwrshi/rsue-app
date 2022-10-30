@@ -9,6 +9,8 @@
 # packages, and plugins designed to encourage good coding practices.
 include: package:flutter_lints/flutter.yaml
 analyzer:
+  plugins:
+    - dart_code_metrics
   enable-experiment:
     - records
 
@@ -24,10 +26,8 @@ dart_code_metrics:
   metrics-exclude:
     - test/**
   rules:
-    - newline-before-return
     - no-boolean-literal-compare
     - no-empty-block
-    - prefer-trailing-comma
     - prefer-conditional-expressions
     - no-equal-then-else
 

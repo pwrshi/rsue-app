@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rsue_app/src/core/api/response.dart';
-import 'package:rsue_app/src/domain/usecases/widget/short_info.dart';
+import 'package:rsue_app/src/presentation/providers/widget/short_info.dart';
 
 import 'left_column.dart';
 import 'right_column.dart';

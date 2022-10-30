@@ -1,7 +1,7 @@
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:rsue_app/src/domain/usecases/data/schedule_snapshot.dart';
+import 'package:rsue_app/src/presentation/providers/data/schedule_snapshot.dart';
 import 'package:rsue_app/src/presentation/widgets/app_bar.dart';
 import 'package:rsue_app/src/presentation/widgets/schedule/schedule.dart';
 

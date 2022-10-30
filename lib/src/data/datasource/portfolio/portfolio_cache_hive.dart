@@ -66,7 +66,9 @@ class StoragePaymentsAdapter extends TypeAdapter<PaymentEntity> {
   @override
   read(BinaryReader reader) {
     var li = jsonDecode(reader.readString());
-    print(li);
+    if (kDebugMode) {
+      print(li);
+    }
     var de = PaymentEntity.fromJson(li);
     return de;
   }
@@ -87,7 +89,9 @@ class StorageAcademicPerfomanceAdapter extends TypeAdapter<SubjectEntity> {
           print(li);
         }
     var de = SubjectEntity.fromJson( li);
-    print(de);
+    if (kDebugMode) {
+      print(de);
+    }
     return de;
   }
 
