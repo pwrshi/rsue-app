@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_displaymode/flutter_displaymode.dart';
 import 'package:provider/provider.dart';
 import 'package:rsue_app/src/domain/repositories/portfolio_repository.dart';
 import 'package:rsue_app/src/domain/repositories/schedule_repository.dart';
@@ -8,9 +11,13 @@ class LoadingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (Platform.isAndroid) {
+      FlutterDisplayMode.setHighRefreshRate();
+    }
+
     Future.sync(() async => [
           await context.read<PortfolioRepository>().isAuthorized(),
-          await context.read<ScheduleRepository>().isAuthorized()
+          await context.read<ScheduleRepository>().isAuthorized(),
         ]).then((List<bool> value) {
       if (value[0] && value[1]) {
         Navigator.pushNamedAndRemoveUntil(context, "/home", (route) => false);

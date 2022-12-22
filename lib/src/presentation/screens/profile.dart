@@ -1,10 +1,60 @@
+import 'package:expandable/expandable.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rsue_app/src/core/api/response.dart';
+import 'package:rsue_app/src/domain/entities/subject_entity.dart';
 import 'package:rsue_app/src/presentation/providers/data/portfolio_snapshot.dart';
 import 'package:rsue_app/src/presentation/widgets/app_bar.dart';
 import 'package:rsue_app/src/presentation/widgets/schedule/subject.dart';
+
+class ExpandSemesterWidget extends StatelessWidget {
+  final List<SubjectEntity> subjects;
+  final String title;
+
+  const ExpandSemesterWidget(this.title, this.subjects, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 8),
+      child: ExpandablePanel(
+        theme: const ExpandableThemeData(
+          useInkWell: false,
+          hasIcon: false,
+        ),
+        header: Container(
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15.0),
+              color: const Color(0xff486581)),
+          padding: const EdgeInsets.all(10.0),
+          child: Row(
+            children: [
+              Expanded(child: Text(title)),
+              ExpandableIcon(
+                  theme: ExpandableThemeData(
+                iconColor: Theme.of(context).textTheme.bodyMedium?.color,
+              ))
+            ],
+          ),
+        ),
+        collapsed: Container(),
+        expanded: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: subjects
+              .map<Widget>((subject) => SubjectWidget(
+                  name: subject.name,
+                  controlPoints: subject.controlPoints,
+                  teacher: subject.teachersname,
+                  isClosed: subject.isClosed,
+                  statement: subject.statement,
+                  type: SubjectWidget.sessionTypeToString(subject.type)))
+              .toList(),
+        ),
+      ),
+    );
+  }
+}
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -112,27 +162,25 @@ class ProfileScreen extends StatelessWidget {
                   child: Text(value.data.error.toString()),
                 );
               default:
-                return Column(
-                  children: [
-                    for (var s
-                        in (value.data.content?.entries.toList() ?? [])) ...[
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            top: 20.0, left: 8, right: 8, bottom: 8),
-                        child: Text(s.key),
-                      ),
-                      for (var subject in s.value)
-                        SubjectWidget(
-                            name: subject.name,
-                            controlPoints: subject.controlPoints,
-                            teacher: subject.teachersname,
-                            isClosed: subject.isClosed,
-                            statement: subject.statement,
-                            type:
-                                SubjectWidget.sessionTypeToString(subject.type))
-                    ]
-                  ],
-                );
+                return Column(children: [
+                  for (var s in (value.data.content?.entries.toList() ?? []))
+                    ExpandSemesterWidget(s.key, s.value)
+
+                  //   Padding(
+                  //     padding: const EdgeInsets.only(
+                  //         top: 20.0, left: 8, right: 8, bottom: 8),
+                  //     child: Text(s.key),
+                  //   ),
+                  //   for (var subject in s.value)
+                  //     SubjectWidget(
+                  //         name: subject.name,
+                  //         controlPoints: subject.controlPoints,
+                  //         teacher: subject.teachersname,
+                  //         isClosed: subject.isClosed,
+                  //         statement: subject.statement,
+                  //         type:
+                  //             SubjectWidget.sessionTypeToString(subject.type))
+                ]);
             }
             // if (snapshot.hasData) {
             //   if (snapshot.data is DataFailed) {

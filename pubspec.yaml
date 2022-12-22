@@ -1,10 +1,13 @@
 name: rsue_app
 description: rsue_app
-version: 1.0.2+3
+version: 1.0.3+4
 publish_to: none
 environment:
   sdk: ">=2.19.0-214.0.dev <3.0.0"
 dependencies:
+  expandable: ^5.0.1
+  flutter_displaymode: ^0.4.1
+  onesignal_flutter: ^3.4.2
   shared_preferences: ^2.0.15
   hive_flutter: ^1.1.0
   url_launcher: ^6.1.5

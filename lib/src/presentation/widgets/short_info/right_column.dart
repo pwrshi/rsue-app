@@ -4,6 +4,12 @@ import 'package:provider/provider.dart';
 import 'package:rsue_app/src/domain/entities/subject_entity.dart';
 import 'package:rsue_app/src/presentation/providers/widget/short_info.dart';
 
+const animationCurve = Curves.easeIn;
+const animationSpeed = Duration(milliseconds: 200);
+const animationCurveOut = Curves.easeOut;
+const _colorOfInnerColumn = Color(0xFF0FCA7A);
+const _colorOfOuterColumn = Color(0xFF334E68);
+
 class ChartWhatNeedsToBeImproved extends StatefulWidget {
   const ChartWhatNeedsToBeImproved({Key? key}) : super(key: key);
 
@@ -20,7 +26,7 @@ class ChartWhatNeedsToBeImprovedState
     return Column(
       children: [
         AnimatedSwitcher(
-            duration: const Duration(milliseconds: 80),
+            duration: const Duration(milliseconds: 200),
             child: SizedBox(
               key: ValueKey(nameOfSelectedItem),
               height: 30,
@@ -77,12 +83,7 @@ class RadioPerfomanceButton extends StatelessWidget {
   final SubjectEntity entity;
   final bool selected;
   final void Function()? onTap;
-  static const animationSpeed = Duration(milliseconds: 200);
 
-  static const animationCurveIn = Curves.easeIn;
-  static const animationCurveOut = Curves.easeOut;
-  final _colorOfInnerColumn = const Color(0xFF0FCA7A);
-  final _colorOfOuterColumn = const Color(0xFF334E68);
   String calcString() {
     var result = "";
     if (entity.controlPoints.length == 1) {
@@ -115,13 +116,13 @@ class RadioPerfomanceButton extends StatelessWidget {
           alignment: Alignment.bottomLeft,
           children: [
             AnimatedContainer(
-                height: (absoluteHeight <= 70 ? 70 : absoluteHeight).toDouble(),
+                height: (absoluteHeight <= 90 ? 90 : absoluteHeight).toDouble(),
                 width: selected ? 55 : 23,
                 alignment: Alignment.centerRight,
-                curve: animationCurveIn,
+                curve: animationCurve,
                 duration: animationSpeed,
                 child: AnimatedSwitcher(
-                  switchInCurve: animationCurveIn,
+                  switchInCurve: animationCurve,
                   switchOutCurve: animationCurveOut,
                   duration: animationSpeed,
                   child: Text(calcString(),
@@ -132,7 +133,7 @@ class RadioPerfomanceButton extends StatelessWidget {
                 )),
             Column(mainAxisAlignment: MainAxisAlignment.end, children: [
               AnimatedSwitcher(
-                switchInCurve: animationCurveIn,
+                switchInCurve: animationCurve,
                 switchOutCurve: animationCurveOut,
                 duration: animationSpeed,
                 child: Padding(
@@ -152,47 +153,23 @@ class RadioPerfomanceButton extends StatelessWidget {
                 ),
               ),
               Container(
-                // curve: animationCurveIn,
+                // curve: animationCurve,
                 // duration: animationSpeed,
                 clipBehavior: Clip.antiAlias,
                 alignment: Alignment.topLeft,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                     color: _colorOfOuterColumn,
-                    borderRadius: const BorderRadius.all(Radius.circular(20))),
+                    borderRadius: BorderRadius.all(Radius.circular(20))),
                 child: Column(
                   children: [
                     for (var i = 0, mark = 0;
                         i < entity.absoluteControlPoints.length;)
                       () {
                         mark = entity.absoluteControlPoints[i++] * 2;
-                        return (i == 1
-                            ? AnimatedContainer(
-                                curve: animationCurveIn,
-                                margin: entity.absoluteControlPoints.length == 1
-                                    ? const EdgeInsets.all(3)
-                                    : const EdgeInsets.only(
-                                        top: 3, left: 3, right: 3),
-                                duration: animationSpeed,
-                                width: (selected ? 17 : 9),
-                                height: mark.toDouble(),
-                                decoration: BoxDecoration(
-                                    color: _colorOfInnerColumn,
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(20))),
-                              )
-                            : AnimatedContainer(
-                                curve: animationCurveIn,
-                                margin: const EdgeInsets.all(3),
-                                duration: animationSpeed,
-                                width: (selected ? 17 : 9),
-                                height: mark.toDouble(),
-                                decoration: BoxDecoration(
-                                    color: selected
-                                        ? _colorOfInnerColumn
-                                        : _colorOfOuterColumn,
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(20))),
-                              ));
+                        return ControlPointWidget(
+                          selected: selected,
+                          mark: mark,
+                        );
                       }.call(),
                   ],
                 ),
@@ -201,6 +178,34 @@ class RadioPerfomanceButton extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class ControlPointWidget extends StatelessWidget {
+  const ControlPointWidget(
+      {super.key,
+      this.selected = false,
+      this.hasBottomMargin = false,
+      required this.mark});
+
+  final bool selected;
+  final int mark;
+  final bool hasBottomMargin;
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedContainer(
+      curve: animationCurve,
+      margin: hasBottomMargin
+          ? const EdgeInsets.all(3)
+          : const EdgeInsets.only(top: 3, left: 3, right: 3),
+      duration: animationSpeed,
+      width: (selected ? 17 : 9),
+      height: mark.toDouble(),
+      decoration: const BoxDecoration(
+          color: _colorOfInnerColumn,
+          borderRadius: BorderRadius.all(Radius.circular(20))),
     );
   }
 }
