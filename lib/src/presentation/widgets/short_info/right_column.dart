@@ -87,12 +87,13 @@ class RadioPerfomanceButton extends StatelessWidget {
   String calcString() {
     var result = "";
     if (entity.controlPoints.length == 1) {
-      result += "ЭКЗ:\n${entity.controlPoints.first}";
+      result += "ПР:\n${entity.controlPoints.first}";
     } else {
-      for (var i = 0, ma = 0; i < entity.controlPoints.length;) {
-        ma = entity.controlPoints[i++];
-        result += "КТ$i:\n$ma";
-        if (i == (entity.controlPoints.length - 1)) {
+      var len = entity.controlPoints.length;
+      for (var i = len - 1, ma = 0; i >= 0;) {
+        ma = entity.controlPoints[i--];
+        result += "КТ${i + 2}:\n$ma";
+        if (i == 0) {
           result += "\n\n";
         }
       }
@@ -162,12 +163,18 @@ class RadioPerfomanceButton extends StatelessWidget {
                     borderRadius: BorderRadius.all(Radius.circular(20))),
                 child: Column(
                   children: [
-                    for (var i = 0, mark = 0;
+                    for (var i = 0, mark = 990909;
                         i < entity.absoluteControlPoints.length;)
                       () {
-                        mark = entity.absoluteControlPoints[i++] * 2;
+                        bool isTop = (i + 1 == 1);
+                        if (mark == 0) {
+                          isTop = true;
+                        }
+                        mark = entity.absoluteControlPoints.reversed
+                                .toList()[i++] *
+                            2;
                         return ControlPointWidget(
-                          isTop: i == 1,
+                          isTop: isTop,
                           selected: selected,
                           mark: mark,
                           hasBottomMargin: (mark != 0) &&
@@ -204,7 +211,9 @@ class ControlPointWidget extends StatelessWidget {
       curve: animationCurve,
       margin: hasBottomMargin
           ? const EdgeInsets.all(3)
-          : const EdgeInsets.only(top: 3, left: 3, right: 3),
+          : mark == 0
+              ? const EdgeInsets.only(left: 3, right: 3)
+              : const EdgeInsets.only(top: 3, left: 3, right: 3),
       duration: animationSpeed,
       width: (selected ? 17 : 9),
       height: mark.toDouble(),
