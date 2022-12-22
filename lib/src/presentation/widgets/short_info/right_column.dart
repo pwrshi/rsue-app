@@ -167,8 +167,11 @@ class RadioPerfomanceButton extends StatelessWidget {
                       () {
                         mark = entity.absoluteControlPoints[i++] * 2;
                         return ControlPointWidget(
+                          isTop: i == 1,
                           selected: selected,
                           mark: mark,
+                          hasBottomMargin: (mark != 0) &&
+                              (i != (entity.absoluteControlPoints.length - 1)),
                         );
                       }.call(),
                   ],
@@ -183,12 +186,14 @@ class RadioPerfomanceButton extends StatelessWidget {
 }
 
 class ControlPointWidget extends StatelessWidget {
-  const ControlPointWidget(
-      {super.key,
-      this.selected = false,
-      this.hasBottomMargin = false,
-      required this.mark});
-
+  const ControlPointWidget({
+    super.key,
+    this.selected = false,
+    this.hasBottomMargin = false,
+    required this.mark,
+    this.isTop = false,
+  });
+  final bool isTop;
   final bool selected;
   final int mark;
   final bool hasBottomMargin;
@@ -203,9 +208,11 @@ class ControlPointWidget extends StatelessWidget {
       duration: animationSpeed,
       width: (selected ? 17 : 9),
       height: mark.toDouble(),
-      decoration: const BoxDecoration(
-          color: _colorOfInnerColumn,
-          borderRadius: BorderRadius.all(Radius.circular(20))),
+      decoration: BoxDecoration(
+          color: isTop
+              ? _colorOfInnerColumn
+              : (selected ? _colorOfInnerColumn : _colorOfOuterColumn),
+          borderRadius: const BorderRadius.all(Radius.circular(20))),
     );
   }
 }

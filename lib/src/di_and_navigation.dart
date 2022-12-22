@@ -107,6 +107,17 @@ class RsueApplication extends StatelessWidget {
                             .toggle!();
                       },
                     ),
+                    MenuButton(icon: FluentIcons.glance_24_filled, text: "Сессия", onPressed: (){}),
+                    MenuButton(
+                      icon: FluentIcons.person_48_filled,
+                      text: "Профиль",
+                      onPressed: () {
+                        Provider.of<ZoomDrawerController>(context,
+                                listen: false)
+                            .toggle!();
+                        Navigator.pushNamed(context, '/profile');
+                      },
+                    ),
                     MenuButton(
                       icon: FluentIcons.app_recent_24_filled,
                       text: "Расписание",
@@ -118,22 +129,14 @@ class RsueApplication extends StatelessWidget {
                       },
                     ),
 
-                    // [TODO]: реализовать экран преподавателей
-                    // MenuButton(
-                    //   icon: FluentIcons.people_48_filled,
-                    //   text: "Преподаватели",
-                    //   onPressed: () {},
-                    // ),
+                    // TODO: реализовать экран преподавателей
                     MenuButton(
-                      icon: FluentIcons.person_48_filled,
-                      text: "Профиль",
-                      onPressed: () {
-                        Provider.of<ZoomDrawerController>(context,
-                                listen: false)
-                            .toggle!();
-                        Navigator.pushNamed(context, '/profile');
-                      },
+                      icon: FluentIcons.people_48_filled,
+                      text: "Преподаватели",
+                      onPressed: () {},
                     ),
+                    // TODO: реализовать экран сессии
+                    
                     MenuButton(
                       icon: FluentIcons.bug_24_filled,
                       text: "О приложении",
