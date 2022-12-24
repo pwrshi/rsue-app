@@ -688,6 +688,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.0"
+  rsue_session_api:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: "3d626ad4cfcc0c417b8752ea053361647c6eeb6f"
+      url: "https://github.com/pwrshi/rsue-session-api.git"
+    source: git
+    version: "0.0.1"
   rxdart:
     dependency: transitive
     description:
@@ -998,5 +1007,5 @@ packages:
     source: hosted
     version: "3.1.1"
 sdks:
-  dart: ">=2.19.0-214.0.dev <4.0.0"
+  dart: ">=3.0.0-21.0.dev <4.0.0"
   flutter: ">=3.0.0"

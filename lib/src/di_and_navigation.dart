@@ -23,11 +23,17 @@ import 'package:rsue_app/src/presentation/screens/loading.dart';
 import 'package:rsue_app/src/presentation/screens/payments.dart';
 import 'package:rsue_app/src/presentation/screens/profile.dart';
 import 'package:rsue_app/src/presentation/screens/schedule.dart';
+import 'package:rsue_app/src/presentation/screens/session.dart';
 import 'package:rsue_app/src/presentation/screens/whoami.dart';
 import 'package:rsue_app/src/presentation/widgets/menu_scaffold.dart';
 
 class RsueApplication extends StatelessWidget {
   const RsueApplication({super.key});
+  void toggleDrawer(context) {
+    Provider.of<ZoomDrawerController>(context,
+                                listen: false)
+                            .toggle!();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,19 +108,17 @@ class RsueApplication extends StatelessWidget {
                       icon: FluentIcons.home_48_filled,
                       text: "Главная",
                       onPressed: () {
-                        Provider.of<ZoomDrawerController>(context,
-                                listen: false)
-                            .toggle!();
+                        toggleDrawer(context);
                       },
                     ),
-                    MenuButton(icon: FluentIcons.glance_24_filled, text: "Сессия", onPressed: (){}),
+                    MenuButton(icon: FluentIcons.glance_24_filled, text: "Сессия", onPressed: (){
+                      toggleDrawer(context);
+                        Navigator.pushNamed(context, '/session');
+                    }),
                     MenuButton(
                       icon: FluentIcons.person_48_filled,
                       text: "Профиль",
                       onPressed: () {
-                        Provider.of<ZoomDrawerController>(context,
-                                listen: false)
-                            .toggle!();
                         Navigator.pushNamed(context, '/profile');
                       },
                     ),
@@ -122,9 +126,7 @@ class RsueApplication extends StatelessWidget {
                       icon: FluentIcons.app_recent_24_filled,
                       text: "Расписание",
                       onPressed: () {
-                        Provider.of<ZoomDrawerController>(context,
-                                listen: false)
-                            .toggle!();
+                        toggleDrawer(context);
                         Navigator.pushNamed(context, '/schedule');
                       },
                     ),
@@ -135,19 +137,17 @@ class RsueApplication extends StatelessWidget {
                       text: "Преподаватели",
                       onPressed: () {},
                     ),
-                    // TODO: реализовать экран сессии
                     
                     MenuButton(
                       icon: FluentIcons.bug_24_filled,
                       text: "О приложении",
                       onPressed: () {
-                        Provider.of<ZoomDrawerController>(context,
-                                listen: false)
-                            .toggle!();
+                        toggleDrawer(context);
                         Navigator.pushNamed(context, '/autor');
                       },
                     ),
                   ]),
+              '/session': (context) => const SessionScreen(),
               '/loading': (context) => const LoadingScreen(),
               '/schedule': (context) => const ScheduleScreen(),
               '/licenses': (context) => const OssLicensesPage(),

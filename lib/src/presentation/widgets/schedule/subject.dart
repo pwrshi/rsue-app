@@ -35,33 +35,35 @@ class SubjectWidget extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(3),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(9),
           color: const Color(0xFFD9E2EC)),
       child: Row(
         children: [
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 6),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(9),
-                color: const Color(0xFF486581)),
-            child: Text(
-              controlPoints[0].toString(),
-              style: const TextStyle(
-                  color: Color(0xFFD9E2EC),
-                  fontWeight: FontWeight.w500,
-                  fontSize: 12),
+          for (var point in controlPoints)
+            Container(
+              margin: EdgeInsets.only(right: 4),
+              padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 6),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(6),
+                  color: const Color(0xFF486581)),
+              child: Text(
+                point.toString(),
+                style: const TextStyle(
+                    color: Color(0xFFD9E2EC),
+                    fontWeight: FontWeight.w500,
+                    fontSize: 12),
+              ),
             ),
-          ),
-          for (var point in controlPoints.skip(1))
-            Padding(
-                padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 6),
-                child: Text(
-                  point.toString(),
-                  style: const TextStyle(
-                      color: Color(0xFF486581),
-                      fontWeight: FontWeight.w500,
-                      fontSize: 12),
-                )),
+          Padding(
+              padding:
+                  const EdgeInsets.only(top: 4, bottom: 4, left: 2, right: 4),
+              child: Text(
+                "= ${controlPoints.fold<int>(0, (previousValue, element) => previousValue + element) / controlPoints.length}",
+                style: const TextStyle(
+                    color: Color(0xFF486581),
+                    fontWeight: FontWeight.w500,
+                    fontSize: 12),
+              )),
         ],
       ),
     );
@@ -87,7 +89,10 @@ class SubjectWidget extends StatelessWidget {
             children: [
               Text(
                 type,
-                style: const TextStyle(fontSize: 12),
+                style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white70),
               ),
               getMark()
             ],
@@ -118,14 +123,14 @@ class SubjectWidget extends StatelessWidget {
                 (isClosed
                     ? const Icon(
                         FluentIcons.presence_available_24_filled,
-                        size: 15,
+                        size: 18,
                       )
                     : const Icon(
                         FluentIcons.presence_away_24_filled,
-                        size: 15,
+                        size: 18,
                       )),
                 const SizedBox(
-                  height: 2,
+                  height: 6,
                 ),
                 Text(
                   statement.toString(),
