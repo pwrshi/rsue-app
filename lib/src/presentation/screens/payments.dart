@@ -38,7 +38,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
               case ResponseStatus.loading:
                 return ListView(
                   padding: const EdgeInsets.all(8),
-                  children: const [CircularProgressIndicator()],
+                  children: const [
+                    Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  ],
                 );
               default:
                 return ListView(

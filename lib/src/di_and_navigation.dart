@@ -7,12 +7,18 @@ import 'package:rsue_app/src/data/datasource/portfolio/portfolio_cache_sp.dart';
 import 'package:rsue_app/src/data/datasource/portfolio/portfolio_offical.dart';
 import 'package:rsue_app/src/data/datasource/schedule/offical/schedule_offical.dart';
 import 'package:rsue_app/src/data/datasource/schedule/schedule_cache_sp.dart';
+import 'package:rsue_app/src/data/datasource/session/session_cache.dart';
+import 'package:rsue_app/src/data/datasource/session/session_offical.dart';
 import 'package:rsue_app/src/data/repositories/portfolio_repository.dart';
 import 'package:rsue_app/src/data/repositories/schedule_repository.dart';
+import 'package:rsue_app/src/data/repositories/session_datasource.dart';
+import 'package:rsue_app/src/data/repositories/session_repository.dart';
 import 'package:rsue_app/src/domain/repositories/portfolio_repository.dart';
 import 'package:rsue_app/src/domain/repositories/schedule_repository.dart';
+import 'package:rsue_app/src/domain/repositories/session_repository.dart';
 import 'package:rsue_app/src/presentation/providers/data/portfolio_snapshot.dart';
 import 'package:rsue_app/src/presentation/providers/data/schedule_snapshot.dart';
+import 'package:rsue_app/src/presentation/providers/data/session_snapshot.dart';
 import 'package:rsue_app/src/presentation/providers/widget/short_info.dart';
 import 'package:rsue_app/src/presentation/screens/autor.dart';
 import 'package:rsue_app/src/presentation/screens/dzen_mode.dart';
@@ -52,6 +58,7 @@ class RsueApplication extends StatelessWidget {
               create: (context) => PortfolioRepositoryImpl(
                   PortfolioOfficalDataSource(),
                   SharedPreferencesPortfolioCacheDatasource())),
+          Provider<SessionRepository>(create: (context) => SessionRepositoryImpl(SessionImplDatasource(), SharedPreferencesSessionCacheDatasource())),
 
           // прокся для данных
           // Portfolio
@@ -81,6 +88,7 @@ class RsueApplication extends StatelessWidget {
                   ShortInfoProvider>(
               create: (context) => ShortInfoProvider(null),
               update: (context, value, previous) => ShortInfoProvider(value)),
+          ChangeNotifierProxyProvider<SessionRepository, SessionsSnapshot>(create: (context) => SessionsSnapshot(null), update: (context, value, previous) => SessionsSnapshot(value)),
 
           Provider<ZoomDrawerController>(
             create: (context) => ZoomDrawerController(),
@@ -132,11 +140,11 @@ class RsueApplication extends StatelessWidget {
                     ),
 
                     // TODO: реализовать экран преподавателей
-                    MenuButton(
-                      icon: FluentIcons.people_48_filled,
-                      text: "Преподаватели",
-                      onPressed: () {},
-                    ),
+                    // MenuButton(
+                    //   icon: FluentIcons.people_48_filled,
+                    //   text: "Преподаватели",
+                    //   onPressed: () {},
+                    // ),
                     
                     MenuButton(
                       icon: FluentIcons.bug_24_filled,

@@ -6,6 +6,13 @@ class SessionImplDatasource extends SessionDatasource {
   @override
   Future<Map<String, List<Quiz>>> getAllSchedules() async =>
       (await RsueSessionApi().getAllSchedules()).asMap().map((key, value) =>
-          MapEntry(value!.name,
-              value.exams.map((e) => Quiz(name: e!.name)).toList()));
+          MapEntry(
+              value!.name,
+              value.exams
+                  .map((e) => Quiz(
+                      name: e!.name,
+                      dateTime: e.dateTime,
+                      rooms: e.rooms?.join(", "),
+                      teachers: e.teachers?.join(", ")))
+                  .toList()));
 }

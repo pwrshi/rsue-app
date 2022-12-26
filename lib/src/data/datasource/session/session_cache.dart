@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:rsue_app/src/core/error/datasource_error.dart';
 import 'package:rsue_app/src/data/repositories/session_datasource.dart';
 import 'package:rsue_app/src/domain/entities/quiz_entity.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,7 +16,11 @@ class SharedPreferencesSessionCacheDatasource
   @override
   Future<Map<String, List<Quiz>>> getAllSchedules() async {
     String? raw = (await getPref()).getString("sp_cache_all_schedules");
-    Map<String, List<dynamic>> m = jsonDecode(raw!);
+    if (raw == null) {
+      throw const DatasourceError(name: "нет кэша");
+    }
+    Map<String, List<dynamic>> m =
+        Map<String, List<dynamic>>.from(jsonDecode(raw));
 
     return m.map((key, value) => MapEntry(
         key,
