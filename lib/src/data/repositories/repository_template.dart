@@ -4,6 +4,7 @@ import 'package:rsue_app/src/core/error/response_error.dart';
 import 'package:rsue_app/src/core/resources/data_state.dart';
 
 abstract class RepositoryBase {
+  // ignore: long-parameter-list
   Future<DataState<T>> invokeDSs<T>(
       Future<T?> onlineDs,
       Future<T?> localDs,
@@ -19,11 +20,9 @@ abstract class RepositoryBase {
       saveDsCallback(snapshot);
       result = DataSuccess(data: snapshot);
     } catch (onlineErr) {
-      if (onlineErr is RsError) {
-        result = DataFailed(error: onlineErr);
-      } else {
-        result = DataFailed(error: RepositoryError(name: onlineErr.toString()));
-      }
+      result = onlineErr is RsError
+          ? DataFailed(error: onlineErr)
+          : DataFailed(error: RepositoryError(name: onlineErr.toString()));
 
       // попытка взять из локального источника
       try {
@@ -33,12 +32,9 @@ abstract class RepositoryBase {
         }
         result = DataRestored(data: localSnap);
       } catch (localErr) {
-        if (localErr is RsError) {
-          result = DataFailed(error: localErr);
-        } else {
-          result =
-              DataFailed(error: RepositoryError(name: localErr.toString()));
-        }
+        result = localErr is RsError
+            ? DataFailed(error: localErr)
+            : DataFailed(error: RepositoryError(name: localErr.toString()));
       }
     }
     return result;

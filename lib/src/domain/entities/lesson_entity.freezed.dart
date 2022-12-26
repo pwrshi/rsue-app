@@ -37,7 +37,8 @@ mixin _$AbstractLesson {
 abstract class $AbstractLessonCopyWith<$Res> {
   factory $AbstractLessonCopyWith(
           AbstractLesson value, $Res Function(AbstractLesson) then) =
-      _$AbstractLessonCopyWithImpl<$Res>;
+      _$AbstractLessonCopyWithImpl<$Res, AbstractLesson>;
+  @useResult
   $Res call(
       {String name,
       String teachersname,
@@ -48,49 +49,51 @@ abstract class $AbstractLessonCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$AbstractLessonCopyWithImpl<$Res>
+class _$AbstractLessonCopyWithImpl<$Res, $Val extends AbstractLesson>
     implements $AbstractLessonCopyWith<$Res> {
   _$AbstractLessonCopyWithImpl(this._value, this._then);
 
-  final AbstractLesson _value;
   // ignore: unused_field
-  final $Res Function(AbstractLesson) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? name = freezed,
-    Object? teachersname = freezed,
-    Object? room = freezed,
-    Object? type = freezed,
-    Object? time = freezed,
+    Object? name = null,
+    Object? teachersname = null,
+    Object? room = null,
+    Object? type = null,
+    Object? time = null,
     Object? subgroup = freezed,
   }) {
     return _then(_value.copyWith(
-      name: name == freezed
+      name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      teachersname: teachersname == freezed
+      teachersname: null == teachersname
           ? _value.teachersname
           : teachersname // ignore: cast_nullable_to_non_nullable
               as String,
-      room: room == freezed
+      room: null == room
           ? _value.room
           : room // ignore: cast_nullable_to_non_nullable
               as String,
-      type: type == freezed
+      type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as LessonType,
-      time: time == freezed
+      time: null == time
           ? _value.time
           : time // ignore: cast_nullable_to_non_nullable
               as String,
-      subgroup: subgroup == freezed
+      subgroup: freezed == subgroup
           ? _value.subgroup
           : subgroup // ignore: cast_nullable_to_non_nullable
               as String?,
-    ));
+    ) as $Val);
   }
 }
 
@@ -101,6 +104,7 @@ abstract class _$$_AbstractLessonCopyWith<$Res>
           _$_AbstractLesson value, $Res Function(_$_AbstractLesson) then) =
       __$$_AbstractLessonCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {String name,
       String teachersname,
@@ -112,46 +116,44 @@ abstract class _$$_AbstractLessonCopyWith<$Res>
 
 /// @nodoc
 class __$$_AbstractLessonCopyWithImpl<$Res>
-    extends _$AbstractLessonCopyWithImpl<$Res>
+    extends _$AbstractLessonCopyWithImpl<$Res, _$_AbstractLesson>
     implements _$$_AbstractLessonCopyWith<$Res> {
   __$$_AbstractLessonCopyWithImpl(
       _$_AbstractLesson _value, $Res Function(_$_AbstractLesson) _then)
-      : super(_value, (v) => _then(v as _$_AbstractLesson));
+      : super(_value, _then);
 
-  @override
-  _$_AbstractLesson get _value => super._value as _$_AbstractLesson;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? name = freezed,
-    Object? teachersname = freezed,
-    Object? room = freezed,
-    Object? type = freezed,
-    Object? time = freezed,
+    Object? name = null,
+    Object? teachersname = null,
+    Object? room = null,
+    Object? type = null,
+    Object? time = null,
     Object? subgroup = freezed,
   }) {
     return _then(_$_AbstractLesson(
-      name: name == freezed
+      name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      teachersname: teachersname == freezed
+      teachersname: null == teachersname
           ? _value.teachersname
           : teachersname // ignore: cast_nullable_to_non_nullable
               as String,
-      room: room == freezed
+      room: null == room
           ? _value.room
           : room // ignore: cast_nullable_to_non_nullable
               as String,
-      type: type == freezed
+      type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as LessonType,
-      time: time == freezed
+      time: null == time
           ? _value.time
           : time // ignore: cast_nullable_to_non_nullable
               as String,
-      subgroup: subgroup == freezed
+      subgroup: freezed == subgroup
           ? _value.subgroup
           : subgroup // ignore: cast_nullable_to_non_nullable
               as String?,
@@ -196,28 +198,24 @@ class _$_AbstractLesson implements _AbstractLesson {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_AbstractLesson &&
-            const DeepCollectionEquality().equals(other.name, name) &&
-            const DeepCollectionEquality()
-                .equals(other.teachersname, teachersname) &&
-            const DeepCollectionEquality().equals(other.room, room) &&
-            const DeepCollectionEquality().equals(other.type, type) &&
-            const DeepCollectionEquality().equals(other.time, time) &&
-            const DeepCollectionEquality().equals(other.subgroup, subgroup));
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.teachersname, teachersname) ||
+                other.teachersname == teachersname) &&
+            (identical(other.room, room) || other.room == room) &&
+            (identical(other.type, type) || other.type == type) &&
+            (identical(other.time, time) || other.time == time) &&
+            (identical(other.subgroup, subgroup) ||
+                other.subgroup == subgroup));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(name),
-      const DeepCollectionEquality().hash(teachersname),
-      const DeepCollectionEquality().hash(room),
-      const DeepCollectionEquality().hash(type),
-      const DeepCollectionEquality().hash(time),
-      const DeepCollectionEquality().hash(subgroup));
+  int get hashCode =>
+      Object.hash(runtimeType, name, teachersname, room, type, time, subgroup);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_AbstractLessonCopyWith<_$_AbstractLesson> get copyWith =>
       __$$_AbstractLessonCopyWithImpl<_$_AbstractLesson>(this, _$identity);
 
@@ -283,7 +281,8 @@ mixin _$ConcreteLesson {
 abstract class $ConcreteLessonCopyWith<$Res> {
   factory $ConcreteLessonCopyWith(
           ConcreteLesson value, $Res Function(ConcreteLesson) then) =
-      _$ConcreteLessonCopyWithImpl<$Res>;
+      _$ConcreteLessonCopyWithImpl<$Res, ConcreteLesson>;
+  @useResult
   $Res call(
       {String name,
       String teachersname,
@@ -295,54 +294,56 @@ abstract class $ConcreteLessonCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$ConcreteLessonCopyWithImpl<$Res>
+class _$ConcreteLessonCopyWithImpl<$Res, $Val extends ConcreteLesson>
     implements $ConcreteLessonCopyWith<$Res> {
   _$ConcreteLessonCopyWithImpl(this._value, this._then);
 
-  final ConcreteLesson _value;
   // ignore: unused_field
-  final $Res Function(ConcreteLesson) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? name = freezed,
-    Object? teachersname = freezed,
-    Object? startTime = freezed,
-    Object? endTime = freezed,
-    Object? room = freezed,
-    Object? type = freezed,
+    Object? name = null,
+    Object? teachersname = null,
+    Object? startTime = null,
+    Object? endTime = null,
+    Object? room = null,
+    Object? type = null,
     Object? subgroup = freezed,
   }) {
     return _then(_value.copyWith(
-      name: name == freezed
+      name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      teachersname: teachersname == freezed
+      teachersname: null == teachersname
           ? _value.teachersname
           : teachersname // ignore: cast_nullable_to_non_nullable
               as String,
-      startTime: startTime == freezed
+      startTime: null == startTime
           ? _value.startTime
           : startTime // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      endTime: endTime == freezed
+      endTime: null == endTime
           ? _value.endTime
           : endTime // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      room: room == freezed
+      room: null == room
           ? _value.room
           : room // ignore: cast_nullable_to_non_nullable
               as String,
-      type: type == freezed
+      type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as LessonType,
-      subgroup: subgroup == freezed
+      subgroup: freezed == subgroup
           ? _value.subgroup
           : subgroup // ignore: cast_nullable_to_non_nullable
               as String?,
-    ));
+    ) as $Val);
   }
 }
 
@@ -353,6 +354,7 @@ abstract class _$$_ConcreteLessonCopyWith<$Res>
           _$_ConcreteLesson value, $Res Function(_$_ConcreteLesson) then) =
       __$$_ConcreteLessonCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {String name,
       String teachersname,
@@ -365,51 +367,49 @@ abstract class _$$_ConcreteLessonCopyWith<$Res>
 
 /// @nodoc
 class __$$_ConcreteLessonCopyWithImpl<$Res>
-    extends _$ConcreteLessonCopyWithImpl<$Res>
+    extends _$ConcreteLessonCopyWithImpl<$Res, _$_ConcreteLesson>
     implements _$$_ConcreteLessonCopyWith<$Res> {
   __$$_ConcreteLessonCopyWithImpl(
       _$_ConcreteLesson _value, $Res Function(_$_ConcreteLesson) _then)
-      : super(_value, (v) => _then(v as _$_ConcreteLesson));
+      : super(_value, _then);
 
-  @override
-  _$_ConcreteLesson get _value => super._value as _$_ConcreteLesson;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? name = freezed,
-    Object? teachersname = freezed,
-    Object? startTime = freezed,
-    Object? endTime = freezed,
-    Object? room = freezed,
-    Object? type = freezed,
+    Object? name = null,
+    Object? teachersname = null,
+    Object? startTime = null,
+    Object? endTime = null,
+    Object? room = null,
+    Object? type = null,
     Object? subgroup = freezed,
   }) {
     return _then(_$_ConcreteLesson(
-      name: name == freezed
+      name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      teachersname: teachersname == freezed
+      teachersname: null == teachersname
           ? _value.teachersname
           : teachersname // ignore: cast_nullable_to_non_nullable
               as String,
-      startTime: startTime == freezed
+      startTime: null == startTime
           ? _value.startTime
           : startTime // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      endTime: endTime == freezed
+      endTime: null == endTime
           ? _value.endTime
           : endTime // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      room: room == freezed
+      room: null == room
           ? _value.room
           : room // ignore: cast_nullable_to_non_nullable
               as String,
-      type: type == freezed
+      type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as LessonType,
-      subgroup: subgroup == freezed
+      subgroup: freezed == subgroup
           ? _value.subgroup
           : subgroup // ignore: cast_nullable_to_non_nullable
               as String?,
@@ -457,30 +457,26 @@ class _$_ConcreteLesson implements _ConcreteLesson {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_ConcreteLesson &&
-            const DeepCollectionEquality().equals(other.name, name) &&
-            const DeepCollectionEquality()
-                .equals(other.teachersname, teachersname) &&
-            const DeepCollectionEquality().equals(other.startTime, startTime) &&
-            const DeepCollectionEquality().equals(other.endTime, endTime) &&
-            const DeepCollectionEquality().equals(other.room, room) &&
-            const DeepCollectionEquality().equals(other.type, type) &&
-            const DeepCollectionEquality().equals(other.subgroup, subgroup));
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.teachersname, teachersname) ||
+                other.teachersname == teachersname) &&
+            (identical(other.startTime, startTime) ||
+                other.startTime == startTime) &&
+            (identical(other.endTime, endTime) || other.endTime == endTime) &&
+            (identical(other.room, room) || other.room == room) &&
+            (identical(other.type, type) || other.type == type) &&
+            (identical(other.subgroup, subgroup) ||
+                other.subgroup == subgroup));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(name),
-      const DeepCollectionEquality().hash(teachersname),
-      const DeepCollectionEquality().hash(startTime),
-      const DeepCollectionEquality().hash(endTime),
-      const DeepCollectionEquality().hash(room),
-      const DeepCollectionEquality().hash(type),
-      const DeepCollectionEquality().hash(subgroup));
+  int get hashCode => Object.hash(runtimeType, name, teachersname, startTime,
+      endTime, room, type, subgroup);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_ConcreteLessonCopyWith<_$_ConcreteLesson> get copyWith =>
       __$$_ConcreteLessonCopyWithImpl<_$_ConcreteLesson>(this, _$identity);
 

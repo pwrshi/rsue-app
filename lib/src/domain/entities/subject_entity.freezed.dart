@@ -37,7 +37,8 @@ mixin _$SubjectEntity {
 abstract class $SubjectEntityCopyWith<$Res> {
   factory $SubjectEntityCopyWith(
           SubjectEntity value, $Res Function(SubjectEntity) then) =
-      _$SubjectEntityCopyWithImpl<$Res>;
+      _$SubjectEntityCopyWithImpl<$Res, SubjectEntity>;
+  @useResult
   $Res call(
       {String name,
       String teachersname,
@@ -48,49 +49,51 @@ abstract class $SubjectEntityCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$SubjectEntityCopyWithImpl<$Res>
+class _$SubjectEntityCopyWithImpl<$Res, $Val extends SubjectEntity>
     implements $SubjectEntityCopyWith<$Res> {
   _$SubjectEntityCopyWithImpl(this._value, this._then);
 
-  final SubjectEntity _value;
   // ignore: unused_field
-  final $Res Function(SubjectEntity) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? name = freezed,
-    Object? teachersname = freezed,
-    Object? type = freezed,
-    Object? isClosed = freezed,
-    Object? statement = freezed,
-    Object? controlPoints = freezed,
+    Object? name = null,
+    Object? teachersname = null,
+    Object? type = null,
+    Object? isClosed = null,
+    Object? statement = null,
+    Object? controlPoints = null,
   }) {
     return _then(_value.copyWith(
-      name: name == freezed
+      name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      teachersname: teachersname == freezed
+      teachersname: null == teachersname
           ? _value.teachersname
           : teachersname // ignore: cast_nullable_to_non_nullable
               as String,
-      type: type == freezed
+      type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as SessionType,
-      isClosed: isClosed == freezed
+      isClosed: null == isClosed
           ? _value.isClosed
           : isClosed // ignore: cast_nullable_to_non_nullable
               as bool,
-      statement: statement == freezed
+      statement: null == statement
           ? _value.statement
           : statement // ignore: cast_nullable_to_non_nullable
               as int,
-      controlPoints: controlPoints == freezed
+      controlPoints: null == controlPoints
           ? _value.controlPoints
           : controlPoints // ignore: cast_nullable_to_non_nullable
               as List<int>,
-    ));
+    ) as $Val);
   }
 }
 
@@ -101,6 +104,7 @@ abstract class _$$_SubjectEntityCopyWith<$Res>
           _$_SubjectEntity value, $Res Function(_$_SubjectEntity) then) =
       __$$_SubjectEntityCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {String name,
       String teachersname,
@@ -112,46 +116,44 @@ abstract class _$$_SubjectEntityCopyWith<$Res>
 
 /// @nodoc
 class __$$_SubjectEntityCopyWithImpl<$Res>
-    extends _$SubjectEntityCopyWithImpl<$Res>
+    extends _$SubjectEntityCopyWithImpl<$Res, _$_SubjectEntity>
     implements _$$_SubjectEntityCopyWith<$Res> {
   __$$_SubjectEntityCopyWithImpl(
       _$_SubjectEntity _value, $Res Function(_$_SubjectEntity) _then)
-      : super(_value, (v) => _then(v as _$_SubjectEntity));
+      : super(_value, _then);
 
-  @override
-  _$_SubjectEntity get _value => super._value as _$_SubjectEntity;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? name = freezed,
-    Object? teachersname = freezed,
-    Object? type = freezed,
-    Object? isClosed = freezed,
-    Object? statement = freezed,
-    Object? controlPoints = freezed,
+    Object? name = null,
+    Object? teachersname = null,
+    Object? type = null,
+    Object? isClosed = null,
+    Object? statement = null,
+    Object? controlPoints = null,
   }) {
     return _then(_$_SubjectEntity(
-      name: name == freezed
+      name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      teachersname: teachersname == freezed
+      teachersname: null == teachersname
           ? _value.teachersname
           : teachersname // ignore: cast_nullable_to_non_nullable
               as String,
-      type: type == freezed
+      type: null == type
           ? _value.type
           : type // ignore: cast_nullable_to_non_nullable
               as SessionType,
-      isClosed: isClosed == freezed
+      isClosed: null == isClosed
           ? _value.isClosed
           : isClosed // ignore: cast_nullable_to_non_nullable
               as bool,
-      statement: statement == freezed
+      statement: null == statement
           ? _value.statement
           : statement // ignore: cast_nullable_to_non_nullable
               as int,
-      controlPoints: controlPoints == freezed
+      controlPoints: null == controlPoints
           ? _value._controlPoints
           : controlPoints // ignore: cast_nullable_to_non_nullable
               as List<int>,
@@ -202,29 +204,26 @@ class _$_SubjectEntity extends _SubjectEntity {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_SubjectEntity &&
-            const DeepCollectionEquality().equals(other.name, name) &&
-            const DeepCollectionEquality()
-                .equals(other.teachersname, teachersname) &&
-            const DeepCollectionEquality().equals(other.type, type) &&
-            const DeepCollectionEquality().equals(other.isClosed, isClosed) &&
-            const DeepCollectionEquality().equals(other.statement, statement) &&
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.teachersname, teachersname) ||
+                other.teachersname == teachersname) &&
+            (identical(other.type, type) || other.type == type) &&
+            (identical(other.isClosed, isClosed) ||
+                other.isClosed == isClosed) &&
+            (identical(other.statement, statement) ||
+                other.statement == statement) &&
             const DeepCollectionEquality()
                 .equals(other._controlPoints, _controlPoints));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(name),
-      const DeepCollectionEquality().hash(teachersname),
-      const DeepCollectionEquality().hash(type),
-      const DeepCollectionEquality().hash(isClosed),
-      const DeepCollectionEquality().hash(statement),
-      const DeepCollectionEquality().hash(_controlPoints));
+  int get hashCode => Object.hash(runtimeType, name, teachersname, type,
+      isClosed, statement, const DeepCollectionEquality().hash(_controlPoints));
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_SubjectEntityCopyWith<_$_SubjectEntity> get copyWith =>
       __$$_SubjectEntityCopyWithImpl<_$_SubjectEntity>(this, _$identity);
 

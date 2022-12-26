@@ -36,7 +36,8 @@ mixin _$PaymentEntity {
 abstract class $PaymentEntityCopyWith<$Res> {
   factory $PaymentEntityCopyWith(
           PaymentEntity value, $Res Function(PaymentEntity) then) =
-      _$PaymentEntityCopyWithImpl<$Res>;
+      _$PaymentEntityCopyWithImpl<$Res, PaymentEntity>;
+  @useResult
   $Res call(
       {String name,
       String url,
@@ -46,44 +47,46 @@ abstract class $PaymentEntityCopyWith<$Res> {
 }
 
 /// @nodoc
-class _$PaymentEntityCopyWithImpl<$Res>
+class _$PaymentEntityCopyWithImpl<$Res, $Val extends PaymentEntity>
     implements $PaymentEntityCopyWith<$Res> {
   _$PaymentEntityCopyWithImpl(this._value, this._then);
 
-  final PaymentEntity _value;
   // ignore: unused_field
-  final $Res Function(PaymentEntity) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? name = freezed,
-    Object? url = freezed,
-    Object? dateOfReceiptFormation = freezed,
-    Object? dateOfServiceStarting = freezed,
-    Object? dateOfServiceEnding = freezed,
+    Object? name = null,
+    Object? url = null,
+    Object? dateOfReceiptFormation = null,
+    Object? dateOfServiceStarting = null,
+    Object? dateOfServiceEnding = null,
   }) {
     return _then(_value.copyWith(
-      name: name == freezed
+      name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      url: url == freezed
+      url: null == url
           ? _value.url
           : url // ignore: cast_nullable_to_non_nullable
               as String,
-      dateOfReceiptFormation: dateOfReceiptFormation == freezed
+      dateOfReceiptFormation: null == dateOfReceiptFormation
           ? _value.dateOfReceiptFormation
           : dateOfReceiptFormation // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      dateOfServiceStarting: dateOfServiceStarting == freezed
+      dateOfServiceStarting: null == dateOfServiceStarting
           ? _value.dateOfServiceStarting
           : dateOfServiceStarting // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      dateOfServiceEnding: dateOfServiceEnding == freezed
+      dateOfServiceEnding: null == dateOfServiceEnding
           ? _value.dateOfServiceEnding
           : dateOfServiceEnding // ignore: cast_nullable_to_non_nullable
               as DateTime,
-    ));
+    ) as $Val);
   }
 }
 
@@ -94,6 +97,7 @@ abstract class _$$_PaymentEntityCopyWith<$Res>
           _$_PaymentEntity value, $Res Function(_$_PaymentEntity) then) =
       __$$_PaymentEntityCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call(
       {String name,
       String url,
@@ -104,41 +108,39 @@ abstract class _$$_PaymentEntityCopyWith<$Res>
 
 /// @nodoc
 class __$$_PaymentEntityCopyWithImpl<$Res>
-    extends _$PaymentEntityCopyWithImpl<$Res>
+    extends _$PaymentEntityCopyWithImpl<$Res, _$_PaymentEntity>
     implements _$$_PaymentEntityCopyWith<$Res> {
   __$$_PaymentEntityCopyWithImpl(
       _$_PaymentEntity _value, $Res Function(_$_PaymentEntity) _then)
-      : super(_value, (v) => _then(v as _$_PaymentEntity));
+      : super(_value, _then);
 
-  @override
-  _$_PaymentEntity get _value => super._value as _$_PaymentEntity;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? name = freezed,
-    Object? url = freezed,
-    Object? dateOfReceiptFormation = freezed,
-    Object? dateOfServiceStarting = freezed,
-    Object? dateOfServiceEnding = freezed,
+    Object? name = null,
+    Object? url = null,
+    Object? dateOfReceiptFormation = null,
+    Object? dateOfServiceStarting = null,
+    Object? dateOfServiceEnding = null,
   }) {
     return _then(_$_PaymentEntity(
-      name: name == freezed
+      name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      url: url == freezed
+      url: null == url
           ? _value.url
           : url // ignore: cast_nullable_to_non_nullable
               as String,
-      dateOfReceiptFormation: dateOfReceiptFormation == freezed
+      dateOfReceiptFormation: null == dateOfReceiptFormation
           ? _value.dateOfReceiptFormation
           : dateOfReceiptFormation // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      dateOfServiceStarting: dateOfServiceStarting == freezed
+      dateOfServiceStarting: null == dateOfServiceStarting
           ? _value.dateOfServiceStarting
           : dateOfServiceStarting // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      dateOfServiceEnding: dateOfServiceEnding == freezed
+      dateOfServiceEnding: null == dateOfServiceEnding
           ? _value.dateOfServiceEnding
           : dateOfServiceEnding // ignore: cast_nullable_to_non_nullable
               as DateTime,
@@ -180,28 +182,24 @@ class _$_PaymentEntity implements _PaymentEntity {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_PaymentEntity &&
-            const DeepCollectionEquality().equals(other.name, name) &&
-            const DeepCollectionEquality().equals(other.url, url) &&
-            const DeepCollectionEquality()
-                .equals(other.dateOfReceiptFormation, dateOfReceiptFormation) &&
-            const DeepCollectionEquality()
-                .equals(other.dateOfServiceStarting, dateOfServiceStarting) &&
-            const DeepCollectionEquality()
-                .equals(other.dateOfServiceEnding, dateOfServiceEnding));
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.url, url) || other.url == url) &&
+            (identical(other.dateOfReceiptFormation, dateOfReceiptFormation) ||
+                other.dateOfReceiptFormation == dateOfReceiptFormation) &&
+            (identical(other.dateOfServiceStarting, dateOfServiceStarting) ||
+                other.dateOfServiceStarting == dateOfServiceStarting) &&
+            (identical(other.dateOfServiceEnding, dateOfServiceEnding) ||
+                other.dateOfServiceEnding == dateOfServiceEnding));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(name),
-      const DeepCollectionEquality().hash(url),
-      const DeepCollectionEquality().hash(dateOfReceiptFormation),
-      const DeepCollectionEquality().hash(dateOfServiceStarting),
-      const DeepCollectionEquality().hash(dateOfServiceEnding));
+  int get hashCode => Object.hash(runtimeType, name, url,
+      dateOfReceiptFormation, dateOfServiceStarting, dateOfServiceEnding);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_PaymentEntityCopyWith<_$_PaymentEntity> get copyWith =>
       __$$_PaymentEntityCopyWithImpl<_$_PaymentEntity>(this, _$identity);
 

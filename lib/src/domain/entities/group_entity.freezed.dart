@@ -26,41 +26,46 @@ mixin _$Group {
 /// @nodoc
 abstract class $GroupCopyWith<$Res> {
   factory $GroupCopyWith(Group value, $Res Function(Group) then) =
-      _$GroupCopyWithImpl<$Res>;
+      _$GroupCopyWithImpl<$Res, Group>;
+  @useResult
   $Res call({String name, GroupId id});
 
   $GroupIdCopyWith<$Res> get id;
 }
 
 /// @nodoc
-class _$GroupCopyWithImpl<$Res> implements $GroupCopyWith<$Res> {
+class _$GroupCopyWithImpl<$Res, $Val extends Group>
+    implements $GroupCopyWith<$Res> {
   _$GroupCopyWithImpl(this._value, this._then);
 
-  final Group _value;
   // ignore: unused_field
-  final $Res Function(Group) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? name = freezed,
-    Object? id = freezed,
+    Object? name = null,
+    Object? id = null,
   }) {
     return _then(_value.copyWith(
-      name: name == freezed
+      name: null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      id: id == freezed
+      id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as GroupId,
-    ));
+    ) as $Val);
   }
 
   @override
+  @pragma('vm:prefer-inline')
   $GroupIdCopyWith<$Res> get id {
     return $GroupIdCopyWith<$Res>(_value.id, (value) {
-      return _then(_value.copyWith(id: value));
+      return _then(_value.copyWith(id: value) as $Val);
     });
   }
 }
@@ -70,6 +75,7 @@ abstract class _$$_GroupCopyWith<$Res> implements $GroupCopyWith<$Res> {
   factory _$$_GroupCopyWith(_$_Group value, $Res Function(_$_Group) then) =
       __$$_GroupCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call({String name, GroupId id});
 
   @override
@@ -77,25 +83,23 @@ abstract class _$$_GroupCopyWith<$Res> implements $GroupCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_GroupCopyWithImpl<$Res> extends _$GroupCopyWithImpl<$Res>
+class __$$_GroupCopyWithImpl<$Res> extends _$GroupCopyWithImpl<$Res, _$_Group>
     implements _$$_GroupCopyWith<$Res> {
   __$$_GroupCopyWithImpl(_$_Group _value, $Res Function(_$_Group) _then)
-      : super(_value, (v) => _then(v as _$_Group));
+      : super(_value, _then);
 
-  @override
-  _$_Group get _value => super._value as _$_Group;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? name = freezed,
-    Object? id = freezed,
+    Object? name = null,
+    Object? id = null,
   }) {
     return _then(_$_Group(
-      name == freezed
+      null == name
           ? _value.name
           : name // ignore: cast_nullable_to_non_nullable
               as String,
-      id == freezed
+      null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as GroupId,
@@ -123,18 +127,16 @@ class _$_Group implements _Group {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_Group &&
-            const DeepCollectionEquality().equals(other.name, name) &&
-            const DeepCollectionEquality().equals(other.id, id));
+            (identical(other.name, name) || other.name == name) &&
+            (identical(other.id, id) || other.id == id));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(name),
-      const DeepCollectionEquality().hash(id));
+  int get hashCode => Object.hash(runtimeType, name, id);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_GroupCopyWith<_$_Group> get copyWith =>
       __$$_GroupCopyWithImpl<_$_Group>(this, _$identity);
 }
@@ -170,38 +172,42 @@ mixin _$GroupId {
 /// @nodoc
 abstract class $GroupIdCopyWith<$Res> {
   factory $GroupIdCopyWith(GroupId value, $Res Function(GroupId) then) =
-      _$GroupIdCopyWithImpl<$Res>;
+      _$GroupIdCopyWithImpl<$Res, GroupId>;
+  @useResult
   $Res call({int facult, int course, int group});
 }
 
 /// @nodoc
-class _$GroupIdCopyWithImpl<$Res> implements $GroupIdCopyWith<$Res> {
+class _$GroupIdCopyWithImpl<$Res, $Val extends GroupId>
+    implements $GroupIdCopyWith<$Res> {
   _$GroupIdCopyWithImpl(this._value, this._then);
 
-  final GroupId _value;
   // ignore: unused_field
-  final $Res Function(GroupId) _then;
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
 
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? facult = freezed,
-    Object? course = freezed,
-    Object? group = freezed,
+    Object? facult = null,
+    Object? course = null,
+    Object? group = null,
   }) {
     return _then(_value.copyWith(
-      facult: facult == freezed
+      facult: null == facult
           ? _value.facult
           : facult // ignore: cast_nullable_to_non_nullable
               as int,
-      course: course == freezed
+      course: null == course
           ? _value.course
           : course // ignore: cast_nullable_to_non_nullable
               as int,
-      group: group == freezed
+      group: null == group
           ? _value.group
           : group // ignore: cast_nullable_to_non_nullable
               as int,
-    ));
+    ) as $Val);
   }
 }
 
@@ -211,34 +217,34 @@ abstract class _$$_GroupIdCopyWith<$Res> implements $GroupIdCopyWith<$Res> {
           _$_GroupId value, $Res Function(_$_GroupId) then) =
       __$$_GroupIdCopyWithImpl<$Res>;
   @override
+  @useResult
   $Res call({int facult, int course, int group});
 }
 
 /// @nodoc
-class __$$_GroupIdCopyWithImpl<$Res> extends _$GroupIdCopyWithImpl<$Res>
+class __$$_GroupIdCopyWithImpl<$Res>
+    extends _$GroupIdCopyWithImpl<$Res, _$_GroupId>
     implements _$$_GroupIdCopyWith<$Res> {
   __$$_GroupIdCopyWithImpl(_$_GroupId _value, $Res Function(_$_GroupId) _then)
-      : super(_value, (v) => _then(v as _$_GroupId));
+      : super(_value, _then);
 
-  @override
-  _$_GroupId get _value => super._value as _$_GroupId;
-
+  @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? facult = freezed,
-    Object? course = freezed,
-    Object? group = freezed,
+    Object? facult = null,
+    Object? course = null,
+    Object? group = null,
   }) {
     return _then(_$_GroupId(
-      facult: facult == freezed
+      facult: null == facult
           ? _value.facult
           : facult // ignore: cast_nullable_to_non_nullable
               as int,
-      course: course == freezed
+      course: null == course
           ? _value.course
           : course // ignore: cast_nullable_to_non_nullable
               as int,
-      group: group == freezed
+      group: null == group
           ? _value.group
           : group // ignore: cast_nullable_to_non_nullable
               as int,
@@ -272,21 +278,18 @@ class _$_GroupId implements _GroupId {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_GroupId &&
-            const DeepCollectionEquality().equals(other.facult, facult) &&
-            const DeepCollectionEquality().equals(other.course, course) &&
-            const DeepCollectionEquality().equals(other.group, group));
+            (identical(other.facult, facult) || other.facult == facult) &&
+            (identical(other.course, course) || other.course == course) &&
+            (identical(other.group, group) || other.group == group));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      const DeepCollectionEquality().hash(facult),
-      const DeepCollectionEquality().hash(course),
-      const DeepCollectionEquality().hash(group));
+  int get hashCode => Object.hash(runtimeType, facult, course, group);
 
   @JsonKey(ignore: true)
   @override
+  @pragma('vm:prefer-inline')
   _$$_GroupIdCopyWith<_$_GroupId> get copyWith =>
       __$$_GroupIdCopyWithImpl<_$_GroupId>(this, _$identity);
 
