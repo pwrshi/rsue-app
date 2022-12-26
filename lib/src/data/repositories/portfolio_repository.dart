@@ -1,13 +1,14 @@
-import 'package:rsue_app/src/core/error/error.dart';
 import 'package:rsue_app/src/core/error/repository_error.dart';
 import 'package:rsue_app/src/core/error/response_error.dart';
 import 'package:rsue_app/src/data/repositories/portfolio_datasource.dart';
+import 'package:rsue_app/src/data/repositories/repository_template.dart';
 import 'package:rsue_app/src/domain/entities/subject_entity.dart';
 import 'package:rsue_app/src/domain/entities/payment_entity.dart';
 import 'package:rsue_app/src/core/resources/data_state.dart';
 import 'package:rsue_app/src/domain/repositories/portfolio_repository.dart';
 
-class PortfolioRepositoryImpl implements PortfolioRepository {
+class PortfolioRepositoryImpl extends RepositoryBase
+    implements PortfolioRepository {
   PortfolioRepositoryImpl(this.source, this.cacheSource);
   String? username;
   String? password;
@@ -20,51 +21,11 @@ class PortfolioRepositoryImpl implements PortfolioRepository {
     return true;
   }
 
-  Future<DataState<T>> _invokeDSs<T>(
-      Future<T?> onlineDs,
-      Future<T?> localDs,
-      Future<void> Function(T snapshot) saveDsCallback,
-      String localErr,
-      String onlineErr) async {
-    DataState<T> result;
-    try {
-      var snapshot = await onlineDs;
-      if (snapshot == null) {
-        throw const RepositoryError(name: "no data");
-      }
-      saveDsCallback(snapshot);
-      result = DataSuccess(data: snapshot);
-    } catch (onlineErr) {
-      if (onlineErr is RsError) {
-        result = DataFailed(error: onlineErr);
-      } else {
-        result = DataFailed(error: RepositoryError(name: onlineErr.toString()));
-      }
-
-      // попытка взять из локального источника
-      try {
-        var localSnap = await localDs;
-        if (localSnap == null) {
-          throw const ResponseError(name: "no local data");
-        }
-        result = DataRestored(data: localSnap);
-      } catch (localErr) {
-        if (localErr is RsError) {
-          result = DataFailed(error: localErr);
-        } else {
-          result =
-              DataFailed(error: RepositoryError(name: localErr.toString()));
-        }
-      }
-    }
-    return result;
-  }
-
   @override
   Future<DataState<Map<String, List<SubjectEntity>>>>
       getAcademicPerfomance() async {
     if (_checkCredits()) {
-      return await _invokeDSs(
+      return await invokeDSs(
           source.getAcademicPerfomance(username!, password!),
           cacheSource.getAcademicPerfomance(username!, password!),
           (snapshot) =>
@@ -78,7 +39,7 @@ class PortfolioRepositoryImpl implements PortfolioRepository {
   @override
   Future<DataState<List<PaymentEntity>>> getPayments() async {
     if (_checkCredits()) {
-      return await _invokeDSs(
+      return await invokeDSs(
           source.getPayments(username!, password!),
           cacheSource.getPayments(username!, password!),
           (snapshot) => cacheSource.setPayments(username!, password!, snapshot),
@@ -113,7 +74,7 @@ class PortfolioRepositoryImpl implements PortfolioRepository {
   @override
   Future<DataState<Map<String, String>>> whoami() async {
     if (_checkCredits()) {
-      return await _invokeDSs(
+      return await invokeDSs(
           source.getWhoami(username!, password!),
           cacheSource.getWhoami(username!, password!),
           (snapshot) => cacheSource.setWhoami(username!, password!, snapshot),

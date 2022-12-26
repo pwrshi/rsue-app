@@ -6,5 +6,5 @@ abstract class SessionDatasource {
 }
 
 abstract class SessionLocalDatasource extends SessionDatasource {
-  Future<void> setAllSchedules();
+  Future<void> setAllSchedules(Map<String, List<Quiz>> snapshot);
 }
