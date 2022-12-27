@@ -1,8 +1,8 @@
 import 'package:rsue_app/src/core/resources/data_state.dart';
 import 'package:rsue_app/src/domain/entities/quiz_entity.dart';
 import 'package:rsue_app/src/domain/repositories/session_repository.dart';
-import 'package:rsue_app/src/presentation/providers/data/portfolio_snapshot.dart';
-import 'package:rsue_app/src/presentation/providers/data/snapshot_interface.dart';
+import 'package:rsue_app/src/domain/usecases/portfolio_snapshot.dart';
+import 'package:rsue_app/src/core/usecases/snapshot.dart';
 
 const reposNotFound = DataSnapshotError(name: "Репозиторий не найден");
 

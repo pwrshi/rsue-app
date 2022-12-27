@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:rsue_app/src/core/api/response.dart';
 import 'package:rsue_app/src/domain/entities/schedule_service.dart';
-import 'package:rsue_app/src/presentation/providers/data/schedule_snapshot.dart';
+import 'package:rsue_app/src/domain/usecases/schedule_snapshot.dart';
 import 'package:rsue_app/src/presentation/widgets/schedule/lesson.dart';
 
 const int maxWeekPages = 15;

@@ -3,7 +3,7 @@ import 'package:rsue_app/src/core/resources/data_state.dart';
 import 'package:rsue_app/src/domain/entities/payment_entity.dart';
 import 'package:rsue_app/src/domain/entities/subject_entity.dart';
 import 'package:rsue_app/src/domain/repositories/portfolio_repository.dart';
-import 'package:rsue_app/src/presentation/providers/data/snapshot_interface.dart';
+import 'package:rsue_app/src/core/usecases/snapshot.dart';
 
 const reposNotFound = DataSnapshotError(name: "Репозиторий не найден");
 
@@ -21,7 +21,7 @@ class PaymentSnapshot extends DataSnapshot<List<PaymentEntity>> {
   }
 
   @override
-  Future<void> tryUpdate() async {
+  Future<void> tryUpdate(void e) async {
     DataState<List<PaymentEntity>> result =
         await repo?.getPayments() ?? const DataFailed(error: reposNotFound);
     if (result is DataSuccess) {
@@ -39,7 +39,7 @@ class WhoamiSnapshot extends DataSnapshot<Map<String, String>> {
   }
 
   @override
-  Future<void> tryUpdate() async {
+  Future<void> tryUpdate(void e) async {
     DataState<Map<String, String>> result =
         await repo?.whoami() ?? const DataFailed(error: reposNotFound);
     if (result is DataSuccess) {
@@ -59,7 +59,7 @@ class AcademicPerfomanceSnapshot
   }
 
   @override
-  Future<void> tryUpdate() async {
+  Future<void> tryUpdate(void e) async {
     DataState<Map<String, List<SubjectEntity>>> result =
         await repo?.getAcademicPerfomance() ??
             const DataFailed(error: reposNotFound);

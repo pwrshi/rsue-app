@@ -11,14 +11,14 @@ import 'package:rsue_app/src/data/datasource/session/session_cache.dart';
 import 'package:rsue_app/src/data/datasource/session/session_offical.dart';
 import 'package:rsue_app/src/data/repositories/portfolio_repository.dart';
 import 'package:rsue_app/src/data/repositories/schedule_repository.dart';
-import 'package:rsue_app/src/data/repositories/session_datasource.dart';
 import 'package:rsue_app/src/data/repositories/session_repository.dart';
 import 'package:rsue_app/src/domain/repositories/portfolio_repository.dart';
 import 'package:rsue_app/src/domain/repositories/schedule_repository.dart';
 import 'package:rsue_app/src/domain/repositories/session_repository.dart';
-import 'package:rsue_app/src/presentation/providers/data/portfolio_snapshot.dart';
-import 'package:rsue_app/src/presentation/providers/data/schedule_snapshot.dart';
-import 'package:rsue_app/src/presentation/providers/data/session_snapshot.dart';
+import 'package:rsue_app/src/domain/usecases/get-session-for-my-group_usecase.dart';
+import 'package:rsue_app/src/domain/usecases/portfolio_snapshot.dart';
+import 'package:rsue_app/src/domain/usecases/schedule_snapshot.dart';
+import 'package:rsue_app/src/domain/usecases/session_snapshot.dart';
 import 'package:rsue_app/src/presentation/providers/widget/short_info.dart';
 import 'package:rsue_app/src/presentation/screens/autor.dart';
 import 'package:rsue_app/src/presentation/screens/dzen_mode.dart';
@@ -30,6 +30,7 @@ import 'package:rsue_app/src/presentation/screens/payments.dart';
 import 'package:rsue_app/src/presentation/screens/profile.dart';
 import 'package:rsue_app/src/presentation/screens/schedule.dart';
 import 'package:rsue_app/src/presentation/screens/session.dart';
+import 'package:rsue_app/src/presentation/screens/subject_info.dart';
 import 'package:rsue_app/src/presentation/screens/whoami.dart';
 import 'package:rsue_app/src/presentation/widgets/menu_scaffold.dart';
 
@@ -89,7 +90,7 @@ class RsueApplication extends StatelessWidget {
               create: (context) => ShortInfoProvider(null),
               update: (context, value, previous) => ShortInfoProvider(value)),
           ChangeNotifierProxyProvider<SessionRepository, SessionsSnapshot>(create: (context) => SessionsSnapshot(null), update: (context, value, previous) => SessionsSnapshot(value)),
-
+          ProxyProvider2<WhoamiSnapshot, SessionsSnapshot, GetSessionForMyGroupSnapshot>(update: (context, whoami, sessions, previous) => GetSessionForMyGroupSnapshot(whoami: whoami, sessions: sessions)),
           Provider<ZoomDrawerController>(
             create: (context) => ZoomDrawerController(),
           ),
@@ -155,6 +156,7 @@ class RsueApplication extends StatelessWidget {
                       },
                     ),
                   ]),
+              '/subject_info' : (context) => const SubjectInfoScreen(), 
               '/session': (context) => const SessionScreen(),
               '/loading': (context) => const LoadingScreen(),
               '/schedule': (context) => const ScheduleScreen(),

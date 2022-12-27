@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rsue_app/src/core/api/response.dart';
 import 'package:rsue_app/src/domain/entities/quiz_entity.dart';
-import 'package:rsue_app/src/presentation/providers/data/portfolio_snapshot.dart';
-import 'package:rsue_app/src/presentation/providers/data/session_snapshot.dart';
+import 'package:rsue_app/src/domain/usecases/get-session-for-my-group_usecase.dart';
+import 'package:rsue_app/src/domain/usecases/portfolio_snapshot.dart';
+import 'package:rsue_app/src/domain/usecases/session_snapshot.dart';
 import 'package:rsue_app/src/presentation/widgets/app_bar.dart';
 
 class ExpandQuizGroupWidget extends StatelessWidget {
@@ -77,8 +78,7 @@ class _SessionScreenState extends State<SessionScreen> {
         ),
         body: Builder(
           builder: (context) {
-            var session = context.watch<SessionsSnapshot>();
-            var profile = context.watch<WhoamiSnapshot>();
+            var session = context.watch<GetSessionForMyGroupSnapshot>();
 
             switch (session.data.status) {
               case ResponseStatus.error:
@@ -104,24 +104,16 @@ class _SessionScreenState extends State<SessionScreen> {
                   ],
                 );
               default:
-                if (profile.data.status == ResponseStatus.done) {
-                  var groupName = profile.data.content?["Группа"];
-                  if (session.data.content!.containsKey(groupName)) {
-                    var p =
-                        session.data.content![profile.data.content?["Группа"]];
-                    return ListView(
-                      padding: const EdgeInsets.all(8),
-                      children: [ExpandQuizGroupWidget(groupName!, p!)],
-                    );
-                  }
-                }
                 return ListView(
                   padding: const EdgeInsets.all(8),
-                  children: [
-                    for (var p in session.data.content!.entries) ...[
-                      ExpandQuizGroupWidget(p.key, p.value)
-                    ]
-                  ],
+                  children: session.data.content!.$1
+                      .map<Widget>((subject) => QuizWidget(
+                            name: subject.name,
+                            datetime: subject.dateTime,
+                            rooms: subject.rooms,
+                            teachers: subject.teachers,
+                          ))
+                      .toList(),
                 );
             }
           },
@@ -149,7 +141,10 @@ class QuizWidget extends StatelessWidget {
           child: Material(
             color: const Color(0xff486581),
             child: InkWell(
-              onTap: (() async {}),
+              onTap: (() async {
+                Navigator.of(context)
+                    .pushNamed("/subject_info", arguments: name);
+              }),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(

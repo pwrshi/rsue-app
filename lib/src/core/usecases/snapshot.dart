@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:rsue_app/src/core/api/response.dart';
 import 'package:rsue_app/src/core/error/response_error.dart';
 import 'package:rsue_app/src/core/resources/data_state.dart';
+import 'package:rsue_app/src/core/usecases/usecase.dart';
 
-abstract class DataSnapshot<T> extends ChangeNotifier {
+abstract class DataSnapshot<T> extends ChangeNotifier
+    implements UseCase<T, void> {
   Response<T> _data = const Response(status: ResponseStatus.init);
 
   Future<DataState<T>> call();
@@ -12,7 +14,8 @@ abstract class DataSnapshot<T> extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> tryUpdate() async {
+  @override
+  Future<void> tryUpdate(void e) async {
     var result = await call();
     if (result is DataSuccess) {
       update(result.data as T);
@@ -22,6 +25,7 @@ abstract class DataSnapshot<T> extends ChangeNotifier {
     }
   }
 
+  @override
   Response<T> get data {
     if (_data.status == ResponseStatus.init) {
       _data = const Response(status: ResponseStatus.loading);
