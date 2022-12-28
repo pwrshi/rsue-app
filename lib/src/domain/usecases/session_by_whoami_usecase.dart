@@ -1,13 +1,11 @@
 import 'package:rsue_app/src/core/api/response.dart';
-import 'package:rsue_app/src/core/resources/data_state.dart';
 import 'package:rsue_app/src/core/usecases/usecase.dart';
 import 'package:rsue_app/src/domain/entities/quiz_entity.dart';
 import 'package:rsue_app/src/domain/usecases/portfolio_snapshot.dart';
-import 'package:rsue_app/src/domain/usecases/session_snapshot.dart';
-import 'package:rsue_app/src/core/usecases/snapshot.dart';
+import 'package:rsue_app/src/domain/usecases/sessions_snapshot.dart';
 
-class GetSessionForMyGroupSnapshot implements UseCase<(String, List<Quiz>), void> {
-  GetSessionForMyGroupSnapshot({this.sessions, this.whoami});
+class SessionByWhoamiUseCase implements UseCase<(String, List<Quiz>), void> {
+  SessionByWhoamiUseCase({this.sessions, this.whoami});
 
   WhoamiSnapshot? whoami;
   SessionsSnapshot? sessions;

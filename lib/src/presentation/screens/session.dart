@@ -4,9 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rsue_app/src/core/api/response.dart';
 import 'package:rsue_app/src/domain/entities/quiz_entity.dart';
-import 'package:rsue_app/src/domain/usecases/get-session-for-my-group_usecase.dart';
-import 'package:rsue_app/src/domain/usecases/portfolio_snapshot.dart';
-import 'package:rsue_app/src/domain/usecases/session_snapshot.dart';
+import 'package:rsue_app/src/domain/usecases/session_by_whoami_usecase.dart';
 import 'package:rsue_app/src/presentation/widgets/app_bar.dart';
 
 class ExpandQuizGroupWidget extends StatelessWidget {
@@ -78,7 +76,7 @@ class _SessionScreenState extends State<SessionScreen> {
         ),
         body: Builder(
           builder: (context) {
-            var session = context.watch<GetSessionForMyGroupSnapshot>();
+            var session = context.watch<SessionByWhoamiUseCase>();
 
             switch (session.data.status) {
               case ResponseStatus.error:
