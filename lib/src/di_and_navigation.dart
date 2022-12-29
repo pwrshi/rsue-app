@@ -19,6 +19,7 @@ import 'package:rsue_app/src/domain/usecases/session_by_whoami_usecase.dart';
 import 'package:rsue_app/src/domain/usecases/portfolio_snapshot.dart';
 import 'package:rsue_app/src/domain/usecases/schedule_snapshot.dart';
 import 'package:rsue_app/src/domain/usecases/sessions_snapshot.dart';
+import 'package:rsue_app/src/domain/usecases/subject_summary_by_name_usecase.dart';
 import 'package:rsue_app/src/presentation/providers/widget/short_info.dart';
 import 'package:rsue_app/src/presentation/screens/autor.dart';
 import 'package:rsue_app/src/presentation/screens/dzen_mode.dart';
@@ -91,6 +92,7 @@ class RsueApplication extends StatelessWidget {
               update: (context, value, previous) => ShortInfoProvider(value)),
           ChangeNotifierProxyProvider<SessionRepository, SessionsSnapshot>(create: (context) => SessionsSnapshot(null), update: (context, value, previous) => SessionsSnapshot(value)),
           ProxyProvider2<WhoamiSnapshot, SessionsSnapshot, SessionByWhoamiUseCase>(create:  (context) => SessionByWhoamiUseCase() ,update: (context, whoami, sessions, previous) => SessionByWhoamiUseCase( sessions: sessions, whoami: whoami)),
+          ProxyProvider2<AcademicPerfomanceSnapshot, SessionByWhoamiUseCase, SubjectSummaryByNameUseCase>(update: (context, aps, session, previous) => SubjectSummaryByNameUseCase( aps: aps, session: session)),
           Provider<ZoomDrawerController>(
             create: (context) => ZoomDrawerController(),
           ),
