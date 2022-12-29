@@ -5,7 +5,7 @@ import 'package:rsue_app/src/core/resources/data_state.dart';
 import 'package:rsue_app/src/core/usecases/usecase.dart';
 
 abstract class DataSnapshot<T> extends ChangeNotifier
-    implements UseCase<T, void> {
+    implements UseCase<T, void, void> {
   Response<T> _data = const Response(status: ResponseStatus.init);
 
   Future<DataState<T>> call();
@@ -15,7 +15,7 @@ abstract class DataSnapshot<T> extends ChangeNotifier
   }
 
   @override
-  Future<void> tryUpdate(void e) async {
+  Future<void> tryUpdate({void args}) async {
     var result = await call();
     if (result is DataSuccess) {
       update(result.data as T);
@@ -26,7 +26,7 @@ abstract class DataSnapshot<T> extends ChangeNotifier
   }
 
   @override
-  Response<T> get data {
+  Response<T> get({void args}) {
     if (_data.status == ResponseStatus.init) {
       _data = const Response(status: ResponseStatus.loading);
       call().then((value) {

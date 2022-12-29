@@ -29,11 +29,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
         body: Builder(
           builder: (context) {
             var value = context.watch<PaymentSnapshot>();
-            switch (value.data.status) {
+            switch (value.get().status) {
               case ResponseStatus.error:
                 return ListView(
                   padding: const EdgeInsets.all(8),
-                  children: [Text(value.data.error.toString())],
+                  children: [Text(value.get().error.toString())],
                 );
               case ResponseStatus.loading:
                 return ListView(
@@ -48,7 +48,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                 return ListView(
                   padding: const EdgeInsets.all(8),
                   children: [
-                    for (var p in value.data.content!) ...[
+                    for (var p in value.get().content!) ...[
                       PaymentWidget(
                         name: p.name,
                         dateOfReceiptFormation: p.dateOfReceiptFormation,

@@ -4,31 +4,31 @@ import 'package:rsue_app/src/domain/entities/quiz_entity.dart';
 import 'package:rsue_app/src/domain/usecases/portfolio_snapshot.dart';
 import 'package:rsue_app/src/domain/usecases/sessions_snapshot.dart';
 
-class SessionByWhoamiUseCase implements UseCase<(String, List<Quiz>), void> {
+class SessionByWhoamiUseCase implements UseCase<(String, List<Quiz>), void, void> {
   SessionByWhoamiUseCase({this.sessions, this.whoami});
 
   WhoamiSnapshot? whoami;
   SessionsSnapshot? sessions;
 
   @override
-  Response<(String, List<Quiz>)> get data {
+  Response<(String, List<Quiz>)> get({void args}) {
     if ((whoami == null) ||
         (sessions == null) ||
-        (sessions?.data.status == ResponseStatus.init) ||
-        (whoami?.data.status == ResponseStatus.init)) {
+        (sessions?.get().status == ResponseStatus.init) ||
+        (whoami?.get().status == ResponseStatus.init)) {
       return const Response(status: ResponseStatus.init);
-    } else if ((whoami!.data.status == ResponseStatus.loading) ||
-        (sessions!.data.status == ResponseStatus.loading)) {
+    } else if ((whoami!.get().status == ResponseStatus.loading) ||
+        (sessions!.get().status == ResponseStatus.loading)) {
       return const Response(status: ResponseStatus.loading);
-    } else if ((sessions!.data.status == ResponseStatus.error) ||
-        (whoami!.data.status == ResponseStatus.error)) {
+    } else if ((sessions!.get().status == ResponseStatus.error) ||
+        (whoami!.get().status == ResponseStatus.error)) {
       return const Response(status: ResponseStatus.error);
     } else {
-      if (whoami!.data.status == ResponseStatus.done) {
-        var groupName = whoami!.data.content?["Группа"];
-        if (sessions!.data.content!.containsKey(groupName)) {
+      if (whoami!.get().status == ResponseStatus.done) {
+        var groupName = whoami!.get().content?["Группа"];
+        if (sessions!.get().content!.containsKey(groupName)) {
           var p =
-              sessions!.data.content![whoami!.data.content?["Группа"]];
+              sessions!.get().content![whoami!.get().content?["Группа"]];
           return Response(status: ResponseStatus.done, content: (groupName!, p!));
         }
       } 
@@ -37,8 +37,8 @@ class SessionByWhoamiUseCase implements UseCase<(String, List<Quiz>), void> {
   }
 
   @override
-  Future<void> tryUpdate(args) async {
-   whoami?.tryUpdate(args);
-   sessions?.tryUpdate(args);
+    Future<void> tryUpdate({void args}) async {
+   whoami?.tryUpdate();
+   sessions?.tryUpdate();
   }
 }

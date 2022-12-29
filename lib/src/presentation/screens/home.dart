@@ -32,7 +32,7 @@ class HomeScreen extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 15.0),
             child: Builder(builder: (context) {
               var value = context.watch<WhoamiSnapshot>();
-              switch (value.data.status) {
+              switch (value.get().status) {
                 case ResponseStatus.loading:
                   return const Text(
                     "Добрый день!",
@@ -47,7 +47,7 @@ class HomeScreen extends StatelessWidget {
                   );
                 default:
                   return Text(
-                    "Добрый день, ${value.data.content?['Имя']}!",
+                    "Добрый день, ${value.get().content?['Имя']}!",
                     style: const TextStyle(fontSize: 24),
                     textAlign: TextAlign.center,
                   );
@@ -82,7 +82,7 @@ class HomeScreen extends StatelessWidget {
               ),
             )),
         Builder(builder: (context) {
-          var service = Provider.of<ScheduleServiceSnapshot>(context).data;
+          var service = Provider.of<ScheduleServiceSnapshot>(context).get();
 
           switch (service.status) {
             case ResponseStatus.done:

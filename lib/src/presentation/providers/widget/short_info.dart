@@ -17,13 +17,13 @@ class CircularForm {
 
 class ShortInfoProvider extends ChangeNotifier {
   ShortInfoProvider(this.snapshot) {
-    state = snapshot?.data.status ?? ResponseStatus.init;
+    state = snapshot?.get().status ?? ResponseStatus.init;
   }
   var state = ResponseStatus.init;
   AcademicPerfomanceSnapshot? snapshot;
   bool _checkData() {
-    if ((snapshot!.data.status == ResponseStatus.done) ||
-        (snapshot!.data.status == ResponseStatus.restored)) {
+    if ((snapshot!.get().status == ResponseStatus.done) ||
+        (snapshot!.get().status == ResponseStatus.restored)) {
       return true;
     }
     notifyListeners();
@@ -33,7 +33,7 @@ class ShortInfoProvider extends ChangeNotifier {
 
   NumberForm get _countCreditsNeedToPass {
     if (_checkData()) {
-      var lastSemester = snapshot!.data.content?.entries.first.value;
+      var lastSemester = snapshot!.get().content?.entries.first.value;
       var passed = lastSemester!
           .where((element) =>
               (element.type == SessionType.credit) & element.isClosed)
@@ -56,7 +56,7 @@ class ShortInfoProvider extends ChangeNotifier {
 
   NumberForm get _countExamsNeedToPass {
     if (_checkData()) {
-      var lastSemester = snapshot!.data.content?.entries.first.value;
+      var lastSemester = snapshot!.get().content?.entries.first.value;
       var passed = lastSemester!
           .where((element) =>
               (element.type == SessionType.exam) & element.isClosed)
@@ -83,7 +83,7 @@ class ShortInfoProvider extends ChangeNotifier {
 
   CircularForm get _averageExamsScore {
     if (_checkData()) {
-      var lastSemester = snapshot!.data.content?.entries.first.value;
+      var lastSemester = snapshot!.get().content?.entries.first.value;
       int count = 0;
       int summary = lastSemester!.fold<int>(0, (p, element) {
         if (element.type == SessionType.exam) {
@@ -101,7 +101,7 @@ class ShortInfoProvider extends ChangeNotifier {
 
   CircularForm get _averageCreditsScore {
     if (_checkData()) {
-      var lastSemester = snapshot!.data.content?.entries.first.value;
+      var lastSemester = snapshot!.get().content?.entries.first.value;
       int count = 0;
       int summary = lastSemester!.fold<int>(0, (p, element) {
         if (element.type == SessionType.credit) {
@@ -123,7 +123,7 @@ class ShortInfoProvider extends ChangeNotifier {
 
   List<SubjectEntity> get listOf5MostLowRatedSubject {
     if (_checkData()) {
-      var lastSemester = snapshot!.data.content!.entries.first.value;
+      var lastSemester = snapshot!.get().content!.entries.first.value;
       lastSemester.sort((a, b) => a.finalMark.compareTo(b.finalMark));
 
       return (lastSemester.length > 5

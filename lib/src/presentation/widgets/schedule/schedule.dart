@@ -178,7 +178,7 @@ class _ScheduleViewerState extends State<ScheduleViewer> {
 
   @override
   Widget build(BuildContext context) {
-    var service = widget.snapshot.data;
+    var service = widget.snapshot.get();
     return SizedBox.expand(
       child: Column(
         children: [

@@ -98,14 +98,14 @@ class ProfileScreen extends StatelessWidget {
                         ),
                         Builder(builder: (context) {
                           var value = context.watch<PaymentSnapshot>();
-                          switch (value.data.status) {
+                          switch (value.get().status) {
                             case ResponseStatus.loading:
                               return const Text("--\nПлатежи");
                             case ResponseStatus.error:
                               return const Text("-_-\nПлатежи");
                             default:
                               return Text(
-                                  "${value.data.content?.length}\nПлатежи");
+                                  "${value.get().content?.length}\nПлатежи");
                           }
                         })
                       ],
@@ -152,18 +152,18 @@ class ProfileScreen extends StatelessWidget {
           ),
           Builder(builder: (c) {
             var value = context.watch<AcademicPerfomanceSnapshot>();
-            switch (value.data.status) {
+            switch (value.get().status) {
               case ResponseStatus.loading:
                 return const SizedBox.shrink(
                   child: CircularProgressIndicator(),
                 );
               case ResponseStatus.error:
                 return SizedBox.shrink(
-                  child: Text(value.data.error.toString()),
+                  child: Text(value.get().error.toString()),
                 );
               default:
                 return Column(children: [
-                  for (var s in (value.data.content?.entries.toList() ?? []))
+                  for (var s in (value.get().content?.entries.toList() ?? []))
                     ExpandSemesterWidget(s.key, s.value)
 
                   //   Padding(

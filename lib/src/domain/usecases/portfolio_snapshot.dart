@@ -21,7 +21,7 @@ class PaymentSnapshot extends DataSnapshot<List<PaymentEntity>> {
   }
 
   @override
-  Future<void> tryUpdate(void e) async {
+  Future<void> tryUpdate({void args}) async {
     DataState<List<PaymentEntity>> result =
         await repo?.getPayments() ?? const DataFailed(error: reposNotFound);
     if (result is DataSuccess) {
@@ -39,7 +39,7 @@ class WhoamiSnapshot extends DataSnapshot<Map<String, String>> {
   }
 
   @override
-  Future<void> tryUpdate(void e) async {
+  Future<void> tryUpdate({void args}) async {
     DataState<Map<String, String>> result =
         await repo?.whoami() ?? const DataFailed(error: reposNotFound);
     if (result is DataSuccess) {
@@ -59,7 +59,7 @@ class AcademicPerfomanceSnapshot
   }
 
   @override
-  Future<void> tryUpdate(void e) async {
+  Future<void> tryUpdate({void args}) async {
     DataState<Map<String, List<SubjectEntity>>> result =
         await repo?.getAcademicPerfomance() ??
             const DataFailed(error: reposNotFound);

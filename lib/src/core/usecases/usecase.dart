@@ -1,6 +1,18 @@
 import 'package:rsue_app/src/core/api/response.dart';
 
-abstract class UseCase<T, P> {
-  Response<T> get data;
-  Future<void> tryUpdate(P args);
+/// Цель этого класса, показать что
+/// он имеет методы, которые возвращают
+/// результат в определённой оболочке
+abstract class UseCase<T, P, A> {
+  // - Почему аргументы [nullable]?
+
+  // - Да потому что разрабы
+  //   дарта мудаки, которые
+  //   считают что [required]
+  //   ломает наследственность,
+  //   а потому, пусть отсутствие
+  //   агрумента будет возвращаться
+  //   как ошибка :) (когда это нужно)
+  Response<T> get({A? args});
+  Future<void> tryUpdate({P? args});
 }

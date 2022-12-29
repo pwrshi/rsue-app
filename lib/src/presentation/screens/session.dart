@@ -78,11 +78,11 @@ class _SessionScreenState extends State<SessionScreen> {
           builder: (context) {
             var session = context.watch<SessionByWhoamiUseCase>();
 
-            switch (session.data.status) {
+            switch (session.get().status) {
               case ResponseStatus.error:
                 return ListView(
                   padding: const EdgeInsets.all(8),
-                  children: [Text(session.data.error.toString())],
+                  children: [Text(session.get().error.toString())],
                 );
               case ResponseStatus.loading:
                 return ListView(
@@ -104,7 +104,10 @@ class _SessionScreenState extends State<SessionScreen> {
               default:
                 return ListView(
                   padding: const EdgeInsets.all(8),
-                  children: session.data.content!.$1
+                  children: session
+                      .get()
+                      .content!
+                      .$1
                       .map<Widget>((subject) => QuizWidget(
                             name: subject.name,
                             datetime: subject.dateTime,

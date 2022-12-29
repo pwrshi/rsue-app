@@ -26,9 +26,9 @@ class WhoamiScreen extends StatelessWidget {
           "Номер зачетной книжки": "------",
           "Год поступления": "----",
         };
-        if ((value.data.status == ResponseStatus.done) ||
-            (value.data.status == ResponseStatus.restored)) {
-          whoami = value.data.content!;
+        if ((value.get().status == ResponseStatus.done) ||
+            (value.get().status == ResponseStatus.restored)) {
+          whoami = value.get().content!;
         }
         return ListView(
           padding: const EdgeInsets.all(8),
