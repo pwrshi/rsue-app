@@ -39,6 +39,7 @@ abstract class $SubjectEntityCopyWith<$Res> {
           SubjectEntity value, $Res Function(SubjectEntity) then) =
       _$SubjectEntityCopyWithImpl<$Res, SubjectEntity>;
   @useResult
+  // ignore: long-parameter-list
   $Res call(
       {String name,
       String teachersname,
@@ -60,6 +61,7 @@ class _$SubjectEntityCopyWithImpl<$Res, $Val extends SubjectEntity>
 
   @pragma('vm:prefer-inline')
   @override
+  // ignore: long-parameter-list
   $Res call({
     Object? name = null,
     Object? teachersname = null,
@@ -105,6 +107,7 @@ abstract class _$$_SubjectEntityCopyWith<$Res>
       __$$_SubjectEntityCopyWithImpl<$Res>;
   @override
   @useResult
+  // ignore: long-parameter-list
   $Res call(
       {String name,
       String teachersname,
@@ -124,6 +127,7 @@ class __$$_SubjectEntityCopyWithImpl<$Res>
 
   @pragma('vm:prefer-inline')
   @override
+  // ignore: long-parameter-list
   $Res call({
     Object? name = null,
     Object? teachersname = null,

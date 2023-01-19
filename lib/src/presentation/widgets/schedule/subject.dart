@@ -41,7 +41,7 @@ class SubjectWidget extends StatelessWidget {
         children: [
           for (var point in controlPoints)
             Container(
-              margin: EdgeInsets.only(right: 4),
+              margin: const EdgeInsets.only(right: 4),
               padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 6),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(6),

@@ -56,7 +56,7 @@ class PortfolioRepositoryImpl extends RepositoryBase
         this.username = username;
         this.password = password;
         await cacheSource.setLastCredentials(username, password);
-        return const DataSuccess(data: '');
+        return const DataSuccess(data: null);
       } else {
         return const DataFailed(error: ResponseError(name: "неправильно!!!!!"));
       }

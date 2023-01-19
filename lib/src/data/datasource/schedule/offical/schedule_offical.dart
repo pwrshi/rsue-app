@@ -110,6 +110,7 @@ class ScheduleOfficalDatasource implements ScheduleDatasource {
     return allGroups;
   }
 
+  // ignore: long-method
   Future<ScheduleRaw> _getScheduleRaw(GroupId groupId) async {
     var response = await http.post(htmlUrl,
         data: FormData.fromMap({

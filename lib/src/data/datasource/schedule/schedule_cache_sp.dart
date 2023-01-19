@@ -12,6 +12,7 @@ class SharedPreferencesScheduleCacheDatasource
     return pref ??= await SharedPreferences.getInstance();
   }
 
+  // TODO: реализовать кэши
   @override
   Future<List<Group>?> getAllGroups() async {
     return null;

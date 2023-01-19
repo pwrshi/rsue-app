@@ -21,7 +21,7 @@ class SessionRepositoryImpl extends RepositoryBase
         "Ошибка скачивания сессии");
     if (snap is DataSuccess) {
       var sch = snap.data?[groupName];
-      return (sch == Null
+      return (sch == null
           ? const DataFailed(
               error: RepositoryError(name: "Нет такой группы (("))
           : DataSuccess(data: sch));

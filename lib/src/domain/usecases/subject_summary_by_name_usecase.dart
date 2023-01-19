@@ -27,28 +27,47 @@ class SubjectSummaryByNameUseCase
           status: ResponseStatus.error,
           error: UseCaseError(name: "Нет аргумента"));
     }
-    SubjectEntity? subject = apssnap.content?[0]?.fold<SubjectEntity?>(
-        null, (prev, el) => (el.name == args ? el : null));
+    SubjectEntity? subject;
+    var arrayOfSubjects = apssnap.content?.entries.toList()[0].value;
 
-    Quiz? quiz = ssnap.content?.$1.fold<Quiz?>(null, (prev, el) {
-      print(el.toString());
-      return (el.name == args ? el : null);
-    });
+    if (arrayOfSubjects != null) {
+      for (var s in arrayOfSubjects) {
+        if (s.name == args) {
+          subject = s;
+        }
+      }
+    }
+
+    // .fold<SubjectEntity?>(
+    //     null, (prev, el) => (el.name == args ? el : null));
+
+    Quiz? quiz;
+    var arrayOfQuizes = ssnap.content?.$1;
+
+    if (arrayOfQuizes != null) {
+      for (var q in arrayOfQuizes) {
+        if (q.name == args) {
+          quiz = q;
+        }
+      }
+    }
+
+    // .fold<Quiz?>(null, (prev, el) => (el.name == args ? el : null))
 
     Response<SubjectEntity> rsubject = Response(
         status:
-            (((apssnap.status == ResponseStatus.done) && (subject == null)) ||
+            (((apssnap.status == ResponseStatus.done) && (subject != null)) ||
                     ((apssnap.status == ResponseStatus.restored) &&
-                        (subject == null)))
-                ? ResponseStatus.error
-                : apssnap.status,
+                        (subject != null)))
+                ? apssnap.status
+                : ResponseStatus.error,
         content: subject);
     Response<Quiz> rquiz = Response(
-        status: (((ssnap.status == ResponseStatus.done) && (subject == null)) ||
+        status: (((ssnap.status == ResponseStatus.done) && (quiz != null)) ||
                 ((ssnap.status == ResponseStatus.restored) &&
                     (subject == null)))
-            ? ResponseStatus.error
-            : ssnap.status,
+            ? ssnap.status
+            : ResponseStatus.error,
         content: quiz);
 
     return Response(
@@ -58,7 +77,7 @@ class SubjectSummaryByNameUseCase
 
   @override
   Future<void> tryUpdate({void args}) async {
-    aps?.tryUpdate();
-    session?.tryUpdate();
+    aps.tryUpdate();
+    session.tryUpdate();
   }
 }
