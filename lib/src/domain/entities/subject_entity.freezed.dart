@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'subject_entity.dart';
 
@@ -39,7 +39,6 @@ abstract class $SubjectEntityCopyWith<$Res> {
           SubjectEntity value, $Res Function(SubjectEntity) then) =
       _$SubjectEntityCopyWithImpl<$Res, SubjectEntity>;
   @useResult
-  // ignore: long-parameter-list
   $Res call(
       {String name,
       String teachersname,
@@ -61,7 +60,6 @@ class _$SubjectEntityCopyWithImpl<$Res, $Val extends SubjectEntity>
 
   @pragma('vm:prefer-inline')
   @override
-  // ignore: long-parameter-list
   $Res call({
     Object? name = null,
     Object? teachersname = null,
@@ -107,7 +105,6 @@ abstract class _$$_SubjectEntityCopyWith<$Res>
       __$$_SubjectEntityCopyWithImpl<$Res>;
   @override
   @useResult
-  // ignore: long-parameter-list
   $Res call(
       {String name,
       String teachersname,
@@ -127,7 +124,6 @@ class __$$_SubjectEntityCopyWithImpl<$Res>
 
   @pragma('vm:prefer-inline')
   @override
-  // ignore: long-parameter-list
   $Res call({
     Object? name = null,
     Object? teachersname = null,
@@ -194,6 +190,7 @@ class _$_SubjectEntity extends _SubjectEntity {
   final List<int> _controlPoints;
   @override
   List<int> get controlPoints {
+    if (_controlPoints is EqualUnmodifiableListView) return _controlPoints;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_controlPoints);
   }

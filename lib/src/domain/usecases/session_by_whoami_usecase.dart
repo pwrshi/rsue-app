@@ -4,14 +4,15 @@ import 'package:rsue_app/src/domain/entities/quiz_entity.dart';
 import 'package:rsue_app/src/domain/usecases/portfolio_snapshot.dart';
 import 'package:rsue_app/src/domain/usecases/sessions_snapshot.dart';
 
-class SessionByWhoamiUseCase implements UseCase<(String, List<Quiz>), void, void> {
+class SessionByWhoamiUseCase
+    implements UseCase<MapEntry<String, List<Quiz>>, void, void> {
   SessionByWhoamiUseCase({this.sessions, this.whoami});
 
   WhoamiSnapshot? whoami;
   SessionsSnapshot? sessions;
 
   @override
-  Response<(String, List<Quiz>)> get({void args}) {
+  Response<MapEntry<String, List<Quiz>>> get({void args}) {
     if ((whoami == null) ||
         (sessions == null) ||
         (sessions?.get().status == ResponseStatus.init) ||
@@ -27,18 +28,20 @@ class SessionByWhoamiUseCase implements UseCase<(String, List<Quiz>), void, void
       if (whoami!.get().status == ResponseStatus.done) {
         var groupName = whoami!.get().content?["Группа"];
         if (sessions!.get().content!.containsKey(groupName)) {
-          var p =
-              sessions!.get().content![whoami!.get().content?["Группа"]];
-          return Response(status: ResponseStatus.done, content: (groupName!, p!));
+          var p = sessions!.get().content![whoami!.get().content?["Группа"]];
+          return Response(
+              status: ResponseStatus.done, content: MapEntry(groupName!, p!));
         }
-      } 
+      }
     }
-    return const Response(status: ResponseStatus.error, error: DataSnapshotError(name: "группа не найдена"));
+    return const Response(
+        status: ResponseStatus.error,
+        error: DataSnapshotError(name: "группа не найдена"));
   }
 
   @override
-    Future<void> tryUpdate({void args}) async {
-   whoami?.tryUpdate();
-   sessions?.tryUpdate();
+  Future<void> tryUpdate({void args}) async {
+    whoami?.tryUpdate();
+    sessions?.tryUpdate();
   }
 }

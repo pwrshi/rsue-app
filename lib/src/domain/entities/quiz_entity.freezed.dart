@@ -1,7 +1,7 @@
 // coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint
-// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'quiz_entity.dart';
 
@@ -24,6 +24,7 @@ mixin _$Quiz {
   String? get dateTime => throw _privateConstructorUsedError;
   String? get rooms => throw _privateConstructorUsedError;
   String? get teachers => throw _privateConstructorUsedError;
+  SessionType? get type => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +36,12 @@ abstract class $QuizCopyWith<$Res> {
   factory $QuizCopyWith(Quiz value, $Res Function(Quiz) then) =
       _$QuizCopyWithImpl<$Res, Quiz>;
   @useResult
-  $Res call({String name, String? dateTime, String? rooms, String? teachers});
+  $Res call(
+      {String name,
+      String? dateTime,
+      String? rooms,
+      String? teachers,
+      SessionType? type});
 }
 
 /// @nodoc
@@ -55,6 +61,7 @@ class _$QuizCopyWithImpl<$Res, $Val extends Quiz>
     Object? dateTime = freezed,
     Object? rooms = freezed,
     Object? teachers = freezed,
+    Object? type = freezed,
   }) {
     return _then(_value.copyWith(
       name: null == name
@@ -73,6 +80,10 @@ class _$QuizCopyWithImpl<$Res, $Val extends Quiz>
           ? _value.teachers
           : teachers // ignore: cast_nullable_to_non_nullable
               as String?,
+      type: freezed == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as SessionType?,
     ) as $Val);
   }
 }
@@ -83,7 +94,12 @@ abstract class _$$_QuizCopyWith<$Res> implements $QuizCopyWith<$Res> {
       __$$_QuizCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String name, String? dateTime, String? rooms, String? teachers});
+  $Res call(
+      {String name,
+      String? dateTime,
+      String? rooms,
+      String? teachers,
+      SessionType? type});
 }
 
 /// @nodoc
@@ -99,6 +115,7 @@ class __$$_QuizCopyWithImpl<$Res> extends _$QuizCopyWithImpl<$Res, _$_Quiz>
     Object? dateTime = freezed,
     Object? rooms = freezed,
     Object? teachers = freezed,
+    Object? type = freezed,
   }) {
     return _then(_$_Quiz(
       name: null == name
@@ -117,6 +134,10 @@ class __$$_QuizCopyWithImpl<$Res> extends _$QuizCopyWithImpl<$Res, _$_Quiz>
           ? _value.teachers
           : teachers // ignore: cast_nullable_to_non_nullable
               as String?,
+      type: freezed == type
+          ? _value.type
+          : type // ignore: cast_nullable_to_non_nullable
+              as SessionType?,
     ));
   }
 }
@@ -124,7 +145,12 @@ class __$$_QuizCopyWithImpl<$Res> extends _$QuizCopyWithImpl<$Res, _$_Quiz>
 /// @nodoc
 @JsonSerializable()
 class _$_Quiz implements _Quiz {
-  const _$_Quiz({required this.name, this.dateTime, this.rooms, this.teachers});
+  const _$_Quiz(
+      {required this.name,
+      this.dateTime,
+      this.rooms,
+      this.teachers,
+      this.type});
 
   factory _$_Quiz.fromJson(Map<String, dynamic> json) => _$$_QuizFromJson(json);
 
@@ -136,10 +162,12 @@ class _$_Quiz implements _Quiz {
   final String? rooms;
   @override
   final String? teachers;
+  @override
+  final SessionType? type;
 
   @override
   String toString() {
-    return 'Quiz(name: $name, dateTime: $dateTime, rooms: $rooms, teachers: $teachers)';
+    return 'Quiz(name: $name, dateTime: $dateTime, rooms: $rooms, teachers: $teachers, type: $type)';
   }
 
   @override
@@ -152,12 +180,14 @@ class _$_Quiz implements _Quiz {
                 other.dateTime == dateTime) &&
             (identical(other.rooms, rooms) || other.rooms == rooms) &&
             (identical(other.teachers, teachers) ||
-                other.teachers == teachers));
+                other.teachers == teachers) &&
+            (identical(other.type, type) || other.type == type));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, name, dateTime, rooms, teachers);
+  int get hashCode =>
+      Object.hash(runtimeType, name, dateTime, rooms, teachers, type);
 
   @JsonKey(ignore: true)
   @override
@@ -178,7 +208,8 @@ abstract class _Quiz implements Quiz {
       {required final String name,
       final String? dateTime,
       final String? rooms,
-      final String? teachers}) = _$_Quiz;
+      final String? teachers,
+      final SessionType? type}) = _$_Quiz;
 
   factory _Quiz.fromJson(Map<String, dynamic> json) = _$_Quiz.fromJson;
 
@@ -190,6 +221,8 @@ abstract class _Quiz implements Quiz {
   String? get rooms;
   @override
   String? get teachers;
+  @override
+  SessionType? get type;
   @override
   @JsonKey(ignore: true)
   _$$_QuizCopyWith<_$_Quiz> get copyWith => throw _privateConstructorUsedError;

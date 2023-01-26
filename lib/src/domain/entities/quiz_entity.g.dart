@@ -1,7 +1,5 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-// ignore_for_file: non_constant_identifier_names
-
 part of 'quiz_entity.dart';
 
 // **************************************************************************
@@ -13,6 +11,7 @@ _$_Quiz _$$_QuizFromJson(Map<String, dynamic> json) => _$_Quiz(
       dateTime: json['dateTime'] as String?,
       rooms: json['rooms'] as String?,
       teachers: json['teachers'] as String?,
+      type: $enumDecodeNullable(_$SessionTypeEnumMap, json['type']),
     );
 
 Map<String, dynamic> _$$_QuizToJson(_$_Quiz instance) => <String, dynamic>{
@@ -20,4 +19,11 @@ Map<String, dynamic> _$$_QuizToJson(_$_Quiz instance) => <String, dynamic>{
       'dateTime': instance.dateTime,
       'rooms': instance.rooms,
       'teachers': instance.teachers,
+      'type': _$SessionTypeEnumMap[instance.type],
     };
+
+const _$SessionTypeEnumMap = {
+  SessionType.exam: 'exam',
+  SessionType.practise: 'practise',
+  SessionType.credit: 'credit',
+};

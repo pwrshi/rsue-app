@@ -9,6 +9,117 @@ import 'package:rsue_app/src/presentation/screens/session.dart';
 import 'package:rsue_app/src/presentation/widgets/app_bar.dart';
 import 'package:rsue_app/src/presentation/widgets/schedule/subject.dart';
 
+class PerfomanceScoreScale extends StatelessWidget {
+  const PerfomanceScoreScale({super.key, required this.absoluteScore});
+  final List<int> absoluteScore;
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      alignment: AlignmentDirectional.center,
+      children: [
+        Container(
+            height: 20,
+            width: 320,
+            padding: const EdgeInsets.all(2),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: const Color(0xFF9FB3C8)),
+            child: Row(children: [
+              Container(
+                height: 16,
+                width: 280,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: const Color(0xFFF7A23B)),
+                child: Row(children: [
+                  Container(
+                    height: 16,
+                    width: 130,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: const Color(0xFFFBC62F)),
+                  )
+                ]),
+              )
+            ])),
+        SizedBox(
+          width: 320,
+          height: 70,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const SizedBox(
+                  width: 159,
+                  height: 70,
+                  child: Text(
+                    "неуд",
+                    textAlign: TextAlign.center,
+                  )),
+              Container(
+                color: Colors.white,
+                width: 1,
+                height: 30,
+              ),
+              const SizedBox(
+                  width: 53,
+                  height: 70,
+                  child: Text(
+                    "3",
+                    textAlign: TextAlign.center,
+                  )),
+              Container(
+                color: Colors.white,
+                width: 1,
+                height: 30,
+              ),
+              const SizedBox(
+                  width: 53,
+                  height: 70,
+                  child: Text(
+                    "4",
+                    textAlign: TextAlign.center,
+                  )),
+              Container(
+                color: Colors.white,
+                width: 1,
+                height: 30,
+              ),
+              const SizedBox(
+                  width: 52,
+                  height: 70,
+                  child: Text(
+                    "5",
+                    textAlign: TextAlign.center,
+                  )),
+            ],
+          ),
+        )
+      ],
+    );
+  }
+}
+
+class AcademicPerfomanceSummaryWidget extends StatelessWidget {
+  const AcademicPerfomanceSummaryWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        padding: const EdgeInsets.all(3),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(9),
+            color: const Color(0xFF486581)),
+        child: Column(
+          children: const [
+            Text("Оценка по предмету"),
+            PerfomanceScoreScale(absoluteScore: [85, 75]),
+          ],
+        ));
+  }
+}
+
 class SubjectInfoScreen extends StatefulWidget {
   const SubjectInfoScreen({super.key});
 
@@ -62,6 +173,10 @@ class _SubjectInfoScreenState extends State<SubjectInfoScreen> {
                 return ListView(
                   padding: const EdgeInsets.all(8),
                   children: [
+                    genBlock(
+                        summary!.subject,
+                        (SubjectEntity subject) =>
+                            const AcademicPerfomanceSummaryWidget()),
                     genBlock(
                         summary!.quiz,
                         (Quiz quiz) => QuizWidget(

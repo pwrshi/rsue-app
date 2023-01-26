@@ -107,11 +107,12 @@ class _SessionScreenState extends State<SessionScreen> {
                   children: session
                       .get()
                       .content!
-                      .$1
+                      .value
                       .map<Widget>((subject) => QuizWidget(
                             name: subject.name,
                             datetime: subject.dateTime,
                             rooms: subject.rooms,
+                            type: subject.type,
                             teachers: subject.teachers,
                           ))
                       .toList(),
@@ -128,9 +129,24 @@ class QuizWidget extends StatelessWidget {
       required this.name,
       this.datetime,
       this.rooms,
+      this.type,
       this.teachers});
   final String name;
   final String? datetime, rooms, teachers;
+  final SessionType? type;
+
+  String? typeToText() {
+    switch (type) {
+      case SessionType.credit:
+        return "Зачёт";
+      case SessionType.exam:
+        return "Экзамен";
+      case SessionType.practise:
+        return "Практика";
+      default:
+        return null;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -183,10 +199,10 @@ class QuizWidget extends StatelessWidget {
                                 text: datetime ?? ":(",
                               ),
                               ChipWidget(
-                                text: rooms ?? ":(",
+                                text: typeToText() ?? ":(",
                               ),
                               ChipWidget(
-                                text: teachers ?? ":(",
+                                text: rooms ?? ":(",
                               ),
                             ],
                           ),

@@ -42,7 +42,7 @@ class SubjectSummaryByNameUseCase
     //     null, (prev, el) => (el.name == args ? el : null));
 
     Quiz? quiz;
-    var arrayOfQuizes = ssnap.content?.$1;
+    var arrayOfQuizes = ssnap.content?.value;
 
     if (arrayOfQuizes != null) {
       for (var q in arrayOfQuizes) {

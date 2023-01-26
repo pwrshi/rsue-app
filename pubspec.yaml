@@ -3,7 +3,7 @@ description: rsue_app
 version: 1.0.4+5
 publish_to: none
 environment:
-  sdk: ">=2.19.0-214.0.dev <3.0.0"
+  sdk: ">=2.19.0"
 dependencies:
   expandable: ^5.0.1
   rsue_session_api:
