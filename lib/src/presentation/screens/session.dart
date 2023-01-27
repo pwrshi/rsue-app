@@ -160,8 +160,8 @@ class QuizWidget extends StatelessWidget {
             color: const Color(0xff486581),
             child: InkWell(
               onTap: (() async {
-                Navigator.of(context)
-                    .pushNamed("/subject_info", arguments: name);
+                Navigator.of(context).pushNamed("/subject_info",
+                    arguments: MapEntry(name, null));
               }),
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
