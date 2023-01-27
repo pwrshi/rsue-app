@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rsue_app/src/core/api/response.dart';
 import 'package:rsue_app/src/domain/entities/quiz_entity.dart';
+import 'package:rsue_app/src/domain/entities/session_type.dart';
 import 'package:rsue_app/src/domain/entities/subject_entity.dart';
 import 'package:rsue_app/src/domain/usecases/subject_summary_by_name_usecase.dart';
 import 'package:rsue_app/src/presentation/screens/session.dart';
@@ -10,10 +11,10 @@ import 'package:rsue_app/src/presentation/widgets/app_bar.dart';
 import 'package:rsue_app/src/presentation/widgets/schedule/subject.dart';
 
 class SubjectInfoContainer extends StatelessWidget {
-  SubjectInfoContainer(
+  const SubjectInfoContainer(
       {super.key, required this.title, required this.children});
-  String title;
-  List<Widget> children;
+  final String title;
+  final List<Widget> children;
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +49,23 @@ class SubjectInfoContainer extends StatelessWidget {
 }
 
 class SessionWidget extends StatelessWidget {
-  const SessionWidget({super.key});
+  const SessionWidget({super.key, this.room, this.dateTime, this.type});
+  final String? room;
+  final String? dateTime;
+  final SessionType? type;
+
+  String? typeToText() {
+    switch (type) {
+      case SessionType.credit:
+        return "Зачёт";
+      case SessionType.exam:
+        return "Экзамен";
+      case SessionType.practice:
+        return "Практика";
+      default:
+        return null;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

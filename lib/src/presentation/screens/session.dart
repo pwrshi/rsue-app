@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rsue_app/src/core/api/response.dart';
 import 'package:rsue_app/src/domain/entities/quiz_entity.dart';
+import 'package:rsue_app/src/domain/entities/session_type.dart';
 import 'package:rsue_app/src/domain/usecases/session_by_whoami_usecase.dart';
 import 'package:rsue_app/src/presentation/widgets/app_bar.dart';
 
@@ -141,7 +142,7 @@ class QuizWidget extends StatelessWidget {
         return "Зачёт";
       case SessionType.exam:
         return "Экзамен";
-      case SessionType.practise:
+      case SessionType.practice:
         return "Практика";
       default:
         return null;

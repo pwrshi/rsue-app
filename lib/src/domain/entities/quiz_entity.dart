@@ -1,12 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:rsue_app/src/domain/entities/session_type.dart';
 part 'quiz_entity.freezed.dart';
 part 'quiz_entity.g.dart';
-
-enum SessionType {
-  exam,
-  practise,
-  credit,
-}
 
 @freezed
 class Quiz with _$Quiz {

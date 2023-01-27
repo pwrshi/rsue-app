@@ -1,9 +1,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:rsue_app/src/domain/entities/session_type.dart';
 
 part 'subject_entity.freezed.dart';
 part 'subject_entity.g.dart';
-
-enum SessionType { exam, credit, practice }
 
 // /// academic perfomance interface
 // abstract class AcademicPerfomance {

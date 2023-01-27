@@ -5,6 +5,7 @@ import 'package:dio/dio.dart';
 
 import 'package:rsue_app/src/core/error/datasource_error.dart';
 import 'package:rsue_app/src/data/repositories/portfolio_datasource.dart';
+import 'package:rsue_app/src/domain/entities/session_type.dart';
 import 'package:rsue_app/src/domain/entities/subject_entity.dart';
 import 'package:rsue_app/src/domain/entities/payment_entity.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';

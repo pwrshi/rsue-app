@@ -1,7 +1,7 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:rsue_app/src/domain/entities/subject_entity.dart';
+import 'package:rsue_app/src/domain/entities/session_type.dart';
 
 class SubjectWidget extends StatelessWidget {
   const SubjectWidget(

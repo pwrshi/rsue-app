@@ -1,5 +1,6 @@
 import 'package:rsue_app/src/data/repositories/session_datasource.dart';
 import 'package:rsue_app/src/domain/entities/quiz_entity.dart';
+import 'package:rsue_app/src/domain/entities/session_type.dart';
 import 'package:rsue_session_api/api.dart';
 import 'package:rsue_session_api/rsue_session_api.dart';
 
@@ -11,7 +12,7 @@ class SessionImplDatasource extends SessionDatasource {
       case MarkType.exam:
         return SessionType.exam;
       case MarkType.practise:
-        return SessionType.practise;
+        return SessionType.practice;
     }
   }
 

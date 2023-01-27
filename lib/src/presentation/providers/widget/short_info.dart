@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rsue_app/src/core/api/response.dart';
 import 'package:rsue_app/src/core/error/error.dart';
+import 'package:rsue_app/src/domain/entities/session_type.dart';
 import 'package:rsue_app/src/domain/entities/subject_entity.dart';
 import 'package:rsue_app/src/domain/usecases/portfolio_snapshot.dart';
 

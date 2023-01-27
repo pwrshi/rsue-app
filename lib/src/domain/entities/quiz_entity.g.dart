@@ -24,6 +24,6 @@ Map<String, dynamic> _$$_QuizToJson(_$_Quiz instance) => <String, dynamic>{
 
 const _$SessionTypeEnumMap = {
   SessionType.exam: 'exam',
-  SessionType.practise: 'practise',
+  SessionType.practice: 'practice',
   SessionType.credit: 'credit',
 };
