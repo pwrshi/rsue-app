@@ -130,38 +130,43 @@ class ScheduleOfficalDatasource implements ScheduleDatasource {
           if (el.className == "ned") {
             String currentWeek = el.innerHtml;
 
-            List<Element>? week = containerWeeks.children[idx + 1].children;
+            List<Element>? week;
+            if (containerWeeks.children.length > (idx + 1)) {
+              week = containerWeeks.children[idx + 1].children;
+            }
             Map<String, List<Map<String, String>>> weekResult = {};
 
-            for (var day in week) {
-              if (day.text != " ") {
-                String dayName = day.children.first.innerHtml;
-                List<Map<String, String>> lessonsResult = [];
+            if (week != null) {
+              for (var day in week) {
+                if (day.text != " ") {
+                  String dayName = day.children.first.innerHtml;
+                  List<Map<String, String>> lessonsResult = [];
 
-                day.children.asMap().forEach((idx, lesson) {
-                  if (idx != 0) {
-                    String name = lesson.children[1].children[0].innerHtml;
-                    String teacherName =
-                        lesson.children[2].children[0].innerHtml;
-                    String time = lesson.children[0].children[0].innerHtml;
-                    Element subgroup =
-                        lesson.children[0].children[0].children[0];
-                    time = time.replaceAll(subgroup.outerHtml, "");
-                    String room =
-                        lesson.children[3].children[0].children[0].innerHtml;
-                    String type =
-                        lesson.children[3].children[1].children[0].innerHtml;
-                    lessonsResult.add({
-                      "subgroup": subgroup.text,
-                      "name": name,
-                      "teacher": teacherName,
-                      "time": time,
-                      "room": room,
-                      "type": type,
-                    });
-                  }
-                });
-                weekResult[dayName] = lessonsResult;
+                  day.children.asMap().forEach((idx, lesson) {
+                    if (idx != 0) {
+                      String name = lesson.children[1].children[0].innerHtml;
+                      String teacherName =
+                          lesson.children[2].children[0].innerHtml;
+                      String time = lesson.children[0].children[0].innerHtml;
+                      Element subgroup =
+                          lesson.children[0].children[0].children[0];
+                      time = time.replaceAll(subgroup.outerHtml, "");
+                      String room =
+                          lesson.children[3].children[0].children[0].innerHtml;
+                      String type =
+                          lesson.children[3].children[1].children[0].innerHtml;
+                      lessonsResult.add({
+                        "subgroup": subgroup.text,
+                        "name": name,
+                        "teacher": teacherName,
+                        "time": time,
+                        "room": room,
+                        "type": type,
+                      });
+                    }
+                  });
+                  weekResult[dayName] = lessonsResult;
+                }
               }
             }
             schedule[currentWeek] = weekResult;
