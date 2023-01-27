@@ -12,14 +12,14 @@ class SubjectSummary {
   Response<Quiz> quiz;
 }
 
-// TODO: переписать с records
+// Два аргумента в MapEntry, первый обязательный это название предмета, второй, семестр в котором нужно искать
 class SubjectSummaryByNameUseCase
-    implements UseCase<SubjectSummary, void, String> {
+    implements UseCase<SubjectSummary, void, MapEntry<String, int?>> {
   SubjectSummaryByNameUseCase({required this.aps, required this.session});
   AcademicPerfomanceSnapshot aps;
   SessionByWhoamiUseCase session;
   @override
-  Response<SubjectSummary> get({String? args}) {
+  Response<SubjectSummary> get({MapEntry<String, int?>? args}) {
     var ssnap = session.get();
     var apssnap = aps.get();
     if (args == null) {
@@ -28,11 +28,14 @@ class SubjectSummaryByNameUseCase
           error: UseCaseError(name: "Нет аргумента"));
     }
     SubjectEntity? subject;
-    var arrayOfSubjects = apssnap.content?.entries.toList()[0].value;
+
+    int semester = args.value ?? 0;
+
+    var arrayOfSubjects = apssnap.content?.entries.toList()[semester].value;
 
     if (arrayOfSubjects != null) {
       for (var s in arrayOfSubjects) {
-        if (s.name == args) {
+        if (s.name == args.key) {
           subject = s;
         }
       }
@@ -46,7 +49,7 @@ class SubjectSummaryByNameUseCase
 
     if (arrayOfQuizes != null) {
       for (var q in arrayOfQuizes) {
-        if (q.name == args) {
+        if (q.name == args.key) {
           quiz = q;
         }
       }
@@ -58,14 +61,16 @@ class SubjectSummaryByNameUseCase
         status:
             (((apssnap.status == ResponseStatus.done) && (subject != null)) ||
                     ((apssnap.status == ResponseStatus.restored) &&
-                        (subject != null)))
+                        (subject != null)) ||
+                    (apssnap.status == ResponseStatus.loading))
                 ? apssnap.status
                 : ResponseStatus.error,
         content: subject);
     Response<Quiz> rquiz = Response(
         status: (((ssnap.status == ResponseStatus.done) && (quiz != null)) ||
-                ((ssnap.status == ResponseStatus.restored) &&
-                    (subject == null)))
+                    ((ssnap.status == ResponseStatus.restored) &&
+                        (quiz == null))) ||
+                (ssnap.status == ResponseStatus.loading)
             ? ssnap.status
             : ResponseStatus.error,
         content: quiz);

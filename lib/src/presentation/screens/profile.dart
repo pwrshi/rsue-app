@@ -11,8 +11,9 @@ import 'package:rsue_app/src/presentation/widgets/schedule/subject.dart';
 class ExpandSemesterWidget extends StatelessWidget {
   final List<SubjectEntity> subjects;
   final String title;
-
-  const ExpandSemesterWidget(this.title, this.subjects, {super.key});
+  final int order;
+  const ExpandSemesterWidget(this.title, this.subjects, this.order,
+      {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +49,10 @@ class ExpandSemesterWidget extends StatelessWidget {
                   teacher: subject.teachersname,
                   isClosed: subject.isClosed,
                   statement: subject.statement,
+                  callback: (() async {
+                    Navigator.of(context).pushNamed("/subject_info",
+                        arguments: MapEntry(subject.name, order));
+                  }),
                   type: SubjectWidget.sessionTypeToString(subject.type)))
               .toList(),
         ),
@@ -162,9 +167,11 @@ class ProfileScreen extends StatelessWidget {
                   child: Text(value.get().error.toString()),
                 );
               default:
+                var arr = (value.get().content?.entries.toList() ?? []);
                 return Column(children: [
-                  for (var s in (value.get().content?.entries.toList() ?? []))
-                    ExpandSemesterWidget(s.key, s.value)
+                  for (int order = 0; order < arr.length; order++)
+                    ExpandSemesterWidget(
+                        arr[order].key, arr[order].value, order)
 
                   //   Padding(
                   //     padding: const EdgeInsets.only(

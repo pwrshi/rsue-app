@@ -11,11 +11,13 @@ class SubjectWidget extends StatelessWidget {
       required this.teacher,
       required this.type,
       required this.statement,
-      required this.isClosed});
+      required this.isClosed,
+      required this.callback});
   final String type, name, teacher;
   final List<int> controlPoints;
   final int statement;
   final bool isClosed;
+  final Function() callback;
 
   static String sessionTypeToString(SessionType s) {
     switch (s) {
@@ -73,74 +75,82 @@ class SubjectWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return FittedBox(
         child: Container(
-      margin: const EdgeInsets.only(top: 9),
-      padding: const EdgeInsets.all(15),
-      width: 342,
-      height: 161,
-      decoration: const BoxDecoration(
-          color: Color(0xFF486581),
-          borderRadius: BorderRadius.all(Radius.circular(15))),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                type,
-                style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white70),
-              ),
-              getMark()
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ConstrainedBox(
-                    constraints: BoxConstraints.loose(const Size(270, 70)),
-                    child: AutoSizeText(name,
-                        minFontSize: 12,
-                        maxLines: 4,
-                        overflow: TextOverflow.ellipsis,
-                        style: const TextStyle(
-                          fontSize: 38,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w500,
-                        )),
-                  ),
-                  Text(teacher, style: const TextStyle(fontSize: 12)),
-                ],
-              ),
-              Column(children: [
-                (isClosed
-                    ? const Icon(
-                        FluentIcons.presence_available_24_filled,
-                        size: 18,
-                      )
-                    : const Icon(
-                        FluentIcons.presence_away_24_filled,
-                        size: 18,
-                      )),
-                const SizedBox(
-                  height: 6,
-                ),
-                Text(
-                  statement.toString(),
-                  style: const TextStyle(fontSize: 10),
-                )
-              ])
-            ],
-          )
-        ],
-      ),
-    ));
+            margin: const EdgeInsets.only(top: 9),
+            width: 342,
+            height: 161,
+            child: ClipRRect(
+                borderRadius: BorderRadius.circular(15),
+                child: Material(
+                    color: const Color(0xFF486581),
+                    child: InkWell(
+                      onTap: callback,
+                      child: Padding(
+                        padding: const EdgeInsets.all(14.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  type,
+                                  style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.white70),
+                                ),
+                                getMark()
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    ConstrainedBox(
+                                      constraints: BoxConstraints.loose(
+                                          const Size(270, 70)),
+                                      child: AutoSizeText(name,
+                                          minFontSize: 12,
+                                          maxLines: 4,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(
+                                            fontSize: 38,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w500,
+                                          )),
+                                    ),
+                                    Text(teacher,
+                                        style: const TextStyle(fontSize: 12)),
+                                  ],
+                                ),
+                                Column(children: [
+                                  (isClosed
+                                      ? const Icon(
+                                          FluentIcons
+                                              .presence_available_24_filled,
+                                          size: 18,
+                                        )
+                                      : const Icon(
+                                          FluentIcons.presence_away_24_filled,
+                                          size: 18,
+                                        )),
+                                  const SizedBox(
+                                    height: 6,
+                                  ),
+                                  Text(
+                                    statement.toString(),
+                                    style: const TextStyle(fontSize: 10),
+                                  )
+                                ])
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    )))));
   }
 }

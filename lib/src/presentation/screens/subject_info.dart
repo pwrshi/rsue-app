@@ -8,7 +8,6 @@ import 'package:rsue_app/src/domain/entities/subject_entity.dart';
 import 'package:rsue_app/src/domain/usecases/subject_summary_by_name_usecase.dart';
 import 'package:rsue_app/src/presentation/screens/session.dart';
 import 'package:rsue_app/src/presentation/widgets/app_bar.dart';
-import 'package:rsue_app/src/presentation/widgets/schedule/subject.dart';
 
 class SubjectInfoContainer extends StatelessWidget {
   const SubjectInfoContainer(
@@ -79,16 +78,16 @@ class SessionWidget extends StatelessWidget {
                 color: const Color(0xFF486581)),
             child: FittedBox(
               child: Row(
-                children: const [
-                  ChipWidget(text: "21.12.22, 13.50"),
-                  SizedBox(
+                children: [
+                  ChipWidget(text: dateTime ?? ":("),
+                  const SizedBox(
                     width: 10,
                   ),
-                  ChipWidget(text: "Каб.303"),
-                  SizedBox(
+                  ChipWidget(text: "Каб.$room"),
+                  const SizedBox(
                     width: 10,
                   ),
-                  ChipWidget(text: "Экзамен")
+                  ChipWidget(text: typeToText() ?? ":(")
                 ],
               ),
             ))
@@ -98,7 +97,8 @@ class SessionWidget extends StatelessWidget {
 }
 
 class TeacherListWidget extends StatelessWidget {
-  const TeacherListWidget({super.key});
+  const TeacherListWidget({super.key, this.teachers});
+  final String? teachers;
 
   @override
   Widget build(BuildContext context) {
@@ -110,7 +110,7 @@ class TeacherListWidget extends StatelessWidget {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(15),
                 color: const Color(0xFF486581)),
-            child: const Text("доц.Бережной С.О."))
+            child: Text(teachers ?? ":("))
       ],
     );
   }
@@ -122,6 +122,8 @@ class PerfomanceScoreScale extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var summary = absoluteScore.fold<double>(
+        0, (previousValue, element) => previousValue + element);
     return FittedBox(
       child: Stack(
         alignment: AlignmentDirectional.center,
@@ -136,14 +138,14 @@ class PerfomanceScoreScale extends StatelessWidget {
               child: Row(children: [
                 Container(
                   height: 16,
-                  width: 280,
+                  width: summary * 3.16,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
                       color: const Color(0xFFF7A23B)),
                   child: Row(children: [
                     Container(
                       height: 16,
-                      width: 130,
+                      width: absoluteScore[0] * 3.16,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
                           color: const Color(0xFFFBC62F)),
@@ -158,11 +160,14 @@ class PerfomanceScoreScale extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const SizedBox(
+                SizedBox(
                     width: 159,
                     height: 70,
                     child: Text(
                       "неуд",
+                      style: summary < 50
+                          ? const TextStyle(color: Color(0xFFF7A23B))
+                          : null,
                       textAlign: TextAlign.center,
                     )),
                 Container(
@@ -170,11 +175,14 @@ class PerfomanceScoreScale extends StatelessWidget {
                   width: 1,
                   height: 30,
                 ),
-                const SizedBox(
+                SizedBox(
                     width: 53,
                     height: 70,
                     child: Text(
                       "3",
+                      style: (summary >= 50) && (summary < 67)
+                          ? const TextStyle(color: Color(0xFFF7A23B))
+                          : null,
                       textAlign: TextAlign.center,
                     )),
                 Container(
@@ -182,11 +190,14 @@ class PerfomanceScoreScale extends StatelessWidget {
                   width: 1,
                   height: 30,
                 ),
-                const SizedBox(
+                SizedBox(
                     width: 53,
                     height: 70,
                     child: Text(
                       "4",
+                      style: (summary >= 67) && (summary < 84)
+                          ? const TextStyle(color: Color(0xFFF7A23B))
+                          : null,
                       textAlign: TextAlign.center,
                     )),
                 Container(
@@ -194,11 +205,14 @@ class PerfomanceScoreScale extends StatelessWidget {
                   width: 1,
                   height: 30,
                 ),
-                const SizedBox(
+                SizedBox(
                     width: 52,
                     height: 70,
                     child: Text(
                       "5",
+                      style: (summary >= 84)
+                          ? const TextStyle(color: Color(0xFFF7A23B))
+                          : null,
                       textAlign: TextAlign.center,
                     )),
               ],
@@ -211,12 +225,12 @@ class PerfomanceScoreScale extends StatelessWidget {
 }
 
 class AcademicPerfomanceSummaryWidget extends StatelessWidget {
-  const AcademicPerfomanceSummaryWidget({super.key});
-
+  const AcademicPerfomanceSummaryWidget({super.key, required this.subject});
+  final SubjectEntity subject;
   @override
   Widget build(BuildContext context) {
     return SubjectInfoContainer(title: "Оценка по предмету", children: [
-      const PerfomanceScoreScale(absoluteScore: [85, 75]),
+      PerfomanceScoreScale(absoluteScore: subject.absoluteControlPoints),
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: const [
@@ -233,15 +247,17 @@ class AcademicPerfomanceSummaryWidget extends StatelessWidget {
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
-        children: const [
+        children: [
           Text(
-            "за первую: 60\nза вторую: 100",
-            style: TextStyle(
+            subject.controlPoints.length == 2
+                ? "за первую: ${subject.controlPoints[0]}.\nза вторую: ${subject.controlPoints[1]}"
+                : "оценка: ${subject.controlPoints[0]}",
+            style: const TextStyle(
                 fontSize: 12, color: Colors.white, fontWeight: FontWeight.w500),
           ),
           Text(
-            "80",
-            style: TextStyle(
+            subject.finalMark.toString(),
+            style: const TextStyle(
                 fontSize: 40, color: Colors.white, fontWeight: FontWeight.w600),
           )
         ],
@@ -257,9 +273,11 @@ class AcademicPerfomanceSummaryWidget extends StatelessWidget {
             color: const Color(0xFF486581)),
         child:
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          const Text(
-            "Оценка ещё не окончательная",
-            style: TextStyle(fontSize: 11, fontWeight: FontWeight.w500),
+          Text(
+            subject.isClosed
+                ? "Оценка утверждена"
+                : "Оценка ещё не окончательная",
+            style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w500),
           ),
           SizedBox(
             width: 35,
@@ -267,14 +285,16 @@ class AcademicPerfomanceSummaryWidget extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.center,
-              children: const [
-                VerticalDivider(
+              children: [
+                const VerticalDivider(
                   color: Color(0xff334E68),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(bottom: 2.0),
+                  padding: const EdgeInsets.only(bottom: 2.0),
                   child: Icon(
-                    FluentIcons.presence_available_24_filled,
+                    subject.isClosed
+                        ? FluentIcons.presence_available_24_filled
+                        : FluentIcons.presence_away_24_filled,
                     size: 14,
                   ),
                 )
@@ -302,10 +322,14 @@ class _SubjectInfoScreenState extends State<SubjectInfoScreen> {
       case ResponseStatus.restored:
         return successFunction(content.content as T);
       case ResponseStatus.error:
-        return Text(content.error.toString());
+        return Text(
+            content.error.toString() == "null" ? "" : content.error.toString());
       case ResponseStatus.loading:
-        return const Center(
-          child: CircularProgressIndicator(),
+        return const Padding(
+          padding: EdgeInsets.all(18.0),
+          child: Center(
+            child: CircularProgressIndicator(),
+          ),
         );
       case ResponseStatus.init:
         return const Text("Инит");
@@ -314,7 +338,8 @@ class _SubjectInfoScreenState extends State<SubjectInfoScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var name = ModalRoute.of(context)!.settings.arguments as String;
+    var pair =
+        ModalRoute.of(context)!.settings.arguments as MapEntry<String, int?>;
     return Scaffold(
         appBar: CustomAppBar(
           leading: IconButton(
@@ -323,12 +348,12 @@ class _SubjectInfoScreenState extends State<SubjectInfoScreen> {
               Navigator.pop(context);
             },
           ),
-          titleText: name,
+          titleText: pair.key,
         ),
         body: Builder(
           builder: (context) {
             var value = context.watch<SubjectSummaryByNameUseCase>();
-            var snap = value.get(args: name);
+            var snap = value.get(args: pair);
             switch (snap.status) {
               case ResponseStatus.error:
                 return ListView(
@@ -343,21 +368,21 @@ class _SubjectInfoScreenState extends State<SubjectInfoScreen> {
                     genBlock(
                         summary!.subject,
                         (SubjectEntity subject) =>
-                            const AcademicPerfomanceSummaryWidget()),
-                    genBlock(summary!.quiz,
-                        (Quiz quiz) => const TeacherListWidget()),
+                            AcademicPerfomanceSummaryWidget(
+                              subject: subject,
+                            )),
                     genBlock(
-                        summary!.quiz, (Quiz quiz) => const SessionWidget()),
+                        summary.quiz,
+                        (Quiz quiz) => TeacherListWidget(
+                              teachers: quiz.teachers,
+                            )),
                     genBlock(
-                        summary.subject,
-                        (SubjectEntity subject) => SubjectWidget(
-                            name: subject.name,
-                            controlPoints: subject.controlPoints,
-                            teacher: subject.teachersname,
-                            type:
-                                SubjectWidget.sessionTypeToString(subject.type),
-                            statement: subject.statement,
-                            isClosed: subject.isClosed))
+                        summary.quiz,
+                        (Quiz quiz) => SessionWidget(
+                              room: quiz.rooms,
+                              dateTime: quiz.dateTime,
+                              type: quiz.type,
+                            )),
                   ],
                 );
               default:

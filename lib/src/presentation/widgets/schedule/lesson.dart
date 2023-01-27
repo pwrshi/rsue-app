@@ -15,53 +15,61 @@ class LessonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FittedBox(
-      child: Container(
-        margin: const EdgeInsets.only(top: 5),
-        padding: const EdgeInsets.all(15),
-        width: 344,
-        height: 200,
-        decoration: const BoxDecoration(
-            color: Color(0xFF486581),
-            borderRadius: BorderRadius.all(Radius.circular(15))),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [Text(type), Text(room)],
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: 300,
-                  height: 80,
-                  child: Align(
-                    alignment: Alignment.bottomLeft,
-                    child: AutoSizeText(name,
-                        minFontSize: 16,
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.left,
-                        style: const TextStyle(
-                          fontSize: 38,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w500,
-                        )),
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [Text(teacher), Text(time)],
-                ),
-              ],
-            )
-          ],
-        ),
-      ),
-    );
+        child: Container(
+            margin: const EdgeInsets.only(top: 5),
+            width: 344,
+            height: 200,
+            child: ClipRRect(
+                borderRadius: BorderRadius.circular(15),
+                child: Material(
+                    color: const Color(0xFF486581),
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.of(context).pushNamed("/subject_info",
+                            arguments: MapEntry(name, null));
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(15),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [Text(type), Text(room)],
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(
+                                  width: 300,
+                                  height: 80,
+                                  child: Align(
+                                    alignment: Alignment.bottomLeft,
+                                    child: AutoSizeText(name,
+                                        minFontSize: 16,
+                                        maxLines: 3,
+                                        overflow: TextOverflow.ellipsis,
+                                        textAlign: TextAlign.left,
+                                        style: const TextStyle(
+                                          fontSize: 38,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w500,
+                                        )),
+                                  ),
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [Text(teacher), Text(time)],
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    )))));
   }
 
   static LessonWidget fromConcreteLesson(ConcreteLesson lesson) {
