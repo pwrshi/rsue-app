@@ -9,6 +9,96 @@ import 'package:rsue_app/src/presentation/screens/session.dart';
 import 'package:rsue_app/src/presentation/widgets/app_bar.dart';
 import 'package:rsue_app/src/presentation/widgets/schedule/subject.dart';
 
+class SubjectInfoContainer extends StatelessWidget {
+  SubjectInfoContainer(
+      {super.key, required this.title, required this.children});
+  String title;
+  List<Widget> children;
+
+  @override
+  Widget build(BuildContext context) {
+    List<Widget> childrenWithTitle = children;
+    children.insertAll(
+      0,
+      [
+        Text(
+          title,
+          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+        ),
+        const SizedBox(
+          height: 15,
+        ),
+      ],
+    );
+
+    return FittedBox(
+      child: Container(
+          margin: const EdgeInsets.only(top: 9),
+          width: 260,
+          padding: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              color: const Color(0xFF334E68)),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: childrenWithTitle,
+          )),
+    );
+  }
+}
+
+class SessionWidget extends StatelessWidget {
+  const SessionWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SubjectInfoContainer(
+      title: "Сессия",
+      children: [
+        Container(
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                color: const Color(0xFF486581)),
+            child: FittedBox(
+              child: Row(
+                children: const [
+                  ChipWidget(text: "21.12.22, 13.50"),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  ChipWidget(text: "Каб.303"),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  ChipWidget(text: "Экзамен")
+                ],
+              ),
+            ))
+      ],
+    );
+  }
+}
+
+class TeacherListWidget extends StatelessWidget {
+  const TeacherListWidget({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SubjectInfoContainer(
+      title: "Преподаватели",
+      children: [
+        Container(
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                color: const Color(0xFF486581)),
+            child: const Text("доц.Бережной С.О."))
+      ],
+    );
+  }
+}
+
 class PerfomanceScoreScale extends StatelessWidget {
   const PerfomanceScoreScale({super.key, required this.absoluteScore});
   final List<int> absoluteScore;
@@ -108,27 +198,75 @@ class AcademicPerfomanceSummaryWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FittedBox(
-      child: Container(
-          width: 260,
-          padding: const EdgeInsets.all(9),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              color: const Color(0xFF486581)),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: const [
-              Text(
-                "Оценка по предмету",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              PerfomanceScoreScale(absoluteScore: [85, 75]),
-            ],
-          )),
-    );
+    return SubjectInfoContainer(title: "Оценка по предмету", children: [
+      const PerfomanceScoreScale(absoluteScore: [85, 75]),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: const [
+          Text(
+            "По точкам:",
+            style: TextStyle(fontSize: 10, color: Color(0xffD9E2EC)),
+          ),
+          Text(
+            "Итоговый балл:",
+            style: TextStyle(fontSize: 10, color: Color(0xffD9E2EC)),
+          )
+        ],
+      ),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: const [
+          Text(
+            "за первую: 60\nза вторую: 100",
+            style: TextStyle(
+                fontSize: 12, color: Colors.white, fontWeight: FontWeight.w500),
+          ),
+          Text(
+            "80",
+            style: TextStyle(
+                fontSize: 40, color: Colors.white, fontWeight: FontWeight.w600),
+          )
+        ],
+      ),
+      const SizedBox(
+        height: 5,
+      ),
+      Container(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            color: const Color(0xFF486581)),
+        child:
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          const Text(
+            "Оценка ещё не окончательная",
+            style: TextStyle(fontSize: 11, fontWeight: FontWeight.w500),
+          ),
+          SizedBox(
+            width: 35,
+            height: 20,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: const [
+                VerticalDivider(
+                  color: Color(0xff334E68),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(bottom: 2.0),
+                  child: Icon(
+                    FluentIcons.presence_available_24_filled,
+                    size: 14,
+                  ),
+                )
+              ],
+            ),
+          )
+        ]),
+      )
+    ]);
   }
 }
 
@@ -189,14 +327,10 @@ class _SubjectInfoScreenState extends State<SubjectInfoScreen> {
                         summary!.subject,
                         (SubjectEntity subject) =>
                             const AcademicPerfomanceSummaryWidget()),
+                    genBlock(summary!.quiz,
+                        (Quiz quiz) => const TeacherListWidget()),
                     genBlock(
-                        summary!.quiz,
-                        (Quiz quiz) => QuizWidget(
-                              name: quiz.name,
-                              datetime: quiz.dateTime,
-                              teachers: quiz.teachers,
-                              rooms: quiz.rooms,
-                            )),
+                        summary!.quiz, (Quiz quiz) => const SessionWidget()),
                     genBlock(
                         summary.subject,
                         (SubjectEntity subject) => SubjectWidget(
