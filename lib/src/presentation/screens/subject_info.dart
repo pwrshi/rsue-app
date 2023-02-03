@@ -250,7 +250,7 @@ class AcademicPerfomanceSummaryWidget extends StatelessWidget {
         children: [
           Text(
             subject.controlPoints.length == 2
-                ? "за первую: ${subject.controlPoints[0]}.\nза вторую: ${subject.controlPoints[1]}"
+                ? "за первую: ${subject.controlPoints[0]}\nза вторую: ${subject.controlPoints[1]}"
                 : "оценка: ${subject.controlPoints[0]}",
             style: const TextStyle(
                 fontSize: 12, color: Colors.white, fontWeight: FontWeight.w500),
