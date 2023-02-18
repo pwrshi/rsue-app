@@ -1,6 +1,6 @@
 name: rsue_app
 description: rsue_app
-version: 1.0.7+8
+version: 1.0.8+9
 publish_to: none
 environment:
   sdk: ">=2.19.0"

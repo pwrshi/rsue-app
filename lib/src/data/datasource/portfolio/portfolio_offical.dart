@@ -53,7 +53,11 @@ class PortfolioOfficalDataSource implements PortfolioDatasource {
   Future<String> _getRawPage(String url) async {
     Response<String> resp;
     try {
-      resp = await http.get<String>(url);
+      resp = await http.get<String>(url,
+          options: Options(headers: {
+            "user-agent":
+                "Mozilla/5.0 (X11; Linux x86_64; rv:99.0) Gecko/20100101 Firefox/99.0"
+          }));
     } catch (e) {
       throw const DatasourceError(name: "Ошибка получения данныйх из сети");
     }
@@ -91,7 +95,12 @@ class PortfolioOfficalDataSource implements PortfolioDatasource {
             'username': username,
             'loginbtn': 'Вход'
           },
-          options: Options(contentType: "application/x-www-form-urlencoded"));
+          options: Options(
+              contentType: "application/x-www-form-urlencoded",
+              headers: {
+                "user-agent":
+                    "Mozilla/5.0 (X11; Linux x86_64; rv:99.0) Gecko/20100101 Firefox/99.0"
+              }));
       if (resp.statusCode == 200) {
         var result = _checkAuthByDataRaw(resp.data!);
         if (result == null) {
