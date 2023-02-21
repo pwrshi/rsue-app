@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart';
-import 'package:rsue_app/src/config/dio.dart';
 import 'package:rsue_app/src/core/error/datasource_error.dart';
 import 'package:rsue_app/src/data/datasource/schedule/offical/_urls.dart';
 import 'package:rsue_app/src/data/repositories/schedule_datasource.dart';
@@ -144,7 +143,7 @@ class ScheduleOfficalDatasource implements ScheduleDatasource {
             parse(response.data.toString()).getElementById("content")?.children;
         Element? containerWeeks = content![content.length - 1];
         containerWeeks.children.asMap().forEach((idx, el) {
-          if (el.className == "ned") {
+          if (el.className == "week") {
             String currentWeek = el.innerHtml;
 
             List<Element>? week;
