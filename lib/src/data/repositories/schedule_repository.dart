@@ -37,8 +37,8 @@ class ScheduleRepositoryRsueOfficalImpl extends RepositoryBase implements Schedu
           error: RepositoryError(name: "Источник не выбран"));
     }
     return invokeDSs(
-        datasource!.getCourses(faculty),
-        cacheDatasource!.getCourses(faculty),
+        ()=>datasource!.getCourses(faculty),
+        ()=>cacheDatasource!.getCourses(faculty),
         (snapshot) => cacheDatasource!.setCourses(snapshot, faculty),
         "ошибка кэша",
         "ошибка интернета");
@@ -51,8 +51,8 @@ class ScheduleRepositoryRsueOfficalImpl extends RepositoryBase implements Schedu
           error: RepositoryError(name: "Источник не выбран"));
     }
     return invokeDSs(
-        datasource!.getFacults(),
-        cacheDatasource!.getFacults(),
+        ()=>datasource!.getFacults(),
+        ()=>cacheDatasource!.getFacults(),
         (snapshot) => cacheDatasource!.setFacults(snapshot),
         "ошибка кэша",
         "ошибка интернета");
@@ -65,8 +65,8 @@ class ScheduleRepositoryRsueOfficalImpl extends RepositoryBase implements Schedu
           error: RepositoryError(name: "Источник не выбран"));
     }
     return invokeDSs(
-        datasource!.getAllGroups(),
-        cacheDatasource!.getAllGroups(),
+        ()=>datasource!.getAllGroups(),
+        ()=>cacheDatasource!.getAllGroups(),
         (snapshot) => cacheDatasource!.setAllGroups(snapshot),
         "ошибка кэша",
         "ошибка интернета");
@@ -80,8 +80,8 @@ class ScheduleRepositoryRsueOfficalImpl extends RepositoryBase implements Schedu
           error: RepositoryError(name: "Источник не выбран"));
     }
     return invokeDSs(
-        datasource!.getGroups(faculty, course),
-        cacheDatasource!.getGroups(faculty, course),
+        ()=>datasource!.getGroups(faculty, course),
+        ()=>cacheDatasource!.getGroups(faculty, course),
         (snapshot) => cacheDatasource!.setGroups(snapshot, faculty, course),
         "ошибка кэша",
         "ошибка интернета");
@@ -128,8 +128,8 @@ class ScheduleRepositoryRsueOfficalImpl extends RepositoryBase implements Schedu
           error: RepositoryError(name: "группа не выставлена"));
     }
     return invokeDSs(
-        datasource!.getScheduleService((groupId ?? group?.id)!),
-        cacheDatasource!.getScheduleService((groupId ?? group?.id)!),
+        ()=>datasource!.getScheduleService((groupId ?? group?.id)!),
+        ()=>cacheDatasource!.getScheduleService((groupId ?? group?.id)!),
         (snapshot) => cacheDatasource!.setScheduleService(
             (groupId ?? group?.id)!, snapshot),
         "ошибка воостановления расписания",

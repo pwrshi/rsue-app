@@ -3,8 +3,10 @@ import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rsue_app/src/core/api/response.dart';
+import 'package:rsue_app/src/core/error/snapshot_error.dart';
 import 'package:rsue_app/src/domain/entities/quiz_entity.dart';
 import 'package:rsue_app/src/domain/entities/session_type.dart';
+import 'package:rsue_app/src/domain/usecases/portfolio_snapshot.dart';
 import 'package:rsue_app/src/domain/usecases/session_by_whoami_usecase.dart';
 import 'package:rsue_app/src/presentation/widgets/app_bar.dart';
 
@@ -78,12 +80,37 @@ class _SessionScreenState extends State<SessionScreen> {
         body: Builder(
           builder: (context) {
             var session = context.watch<SessionByWhoamiUseCase>();
-
-            switch (session.get().status) {
+            var s = session.get();
+            switch (s.status) {
               case ResponseStatus.error:
+                if (s.error is DataSnapshotError) {
+                  switch (s.error) {
+                    case sessionNotFound:
+                      return ListView(
+                        padding: const EdgeInsets.all(8),
+                        children: const [
+                          Text(
+                              "Мы не обнаружили информации о надвигающейся сессии :(\n\nВозможно время её ещё не опубликовали")
+                        ],
+                      );
+                    case groupNotFound:
+                      return ListView(
+                        padding: const EdgeInsets.all(8),
+                        children: const [
+                          Text(
+                              "Мы не нашли информацию по вашей группе :(\n\nВозможно она появится позже")
+                        ],
+                      );
+                    default:
+                      return ListView(
+                        padding: const EdgeInsets.all(8),
+                        children: [Text((s.error! as DataSnapshotError).name)],
+                      );
+                  }
+                }
                 return ListView(
                   padding: const EdgeInsets.all(8),
-                  children: [Text(session.get().error.toString())],
+                  children: [Text(s.error.toString())],
                 );
               case ResponseStatus.loading:
                 return ListView(
@@ -105,10 +132,7 @@ class _SessionScreenState extends State<SessionScreen> {
               default:
                 return ListView(
                   padding: const EdgeInsets.all(8),
-                  children: session
-                      .get()
-                      .content!
-                      .value
+                  children: s.content!.value
                       .map<Widget>((subject) => QuizWidget(
                             name: subject.name,
                             datetime: subject.dateTime,

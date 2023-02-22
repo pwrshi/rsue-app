@@ -6,14 +6,14 @@ import 'package:rsue_app/src/core/resources/data_state.dart';
 abstract class RepositoryBase {
   // ignore: long-parameter-list
   Future<DataState<T>> invokeDSs<T>(
-      Future<T?> onlineDs,
-      Future<T?> localDs,
+      Future<T?> Function() onlineDs,
+      Future<T?> Function() localDs,
       Future<void> Function(T snapshot) saveDsCallback,
       String localErr,
       String onlineErr) async {
     DataState<T> result;
     try {
-      var snapshot = await onlineDs;
+      var snapshot = await onlineDs();
       if (snapshot == null) {
         throw const RepositoryError(name: "no data");
       }
@@ -26,7 +26,7 @@ abstract class RepositoryBase {
 
       // попытка взять из локального источника
       try {
-        var localSnap = await localDs;
+        var localSnap = await localDs();
         if (localSnap == null) {
           throw const ResponseError(name: "no local data");
         }

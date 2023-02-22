@@ -1,8 +1,13 @@
 import 'package:rsue_app/src/core/api/response.dart';
+import 'package:rsue_app/src/core/error/snapshot_error.dart';
 import 'package:rsue_app/src/core/usecases/usecase.dart';
 import 'package:rsue_app/src/domain/entities/quiz_entity.dart';
 import 'package:rsue_app/src/domain/usecases/portfolio_snapshot.dart';
 import 'package:rsue_app/src/domain/usecases/sessions_snapshot.dart';
+
+const sessionNotFound =
+    DataSnapshotError(name: "Сессии не найдены. Возможно не пришло время");
+const groupNotFound = DataSnapshotError(name: "группа не найдена");
 
 class SessionByWhoamiUseCase
     implements UseCase<MapEntry<String, List<Quiz>>, void, void> {
@@ -23,7 +28,8 @@ class SessionByWhoamiUseCase
       return const Response(status: ResponseStatus.loading);
     } else if ((sessions!.get().status == ResponseStatus.error) ||
         (whoami!.get().status == ResponseStatus.error)) {
-      return const Response(status: ResponseStatus.error);
+      return const Response(
+          status: ResponseStatus.error, error: sessionNotFound);
     } else {
       if (whoami!.get().status == ResponseStatus.done) {
         var groupName = whoami!.get().content?["Группа"];
@@ -34,9 +40,7 @@ class SessionByWhoamiUseCase
         }
       }
     }
-    return const Response(
-        status: ResponseStatus.error,
-        error: DataSnapshotError(name: "группа не найдена"));
+    return const Response(status: ResponseStatus.error, error: groupNotFound);
   }
 
   @override

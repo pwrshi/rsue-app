@@ -1,4 +1,4 @@
-import 'package:rsue_app/src/core/error/error.dart';
+import 'package:rsue_app/src/core/error/snapshot_error.dart';
 import 'package:rsue_app/src/core/resources/data_state.dart';
 import 'package:rsue_app/src/domain/entities/payment_entity.dart';
 import 'package:rsue_app/src/domain/entities/subject_entity.dart';
@@ -6,11 +6,6 @@ import 'package:rsue_app/src/domain/repositories/portfolio_repository.dart';
 import 'package:rsue_app/src/core/usecases/snapshot.dart';
 
 const reposNotFound = DataSnapshotError(name: "Репозиторий не найден");
-
-class DataSnapshotError extends RsError {
-  const DataSnapshotError({required String name})
-      : super(name: "DataSnapshotErr: $name");
-}
 
 class PaymentSnapshot extends DataSnapshot<List<PaymentEntity>> {
   PaymentSnapshot(this.repo);

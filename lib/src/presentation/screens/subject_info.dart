@@ -315,15 +315,17 @@ class SubjectInfoScreen extends StatefulWidget {
 }
 
 class _SubjectInfoScreenState extends State<SubjectInfoScreen> {
-  Widget genBlock<T>(Response<T> content, Widget Function(T) successFunction) {
+  Widget genBlock<T>(Response<T> content, Widget Function(T) successFunction,
+      String nullMessage) {
     switch (content.status) {
       case ResponseStatus.done:
         return successFunction(content.content as T);
       case ResponseStatus.restored:
         return successFunction(content.content as T);
       case ResponseStatus.error:
-        return Text(
-            content.error.toString() == "null" ? "" : content.error.toString());
+        return Text(content.error.toString() == "null"
+            ? nullMessage
+            : content.error.toString());
       case ResponseStatus.loading:
         return const Padding(
           padding: EdgeInsets.all(18.0),
@@ -370,19 +372,22 @@ class _SubjectInfoScreenState extends State<SubjectInfoScreen> {
                         (SubjectEntity subject) =>
                             AcademicPerfomanceSummaryWidget(
                               subject: subject,
-                            )),
+                            ),
+                        "Успеваемость не найдена"),
                     genBlock(
                         summary.quiz,
                         (Quiz quiz) => TeacherListWidget(
                               teachers: quiz.teachers,
-                            )),
+                            ),
+                        ""),
                     genBlock(
                         summary.quiz,
                         (Quiz quiz) => SessionWidget(
                               room: quiz.rooms,
                               dateTime: quiz.dateTime,
                               type: quiz.type,
-                            )),
+                            ),
+                        "Сессия не найдена"),
                   ],
                 );
               default:

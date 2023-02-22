@@ -14,8 +14,8 @@ class SessionRepositoryImpl extends RepositoryBase
   @override
   Future<DataState<List<Quiz>>> getScheduleForGroup(String groupName) async {
     var snap = await invokeDSs<Map<String, List<Quiz>>>(
-        datasource.getAllSchedules(),
-        localDatasource.getAllSchedules(),
+        datasource.getAllSchedules,
+        localDatasource.getAllSchedules,
         (snapshot) => localDatasource.setAllSchedules(snapshot),
         "Ошибка бэкапа сессии",
         "Ошибка скачивания сессии");
@@ -32,8 +32,8 @@ class SessionRepositoryImpl extends RepositoryBase
   @override
   Future<DataState<Map<String, List<Quiz>>>> getSchedulesForAllGroups() {
     return invokeDSs<Map<String, List<Quiz>>>(
-        datasource.getAllSchedules(),
-        localDatasource.getAllSchedules(),
+        datasource.getAllSchedules,
+        localDatasource.getAllSchedules,
         (snapshot) => localDatasource.setAllSchedules(snapshot),
         "Ошибка бэкапа сессии",
         "Ошибка скачивания сессии");

@@ -26,8 +26,8 @@ class PortfolioRepositoryImpl extends RepositoryBase
       getAcademicPerfomance() async {
     if (_checkCredits()) {
       return await invokeDSs(
-          source.getAcademicPerfomance(username!, password!),
-          cacheSource.getAcademicPerfomance(username!, password!),
+          () => source.getAcademicPerfomance(username!, password!),
+          () => cacheSource.getAcademicPerfomance(username!, password!),
           (snapshot) =>
               cacheSource.setAcademicPerfomance(username!, password!, snapshot),
           "ошибка воостановления из кэша успеваемости",
@@ -40,8 +40,8 @@ class PortfolioRepositoryImpl extends RepositoryBase
   Future<DataState<List<PaymentEntity>>> getPayments() async {
     if (_checkCredits()) {
       return await invokeDSs(
-          source.getPayments(username!, password!),
-          cacheSource.getPayments(username!, password!),
+          () => source.getPayments(username!, password!),
+          () => cacheSource.getPayments(username!, password!),
           (snapshot) => cacheSource.setPayments(username!, password!, snapshot),
           "ошибка воостановления из кэша платежей",
           "ошибка скачивания платежей");
@@ -75,8 +75,8 @@ class PortfolioRepositoryImpl extends RepositoryBase
   Future<DataState<Map<String, String>>> whoami() async {
     if (_checkCredits()) {
       return await invokeDSs(
-          source.getWhoami(username!, password!),
-          cacheSource.getWhoami(username!, password!),
+          () => source.getWhoami(username!, password!),
+          () => cacheSource.getWhoami(username!, password!),
           (snapshot) => cacheSource.setWhoami(username!, password!, snapshot),
           "ошибка воостановления из кэша хтоя",
           "ошибка скачивания хтоя");
