@@ -27,7 +27,7 @@ abstract class ScheduleDatasource {
 
 abstract class ScheduleLocalDatasource {
   Future<GroupId?> getLastGroup();
-  Future<void> setLastGroup(GroupId snapshot);
+  Future<void> setLastGroup(GroupId? snapshot);
 
   Future<void> setFacults(Map<int, String> snapshot);
   Future<void> setCourses(Map<int, String> snapshot, int faculty);

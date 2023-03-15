@@ -6,6 +6,7 @@ import 'package:rsue_app/src/config/theme.dart';
 import 'package:rsue_app/src/data/datasource/portfolio/portfolio_cache_sp.dart';
 import 'package:rsue_app/src/data/datasource/portfolio/portfolio_offical.dart';
 import 'package:rsue_app/src/data/datasource/schedule/offical/schedule_offical.dart';
+import 'package:rsue_app/src/data/datasource/schedule/pwrshi/pwrshi_backup.dart';
 import 'package:rsue_app/src/data/datasource/schedule/schedule_cache_sp.dart';
 import 'package:rsue_app/src/data/datasource/session/session_cache.dart';
 import 'package:rsue_app/src/data/datasource/session/session_offical.dart';
@@ -54,7 +55,10 @@ class RsueApplication extends StatelessWidget {
 
           Provider<ScheduleRepository>(
               create: (context) => ScheduleRepositoryRsueOfficalImpl(
-                  {"Сайт РГЭУ (РИНХ)": (ScheduleOfficalDatasource(), SharedPreferencesScheduleCacheDatasource())},
+                  {
+                    "Сайт РГЭУ (РИНХ)": (ScheduleOfficalDatasource(), SharedPreferencesScheduleCacheDatasource("o")),
+                    "Бэкап РИНХ от pwrshi": (SchedulePwrshiBackupDatasource(),SharedPreferencesScheduleCacheDatasource("p"))
+                  },
                   )),
           Provider<PortfolioRepository>(
               create: (context) => PortfolioRepositoryImpl(
@@ -155,6 +159,14 @@ class RsueApplication extends StatelessWidget {
                       onPressed: () {
                         toggleDrawer(context);
                         Navigator.pushNamed(context, '/autor');
+                      },
+                    ),
+                    MenuButton(
+                      icon: FluentIcons.sign_out_24_filled,
+                      text: "Выход",
+                      onPressed: () {
+                        Navigator.pushNamedAndRemoveUntil(
+            context, "/introduction", (route) => false);
                       },
                     ),
                   ]),

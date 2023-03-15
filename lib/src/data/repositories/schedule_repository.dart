@@ -50,12 +50,13 @@ class ScheduleRepositoryRsueOfficalImpl extends RepositoryBase implements Schedu
       return const DataFailed(
           error: RepositoryError(name: "Источник не выбран"));
     }
-    return invokeDSs(
+    var ins = await invokeDSs(
         ()=>datasource!.getFacults(),
         ()=>cacheDatasource!.getFacults(),
         (snapshot) => cacheDatasource!.setFacults(snapshot),
         "ошибка кэша",
         "ошибка интернета");
+    return ins;
   }
 
   @override
@@ -91,6 +92,7 @@ class ScheduleRepositoryRsueOfficalImpl extends RepositoryBase implements Schedu
   void setGroup(Group group) {
     this.group = group;
     groupId = group.id;
+    cacheDatasource!.setLastGroup(groupId);
   }
 
   @override

@@ -143,7 +143,7 @@ class ScheduleOfficalDatasource implements ScheduleDatasource {
             parse(response.data.toString()).getElementById("content")?.children;
         Element? containerWeeks = content![content.length - 1];
         containerWeeks.children.asMap().forEach((idx, el) {
-          if (el.className == "week") {
+          if (el.className == "ned") {
             String currentWeek = el.innerHtml;
 
             List<Element>? week;

@@ -7,6 +7,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferencesScheduleCacheDatasource
     implements ScheduleLocalDatasource {
+  SharedPreferencesScheduleCacheDatasource(this.prefix);
+  String prefix;
   SharedPreferences? pref;
   Future<SharedPreferences> getPref() async {
     return pref ??= await SharedPreferences.getInstance();
@@ -35,7 +37,7 @@ class SharedPreferencesScheduleCacheDatasource
 
   @override
   Future<GroupId?> getLastGroup() async {
-    var raw = (await getPref()).getString("last_selected_group");
+    var raw = (await getPref()).getString("$prefix-last_selected_group");
     if (raw == null) {
       return null;
     }
@@ -44,7 +46,8 @@ class SharedPreferencesScheduleCacheDatasource
 
   @override
   Future<ScheduleService?> getScheduleService(GroupId groupId) async {
-    var raw = (await getPref()).getString("service_of_group_id_$groupId");
+    var raw =
+        (await getPref()).getString("$prefix-service_of_group_id_$groupId");
     if (raw == null) {
       return null;
     }
@@ -67,12 +70,13 @@ class SharedPreferencesScheduleCacheDatasource
   @override
   Future<void> setScheduleService(
       GroupId groupId, ScheduleService snapshot) async {
-    (await getPref())
-        .setString("service_of_group_id_$groupId", json.encode(snapshot));
+    (await getPref()).setString(
+        "$prefix-service_of_group_id_$groupId", json.encode(snapshot));
   }
 
   @override
-  Future<void> setLastGroup(GroupId snapshot) async {
-    (await getPref()).setString("last_selected_group", json.encode(snapshot));
+  Future<void> setLastGroup(GroupId? snapshot) async {
+    (await getPref())
+        .setString("$prefix-last_selected_group", json.encode(snapshot));
   }
 }
