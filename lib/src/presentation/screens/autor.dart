@@ -33,84 +33,66 @@ class _AutorScreenState extends State<AutorScreen> {
               width: double.infinity,
               child: Center(
                   child: Text(
-                "Made by",
+                "Сделано",
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
               )),
             ),
-            SizedBox(
-              height: 200,
-              width: double.infinity,
-              child: Center(
-                child: Image.asset("assets/images/me.png"),
-              ),
+            Center(
+              child: Image.asset("assets/images/me.png"),
             ),
-            SizedBox(
-              height: 50,
-              width: double.infinity,
-              child: Center(
-                child: SizedBox(
-                  width: 160,
-                  height: 50,
-                  child: TextButton(
-                      onPressed: () async {
-                        await launchUrlString("https://github.com/pwrshi",
-                            mode: LaunchMode.externalApplication);
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            "assets/images/gh.png",
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          const Text("pwrshi",
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.w700))
-                        ],
-                      )),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 50,
-              width: double.infinity,
-              child: Center(
-                child: SizedBox(
-                  width: 160,
-                  height: 50,
-                  child: TextButton(
-                      onPressed: () async {
-                        await launchUrlString("https://vk.com/pwrshi",
-                            mode: LaunchMode.externalApplication);
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            "assets/images/vk.png",
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          const Text("pwrshi",
-                              style: TextStyle(
-                                  fontSize: 18, fontWeight: FontWeight.w700))
-                        ],
-                      )),
-                ),
-              ),
-            ),
+            const Center(
+                child: Text(
+              "pwrshi",
+              style: TextStyle(
+                  fontSize: 50,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white),
+            )),
+            const Center(
+                child: Text(
+              "на полном энтузиазме",
+              style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                  color: Colors.white70),
+            )),
             const SizedBox(
+              height: 20,
+            ),
+            SizedBox(
               height: 40,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextButton(
+                    onPressed: () async {
+                      await launchUrlString("https://github.com/pwrshi",
+                          mode: LaunchMode.externalApplication);
+                    },
+                    child: Image.asset(
+                      "assets/images/gh.png",
+                      scale: 0.8,
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: () async {
+                      await launchUrlString("https://vk.com/pwrshi",
+                          mode: LaunchMode.externalApplication);
+                    },
+                    child: Image.asset(
+                      "assets/images/vk.png",
+                      scale: 0.8,
+                    ),
+                  ),
+                ],
+              ),
             ),
             const SizedBox(
               height: 50,
               width: double.infinity,
               child: Center(
                   child: Text(
-                "from",
+                "из",
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
               )),
             ),

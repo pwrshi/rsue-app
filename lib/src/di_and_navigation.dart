@@ -108,7 +108,7 @@ class RsueApplication extends StatelessWidget {
             locale: const Locale('ru'),
             routes: {
               '/home': (context) =>
-                  MenuScaffold(mainScreen: const HomeScreen(), menu: [
+                  MenuScaffold(mainScreen:  HomeScreen(), menu: [
                     const Padding(
                       padding: EdgeInsets.only(left: 8.0),
                       child: Text(

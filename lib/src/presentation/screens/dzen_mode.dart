@@ -21,6 +21,14 @@ class DzenModeScreen extends StatelessWidget {
                 Navigator.pushNamed(context, '/autor');
               },
             ),
+            IconButton(
+              icon: const Icon(
+                FluentIcons.sign_out_24_filled,
+              ),
+              onPressed: () {
+                Navigator.pushNamed(context, '/introduction');
+              },
+            ),
           ],
         ),
         body: ScheduleViewer(
