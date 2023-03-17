@@ -30,7 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
     var s = DateFormat.EEEE('ru').format(date);
     List<Widget> result = [
       Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: EdgeInsets.only(bottom: 8.0, left: 8.0, right: 8.0),
         child: Row(
           children: [
             Text(
@@ -174,23 +174,19 @@ class _HomeScreenState extends State<HomeScreen> {
                 expandedTitleScale: 1,
                 collapseMode: CollapseMode.pin,
                 background: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: const [
-                    FittedBox(
-                      child: SizedBox(
-                        width: 350,
-                        height: 110,
-                      ),
+                    SizedBox(
+                      width: 350,
+                      height: 100,
                     ),
                     Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        padding: EdgeInsets.symmetric(horizontal: 8.0),
                         child: ShortInfo()),
-                    FittedBox(
-                      child: SizedBox(
-                        width: 350,
-                        height: 90,
-                      ),
-                    )
+                    SizedBox(
+                      width: 350,
+                      height: 90,
+                    ),
                   ],
                 ),
               ),

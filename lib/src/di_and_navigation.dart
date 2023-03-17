@@ -137,14 +137,14 @@ class RsueApplication extends StatelessWidget {
                         Navigator.pushNamed(context, '/profile');
                       },
                     ),
-                    MenuButton(
-                      icon: FluentIcons.app_recent_24_filled,
-                      text: "Расписание",
-                      onPressed: () {
-                        toggleDrawer(context);
-                        Navigator.pushNamed(context, '/schedule');
-                      },
-                    ),
+                    // MenuButton(
+                    //   icon: FluentIcons.app_recent_24_filled,
+                    //   text: "Расписание",
+                    //   onPressed: () {
+                    //     toggleDrawer(context);
+                    //     Navigator.pushNamed(context, '/schedule');
+                    //   },
+                    // ),
 
                     // TODO: реализовать экран преподавателей
                     // MenuButton(
