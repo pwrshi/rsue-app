@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:rsue_app/src/config/dio.dart';
 import 'package:html/dom.dart';
 import 'package:html/parser.dart';
 import 'package:rsue_app/src/core/error/datasource_error.dart';
@@ -13,7 +14,7 @@ import 'package:rsue_app/src/domain/entities/lesson_entity.dart';
 typedef ScheduleRaw = Map<String, Map<String, List<Map<String, String>>>>;
 
 class ScheduleOfficalDatasource implements ScheduleDatasource {
-  Dio http = Dio();
+  Dio http = getDio();
   @override
   Future<Map<int, String>> getFacults() async {
     var resp = http.get(htmlUrl,

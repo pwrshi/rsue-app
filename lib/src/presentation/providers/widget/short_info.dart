@@ -37,11 +37,11 @@ class ShortInfoProvider extends ChangeNotifier {
       var lastSemester = snapshot!.get().content?.entries.first.value;
       var passed = lastSemester!
           .where((element) =>
-              (element.type == SessionType.credit) & element.isClosed)
+              (element.type == SessionType.credit) && element.isClosed)
           .length;
       var needToPass = lastSemester
           .where((element) =>
-              (element.type == SessionType.credit) & !element.isClosed)
+              (element.type == SessionType.credit) && !element.isClosed)
           .length;
       if (passed == 0) {
         return NumberForm("Нужно сдать", "$needToPass", "зачета");
@@ -60,11 +60,11 @@ class ShortInfoProvider extends ChangeNotifier {
       var lastSemester = snapshot!.get().content?.entries.first.value;
       var passed = lastSemester!
           .where((element) =>
-              (element.type == SessionType.exam) & element.isClosed)
+              (element.type == SessionType.exam) && element.isClosed)
           .length;
       var needToPass = lastSemester
           .where((element) =>
-              (element.type == SessionType.exam) & !element.isClosed)
+              (element.type == SessionType.exam) && !element.isClosed)
           .length;
       if (passed == 0) {
         return NumberForm("Нужно сдать", "$needToPass", "экзамена");

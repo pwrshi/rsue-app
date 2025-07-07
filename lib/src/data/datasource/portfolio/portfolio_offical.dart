@@ -1,7 +1,7 @@
-import 'dart:io';
+// import 'dart:io'; // removed: Dio instance provided by getDio already handles certificate logic
 
-import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
+import 'package:rsue_app/src/config/dio.dart';
 
 import 'package:rsue_app/src/core/error/datasource_error.dart';
 import 'package:rsue_app/src/data/repositories/portfolio_datasource.dart';
@@ -23,15 +23,7 @@ const accountingURL = 'https://portfolio.rsue.ru/accounting/index.php';
 
 class PortfolioOfficalDataSource implements PortfolioDatasource {
   PortfolioOfficalDataSource() {
-    http = Dio();
-    // Игнорирует всратый сертификат
-    (http.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
-        (HttpClient client) {
-      // коллбэчит что всё ок
-      client.badCertificateCallback =
-          (X509Certificate cert, String host, int port) => true;
-      return client;
-    };
+    http = getDio();
     var cookieJar = CookieJar();
     http.interceptors.add(CookieManager(cookieJar));
   }
